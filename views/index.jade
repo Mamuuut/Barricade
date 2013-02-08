@@ -1,0 +1,9 @@
+block append head
+    script(type='text/javascript', src='/socket.io/socket.io.js')
+    script(type='text/javascript', data-main='js/main', src='js/libs/require-jquery.js')
+
+div.header
+  h1= title
+  a(href='/logout') Logout
+div.index
+  include chat
