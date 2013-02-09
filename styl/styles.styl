@@ -11,6 +11,12 @@ box-shadow()
   -ms-box-shadow arguments
   -o-box-shadow arguments
   box-shadow arguments
+  
+transition()
+  transition arguments
+  -moz-transition arguments
+  -webkit-transition arguments
+  -o-transition arguments
 
 container(width)
   border 1px solid #000
@@ -62,6 +68,11 @@ h1
     border solid 1px #acacac
     border-top-width 0
     padding 8px
+    span
+      opacity 0
+      transition opacity 1s
+      &.visible
+        opacity 1
 
 .login
   container 300px

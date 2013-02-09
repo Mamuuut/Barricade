@@ -5,9 +5,9 @@
 module.exports =
   
   startup: (io) ->
-    io.sockets.on 'connection', (socket) ->
+    io.sockets.on 'connection', (socket) =>
       
-      socket.on 'new user', (username) ->
+      socket.on 'new user', (username) =>
         socket.username = username
         
       socket.on 'send message', (message) ->

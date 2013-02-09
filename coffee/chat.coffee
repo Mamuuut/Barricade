@@ -6,7 +6,12 @@ define ->
   initialize = (username) ->
     socket = io.connect 'http://localhost'
     socket.on 'new message', (userMessage) ->
-      ($ '#conversation').prepend '<b>' + userMessage.username + ' : </b>' + userMessage.message + '<br/>'
+      newMessage = $( '<span>' +
+        '<b>' + userMessage.username + ' : </b>' + userMessage.message + '<br/>' +
+        '</span>' )
+      ($ '#conversation').prepend newMessage
+      setTimeout ->
+        newMessage.addClass 'visible', 0
   
     ($ '#new_message').keypress (e) ->
         if(e.which is 13)

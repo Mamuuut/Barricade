@@ -13,7 +13,12 @@
       var socket;
       socket = io.connect('http://localhost');
       socket.on('new message', function(userMessage) {
-        return ($('#conversation')).prepend('<b>' + userMessage.username + ' : </b>' + userMessage.message + '<br/>');
+        var newMessage;
+        newMessage = $('<span>' + '<b>' + userMessage.username + ' : </b>' + userMessage.message + '<br/>' + '</span>');
+        ($('#conversation')).prepend(newMessage);
+        return setTimeout(function() {
+          return newMessage.addClass('visible', 0);
+        });
       });
       ($('#new_message')).keypress(function(e) {
         var message;
