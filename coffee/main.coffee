@@ -2,5 +2,10 @@
   main.coffee
 ###
 
-require ['app'], ( App ) ->
+requirejs.config
+  paths: 
+    underscore: 'libs/underscore-min',
+    backbone: 'libs/backbone-min'
+
+require ['app'], (App) ->
     App.initialize()

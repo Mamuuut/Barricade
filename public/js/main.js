@@ -7,6 +7,13 @@
 
 (function() {
 
+  requirejs.config({
+    paths: {
+      underscore: 'libs/underscore-min',
+      backbone: 'libs/backbone-min'
+    }
+  });
+
   require(['app'], function(App) {
     return App.initialize();
   });

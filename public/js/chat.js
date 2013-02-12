@@ -11,7 +11,7 @@
     var initialize;
     initialize = function(username) {
       var socket;
-      socket = io.connect('http://localhost');
+      socket = io.connect();
       socket.on('new message', function(userMessage) {
         var newMessage;
         newMessage = $('<span>' + '<b>' + userMessage.username + ' : </b>' + userMessage.message + '<br/>' + '</span>');

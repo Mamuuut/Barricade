@@ -4,7 +4,7 @@
 
 define ->
   initialize = (username) ->
-    socket = io.connect 'http://localhost'
+    socket = io.connect()
     socket.on 'new message', (userMessage) ->
       newMessage = $( '<span>' +
         '<b>' + userMessage.username + ' : </b>' + userMessage.message + '<br/>' +

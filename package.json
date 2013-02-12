@@ -17,6 +17,8 @@
     "jade": "*",
     "uglify-js": "*",
     "mocha": "*",
-    "should": "*"
+    "should": "*",
+    "superagent": "*",
+    "supertest": "*"
   }
 }

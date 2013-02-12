@@ -56,3 +56,5 @@ db = new DB.startup conn
 app.listen 3000, ->
   espresso.core.logEspresso()
   console.log "Server listening on port %d, %s", app.address().port, app.env
+  
+module.exports = app

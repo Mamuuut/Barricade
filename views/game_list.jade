@@ -1,0 +1,14 @@
+extends index
+
+block append content
+  div#games
+    div.list
+    button#create Create
+  
+  include chat
+  
+script#game-template(type="text/template")
+  |<div class="view">
+  |  <label><%= title %></label>
+  |  <a class="join"></a>
+  |</div>

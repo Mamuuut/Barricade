@@ -10,6 +10,6 @@ User = new Schema
   password: String
 
 User.methods.validPassword = ( pwd ) ->
-  return this.password is pwd
+  return @password is pwd
 
 module.exports = mongoose.model 'User', User
