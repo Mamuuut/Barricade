@@ -27,7 +27,8 @@ module.exports = (app) ->
   app.post '/games', ensureAuthenticated, (req, res) ->
     newGame = new Game req.body
     newGame.save (err, user) -> 
-      console.log 'newGame saved', err, user
+      Game.find (err, games) ->
+        res.json games
   
   app.get '/user', ensureAuthenticated, (req, res) ->
     res.json { username: req.user.username, userid: req.user.id }

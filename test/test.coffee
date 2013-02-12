@@ -3,6 +3,7 @@ request = require 'supertest'
 should = require 'should'
 app = require '../app'
 User = require '../models/user'
+Game = require '../models/game'
 
 describe 'routes', ->
   
@@ -10,7 +11,7 @@ describe 'routes', ->
   username = 'John'
   realPassword = '1234'
  
-  beforeEach (done) ->
+  before (done) ->
     User.remove (err, users) ->
       user = new User
         username: username,
@@ -18,6 +19,10 @@ describe 'routes', ->
   
       user.save (err, user) -> 
         done()
+      
+  after ->
+    User.remove
+    Game.remove
   
   describe 'GET /login', ->
     it 'respond with html', (done) ->
@@ -46,7 +51,10 @@ describe 'routes', ->
           res.header['location'].should.not.include('/login')
           cookie = res.headers['set-cookie']
           done()
-  
+          
+  ###
+    Authentication
+  ###
   describe 'Authentication', ->
     
     cookie = null
@@ -78,7 +86,41 @@ describe 'routes', ->
             res.body.should.have.property('username').equal(username)
             res.body.should.have.property('userid').equal(user.id)
             done()
-  
-  after ->
-    User.remove
+    
+    ###
+      Games
+    ###
+    describe 'Games', ->
+       
+      newGame = null
+      
+      before (done) ->
+        newGame = 
+          players: [user.id],
+          currentplayer: 0,
+          cells: [0,0,0,0,0,0,0,0,0]
+          
+        Game.remove (err, games) ->
+          done()
+            
+      describe 'GET /games', ->
+        it 'respond with json', (done) ->
+          request( app )
+            .get( '/games' )
+            .set('cookie', cookie)
+            .end (err, res) ->
+              res.body.should.be.an.instanceOf(Array)
+              res.body.length.should.equal(0)
+              done()
+            
+      describe 'POST /games', ->
+        it 'respond with json', (done) ->
+          request( app )
+            .post( '/games' )
+            .set('cookie', cookie)
+            .send( newGame )
+            .end (err, res) ->
+              res.body.should.be.an.instanceOf(Array)
+              res.body.length.should.equal(1)
+              done()
       
