@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/Mamuuut/Barricade.png)](https://travis-ci.org/Mamuuut/Barricade)
+
 Barricade
 =========
 
