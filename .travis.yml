@@ -4,3 +4,5 @@ node_js:
   - 0.7
 services:
   - mongodb
+before_script:
+  - mongod --dbpath .\db\
