@@ -7,7 +7,7 @@
 
 (function() {
 
-  define(['chat', 'collections/game_list', 'views/games_view'], function(Chat, GameList, GamesView) {
+  define(['chat', 'collections/games', 'views/games'], function(Chat, GameList, GamesView) {
     var initialize;
     initialize = function() {
       var gameList;

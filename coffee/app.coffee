@@ -2,7 +2,7 @@
   app.coffee
 ###
 
-define ['chat', 'collections/game_list', 'views/games_view'], (Chat, GameList, GamesView) ->
+define ['chat', 'collections/games', 'views/games'], (Chat, GameList, GamesView) ->
     initialize = ->
       
       gameList = new GameList

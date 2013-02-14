@@ -7,7 +7,8 @@ define [ 'underscore', 'backbone' ], (_, Backbone) ->
     idAttribute: "_id",
     
     url: ->
-      '/todo/' + @id,
+      '/todo/' + @id
+    ,
     
     defaults: ->
       date: new Date(),
