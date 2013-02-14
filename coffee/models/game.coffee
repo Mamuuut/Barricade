@@ -6,10 +6,6 @@ define [ 'underscore', 'backbone' ], (_, Backbone) ->
   GameModel = Backbone.Model.extend
     idAttribute: "_id",
     
-    url: ->
-      '/todo/' + @id
-    ,
-    
     defaults: ->
       date: new Date(),
       players: [],

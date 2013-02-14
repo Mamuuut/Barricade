@@ -2,7 +2,7 @@
   app.coffee
 ###
 
-define ['chat', 'collections/games', 'views/games'], (Chat, GameList, GamesView) ->
+define ['chat', 'GameList', 'GameListView'], (Chat, GameList, GameListView) ->
     initialize = ->
       
       gameList = new GameList
@@ -10,9 +10,10 @@ define ['chat', 'collections/games', 'views/games'], (Chat, GameList, GamesView)
       $.get '/user', (data) ->
         Chat.initialize data.username
         
-        gamesView = new GamesView { games: gameList, playerid: data.userid }
+        gameListView = new GameListView { games: gameList, playerid: data.userid }
         gameList.fetch 
           success: (games) ->
             console.log games
+            gameListView.render()
       
     initialize: initialize

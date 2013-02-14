@@ -1,22 +1,25 @@
 ###
-  games_view.coffee
+  gameline.coffee
 ###
 
 define [ 'underscore', 'backbone' ], (_, Backbone) ->
-  GamesView = Backbone.View.extend
-    el: $("#games"),  
+  GameLineView = Backbone.View.extend
+    tagName: 'li',  
+    
+    template: _.template($('#game-template').html()),
      
     initialize: ->
-      @games = @options.games
-      @playerid = @options.playerid
      
     events: 
       "click #create": "createGame"
-      
+    
+    render: ->
+      @$el.html @template({ title: @model.get 'date' })
+            
     createGame: ->
       @games.create 
         players: [@playerid],
         currentplayer: 0,
         cells: [0,0,0,0,0,0,0,0,0]
      
-  GamesView
+  GameLineView

@@ -7,21 +7,22 @@
 
 (function() {
 
-  define(['chat', 'collections/games', 'views/games'], function(Chat, GameList, GamesView) {
+  define(['chat', 'GameList', 'GameListView'], function(Chat, GameList, GameListView) {
     var initialize;
     initialize = function() {
       var gameList;
       gameList = new GameList;
       return $.get('/user', function(data) {
-        var gamesView;
+        var gameListView;
         Chat.initialize(data.username);
-        gamesView = new GamesView({
+        gameListView = new GameListView({
           games: gameList,
           playerid: data.userid
         });
         return gameList.fetch({
           success: function(games) {
-            return console.log(games);
+            console.log(games);
+            return gameListView.render();
           }
         });
       });

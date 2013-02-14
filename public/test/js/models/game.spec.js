@@ -1,16 +1,28 @@
-define('GameModelSpec', ['GameModel'], function(GameModel) {
+define( ['GameModel'], function(GameModel) {
 	describe('GameModel', function() {
         var gameModel;
 		
 		describe('Default', function() {
-			gameModel = new GameModel;
+			gameModel = new GameModel();
 			
 			it('is defined', function() {
-			      return gameModel.should.exist;
+			    gameModel.should.exist;
 		    });
 		    
 			it('should have a default date', function() {
-        		return gameModel.get('date').should.exist;
+        		gameModel.get('date').should.exist;
+		    });
+		    
+			it('should have a default player', function() {
+        		gameModel.get('currentplayer').should.exist.equal(0);
+		    });
+		    
+			it('should have a default players array', function() {
+				expect(gameModel.get('players')).to.be.an('array');
+		    });
+		    
+			it('should have a default cells array', function() {
+				expect(gameModel.get('cells')).to.be.an('array');
 		    });
 		});
 	});

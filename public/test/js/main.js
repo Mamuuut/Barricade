@@ -1,14 +1,16 @@
 requirejs.config({
   paths: {
-    'mocha'            : '../../js/libs/mocha',
-    'chai'             : '../../js/libs/chai',
-    'jquery'           : '../../js/libs/require-jquery',
-    'underscore'       : '../../js/libs/underscore-min',
-    'backbone'         : '../../js/libs/backbone-min',
-    'GameModel'        : '../../js/models/game',
+    'mocha'        		: '../../js/libs/mocha',
+    'chai'             	: '../../js/libs/chai',
+    'jquery'           	: '../../js/libs/require-jquery',
+    'underscore'       	: '../../js/libs/underscore-min',
+    'backbone'         	: '../../js/libs/backbone-min',
+    'GameModel'        	: '../../js/models/game',
+    'GameList'         	: '../../js/collections/games',
     
     // ============ Specs follow ============
-    'GameModelSpec'  : 'models/game.spec'
+    'GameModelSpec'  	: 'models/game.spec',
+	'GameListSpec'  	: 'collections/games.spec'
   }
 });
 
@@ -18,7 +20,7 @@ require(['require', 'jquery', 'chai', 'mocha'], function(require, $, chai) {
   window.assert = chai.assert;
   
   mocha.setup({ ui: 'bdd' });
-  require(['GameModelSpec'], function() {
+  require(['GameModelSpec', 'GameListSpec'], function() {
     mocha.run();
   });
 });

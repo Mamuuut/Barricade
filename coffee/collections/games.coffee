@@ -2,7 +2,7 @@
   game_list.coffee
 ###
 
-define [ 'underscore', 'backbone', 'models/game' ], (_, Backbone, GameModel) ->
+define [ 'underscore', 'backbone', 'GameModel' ], (_, Backbone, GameModel) ->
   GameList = Backbone.Collection.extend
     
     model: GameModel,

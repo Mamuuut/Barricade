@@ -11,9 +11,6 @@
     var GameModel;
     GameModel = Backbone.Model.extend({
       idAttribute: "_id",
-      url: function() {
-        return '/todo/' + this.id;
-      },
       defaults: function() {
         return {
           date: new Date(),

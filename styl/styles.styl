@@ -52,8 +52,31 @@ h1
   container 600px
   min-height 300px
 
-.chat
+#games
+  .list
+    padding 0
+    margin 0
+    list-style-type none
+    li
+      padding 4px
+      &:nth-child(even)
+        background-color #deddff
+      &:nth-child(odd)
+        background-color #fffcdd
+      &:hover
+        background-color #000
+        color #fff
+      .delete
+        text-decoration underline
+        cursor pointer
+        float right
+  #create
+    margin 4px 0
+  padding-bottom 16px
+
+#chat
   #message
+    margin-top 8px
     padding 5px
     #new_message
       padding 4px
