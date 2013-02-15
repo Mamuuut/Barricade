@@ -8,7 +8,8 @@
 (function() {
 
   define(['underscore', 'backbone'], function(_, Backbone) {
-    var GameModel, MAX_PLAYERS, STATUS;
+    var GameModel, MAX_PLAYERS, MIN_PLAYERS, STATUS;
+    MIN_PLAYERS = 2;
     MAX_PLAYERS = 4;
     STATUS = ['waiting_player', 'playing', 'complete'];
     GameModel = Backbone.Model.extend({
@@ -32,6 +33,15 @@
       },
       getDateStr: function() {
         return new Date(this.get('date')).toUTCString();
+      },
+      canPlay: function(playerId) {
+        return (this.hasPlayer(playerId)) && 'playing' === this.getStatusStr();
+      },
+      canJoin: function(playerId) {
+        return (!this.hasPlayer(playerId)) && this.getNbPlayers() < MAX_PLAYERS;
+      },
+      canStart: function(playerId) {
+        return (0 === _.indexOf(this.get('players'), playerId)) && this.getNbPlayers() >= MIN_PLAYERS;
       },
       hasPlayer: function(playerId) {
         return -1 !== _.indexOf(this.get('players'), playerId);

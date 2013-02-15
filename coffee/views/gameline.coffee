@@ -19,22 +19,32 @@ define [ 'underscore', 'backbone' ], (_, Backbone) ->
         status: @model.get('status'), 
         date: @model.getDateStr() 
       @$el.html @template(params)
+      @updateLine()
+    
+    updateLine: ->
       @updateNbPlayers()
       @updateStatus()
       @updateJoinBtn()
-      @updateOpenBtn()
+      @updatePlayBtn()
+      @updateStartBtn()
+    
+    updateStartBtn: ->
+      if @model.canStart @playerid
+        @$('.start').show()
+      else
+        @$('.start').hide()
     
     updateJoinBtn: ->
-      if @model.hasPlayer @playerid
-        @$('.join').hide()
-      else
+      if @model.canJoin @playerid
         @$('.join').show()
-    
-    updateOpenBtn: ->
-      if @model.hasPlayer @playerid
-        @$('.open').show()
       else
-        @$('.open').hide()
+        @$('.join').hide()
+    
+    updatePlayBtn: ->
+      if @model.canPlay @playerid
+        @$('.play').show()
+      else
+        @$('.play').hide()
 
     updateNbPlayers: ->
       @$('.players').html @model.getPlayersStr() 

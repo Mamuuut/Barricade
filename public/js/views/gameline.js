@@ -25,23 +25,34 @@
           date: this.model.getDateStr()
         };
         this.$el.html(this.template(params));
+        return this.updateLine();
+      },
+      updateLine: function() {
         this.updateNbPlayers();
         this.updateStatus();
         this.updateJoinBtn();
-        return this.updateOpenBtn();
+        this.updatePlayBtn();
+        return this.updateStartBtn();
       },
-      updateJoinBtn: function() {
-        if (this.model.hasPlayer(this.playerid)) {
-          return this.$('.join').hide();
+      updateStartBtn: function() {
+        if (this.model.canStart(this.playerid)) {
+          return this.$('.start').show();
         } else {
-          return this.$('.join').show();
+          return this.$('.start').hide();
         }
       },
-      updateOpenBtn: function() {
-        if (this.model.hasPlayer(this.playerid)) {
-          return this.$('.open').show();
+      updateJoinBtn: function() {
+        if (this.model.canJoin(this.playerid)) {
+          return this.$('.join').show();
         } else {
-          return this.$('.open').hide();
+          return this.$('.join').hide();
+        }
+      },
+      updatePlayBtn: function() {
+        if (this.model.canPlay(this.playerid)) {
+          return this.$('.play').show();
+        } else {
+          return this.$('.play').hide();
         }
       },
       updateNbPlayers: function() {
