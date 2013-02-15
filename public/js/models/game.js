@@ -7,7 +7,7 @@
 
 (function() {
 
-  define(['backbone'], function(Backbone) {
+  define(['underscore', 'backbone'], function(_, Backbone) {
     var GameModel, MAX_PLAYERS, STATUS;
     MAX_PLAYERS = 4;
     STATUS = ['waiting_player', 'playing', 'complete'];
@@ -32,6 +32,9 @@
       },
       getDateStr: function() {
         return new Date(this.get('date')).toUTCString();
+      },
+      hasPlayer: function(playerId) {
+        return -1 !== _.indexOf(this.get('players'), playerId);
       }
     });
     return GameModel;

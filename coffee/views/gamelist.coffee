@@ -21,7 +21,7 @@ define [ 'backbone', 'GameLineView' ], (Backbone, GameLineView) ->
         @addGame game
       
     addGame: (game) ->
-      line = new GameLineView { model: game }
+      line = new GameLineView { model: game, playerid: @playerid }
       line.render()
       @list.append line.$el
             

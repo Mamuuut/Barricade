@@ -30,7 +30,8 @@
       addGame: function(game) {
         var line;
         line = new GameLineView({
-          model: game
+          model: game,
+          playerid: this.playerid
         });
         line.render();
         return this.list.append(line.$el);

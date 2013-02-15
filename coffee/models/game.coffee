@@ -2,7 +2,7 @@
   game_model.coffee
 ###
 
-define [ 'backbone' ], (Backbone) ->
+define [ 'underscore', 'backbone' ], (_, Backbone) ->
   MAX_PLAYERS = 4
   STATUS = ['waiting_player', 'playing', 'complete']
   
@@ -26,5 +26,8 @@ define [ 'backbone' ], (Backbone) ->
       
     getDateStr: ->
       new Date(@get('date')).toUTCString()
+      
+    hasPlayer: (playerId) ->
+      -1 isnt _.indexOf @get('players'), playerId
       
   GameModel
