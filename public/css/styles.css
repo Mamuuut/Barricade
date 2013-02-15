@@ -6,11 +6,15 @@ h1{font-size:16px;margin:0}
 .content{border:1px solid #000;-webkit-border-radius:3px;-moz-border-radius:3px;-ms-border-radius:3px;-o-border-radius:3px;border-radius:3px;-webkit-box-shadow:0 4px 16px #000;-moz-box-shadow:0 4px 16px #000;-ms-box-shadow:0 4px 16px #000;-o-box-shadow:0 4px 16px #000;box-shadow:0 4px 16px #000;background-color:#fff;margin:8px auto;width:600px;padding:8px;min-height:300px}
 #games{padding-bottom:16px}
 #games .list{padding:0;margin:0;list-style-type:none;}
-#games .list li{padding:4px;}
+#games .list li{position:relative;padding:4px 4px 4px 18px;}
 #games .list li:nth-child(even){background-color:#deddff}
 #games .list li:nth-child(odd){background-color:#fffcdd}
 #games .list li:hover{background-color:#000;color:#fff}
+#games .list li .players{padding:0 8px}
 #games .list li .delete{text-decoration:underline;cursor:pointer;float:right}
+#games .list li.waiting_player:after{content:'';position:absolute;width:10px;height:10px;background-color:#f80;-webkit-border-radius:5px;-moz-border-radius:5px;-ms-border-radius:5px;-o-border-radius:5px;border-radius:5px;margin:5px;top:0;left:0;border:1px solid #888}
+#games .list li.playing:after{content:'';position:absolute;width:10px;height:10px;background-color:#0f0;-webkit-border-radius:5px;-moz-border-radius:5px;-ms-border-radius:5px;-o-border-radius:5px;border-radius:5px;margin:5px;top:0;left:0;border:1px solid #888}
+#games .list li.complete:after{content:'';position:absolute;width:10px;height:10px;background-color:#f00;-webkit-border-radius:5px;-moz-border-radius:5px;-ms-border-radius:5px;-o-border-radius:5px;border-radius:5px;margin:5px;top:0;left:0;border:1px solid #888}
 #games #create{margin:4px 0}
 #chat #message{margin-top:8px;padding:5px;}
 #chat #message #new_message{padding:4px;margin:-7px -5px;width:100%;border:1px solid #acacac;-webkit-border-radius:0;-moz-border-radius:0;-ms-border-radius:0;-o-border-radius:0;border-radius:0}

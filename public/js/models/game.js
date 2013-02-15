@@ -8,7 +8,9 @@
 (function() {
 
   define(['backbone'], function(Backbone) {
-    var GameModel;
+    var GameModel, MAX_PLAYERS, STATUS;
+    MAX_PLAYERS = 4;
+    STATUS = ['waiting_player', 'playing', 'complete'];
     GameModel = Backbone.Model.extend({
       idAttribute: "_id",
       defaults: function() {
@@ -18,6 +20,18 @@
           currentplayer: 0,
           status: 0
         };
+      },
+      getNbPlayers: function() {
+        return this.get('players').length;
+      },
+      getPlayersStr: function() {
+        return this.getNbPlayers() + "/" + MAX_PLAYERS;
+      },
+      getStatusStr: function() {
+        return STATUS[this.get('status')];
+      },
+      getDateStr: function() {
+        return new Date(this.get('date')).toUTCString();
       }
     });
     return GameModel;

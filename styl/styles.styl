@@ -27,6 +27,18 @@ container(width)
   width width
   padding 8px
   
+game-status(color)
+  content ''
+  position absolute
+  width 10px
+  height 10px
+  background-color color
+  border-radius 5px
+  margin 5px
+  top 0
+  left 0
+  border 1px solid #888
+  
 body
   background-color: #3d3d3d
   font 12px Arial
@@ -58,7 +70,8 @@ h1
     margin 0
     list-style-type none
     li
-      padding 4px
+      position relative
+      padding 4px 4px 4px 18px
       &:nth-child(even)
         background-color #deddff
       &:nth-child(odd)
@@ -66,10 +79,19 @@ h1
       &:hover
         background-color #000
         color #fff
+      .players
+        padding 0 8px
       .delete
         text-decoration underline
         cursor pointer
         float right
+      &.waiting_player:after
+        game-status #ff8800
+      &.playing:after
+        game-status #00ff00
+      &.complete:after
+        game-status #ff0000
+        
   #create
     margin 4px 0
   padding-bottom 16px

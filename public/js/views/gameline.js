@@ -17,9 +17,14 @@
         "click .delete": "deleteGame"
       },
       render: function() {
-        return this.$el.html(this.template({
-          title: this.model.get('date')
-        }));
+        var params;
+        params = {
+          status: this.model.get('status'),
+          players: this.model.getPlayersStr(),
+          date: this.model.getDateStr()
+        };
+        this.$el.html(this.template(params));
+        return this.$el.addClass(this.model.getStatusStr());
       },
       deleteGame: function() {
         var _this = this;

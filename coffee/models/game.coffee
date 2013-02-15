@@ -3,6 +3,9 @@
 ###
 
 define [ 'backbone' ], (Backbone) ->
+  MAX_PLAYERS = 4
+  STATUS = ['waiting_player', 'playing', 'complete']
+  
   GameModel = Backbone.Model.extend
     idAttribute: "_id",
     
@@ -11,5 +14,17 @@ define [ 'backbone' ], (Backbone) ->
       players: [],
       currentplayer: 0,
       status: 0
+      
+    getNbPlayers: ->
+      @get('players').length
+      
+    getPlayersStr: ->
+      @getNbPlayers() + "/" + MAX_PLAYERS
+    
+    getStatusStr: ->
+      STATUS[@get('status')]
+      
+    getDateStr: ->
+      new Date(@get('date')).toUTCString()
       
   GameModel

@@ -14,7 +14,12 @@ define [ 'underscore', 'backbone' ], (_, Backbone) ->
       "click .delete": "deleteGame"
     
     render: ->
-      @$el.html @template({ title: @model.get 'date' })
+      params = 
+        status: @model.get('status'),
+        players: @model.getPlayersStr(), 
+        date: @model.getDateStr() 
+      @$el.html @template(params)
+      @$el.addClass @model.getStatusStr()
             
     deleteGame: ->
       @model.destroy( {
