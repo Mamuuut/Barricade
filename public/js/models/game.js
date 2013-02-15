@@ -7,7 +7,7 @@
 
 (function() {
 
-  define(['underscore', 'backbone'], function(_, Backbone) {
+  define(['backbone'], function(Backbone) {
     var GameModel;
     GameModel = Backbone.Model.extend({
       idAttribute: "_id",

@@ -2,17 +2,15 @@
   gamelist.coffee
 ###
 
-define [ 'underscore', 'backbone', 'GameLineView' ], (_, Backbone, GameLineView) ->
+define [ 'backbone', 'GameLineView' ], (Backbone, GameLineView) ->
   GameListView = Backbone.View.extend
     el: $("#games"),  
-    
-    template: _.template($('#game-template').html()),
      
     initialize: ->
       @games = @options.games
       @playerid = @options.playerid
       @list = @.$ '.list'
-      @games.on 'change', @render, @
+      @games.on 'add', @addGame, @
      
     events: 
       "click #create": "createGame"
@@ -20,17 +18,18 @@ define [ 'underscore', 'backbone', 'GameLineView' ], (_, Backbone, GameLineView)
     render: ->
       @list.empty()
       @games.each (game) =>
-        @renderGame game
+        @addGame game
       
-    renderGame: (game) ->
+    addGame: (game) ->
       line = new GameLineView { model: game }
       line.render()
       @list.append line.$el
             
     createGame: ->
-      @games.create 
+      @games.create {
         players: [@playerid],
         currentplayer: 0,
-        cells: [0,0,0,0,0,0,0,0,0]
-     
-  GameListView
+        cells: [0,0,0,0,0,0,0,0,0] 
+        }, { wait: true } 
+   
+   GameListView

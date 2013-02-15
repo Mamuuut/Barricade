@@ -14,18 +14,19 @@
       template: _.template($('#game-template').html()),
       initialize: function() {},
       events: {
-        "click #create": "createGame"
+        "click .delete": "deleteGame"
       },
       render: function() {
         return this.$el.html(this.template({
           title: this.model.get('date')
         }));
       },
-      createGame: function() {
-        return this.games.create({
-          players: [this.playerid],
-          currentplayer: 0,
-          cells: [0, 0, 0, 0, 0, 0, 0, 0, 0]
+      deleteGame: function() {
+        var _this = this;
+        return this.model.destroy({
+          success: function(model, response) {
+            return _this.$el.remove();
+          }
         });
       }
     });

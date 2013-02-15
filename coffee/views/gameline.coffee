@@ -11,15 +11,15 @@ define [ 'underscore', 'backbone' ], (_, Backbone) ->
     initialize: ->
      
     events: 
-      "click #create": "createGame"
+      "click .delete": "deleteGame"
     
     render: ->
       @$el.html @template({ title: @model.get 'date' })
             
-    createGame: ->
-      @games.create 
-        players: [@playerid],
-        currentplayer: 0,
-        cells: [0,0,0,0,0,0,0,0,0]
+    deleteGame: ->
+      @model.destroy( {
+        success: (model, response) =>
+          @$el.remove()
+      } )
      
   GameLineView

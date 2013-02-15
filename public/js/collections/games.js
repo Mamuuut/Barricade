@@ -7,7 +7,7 @@
 
 (function() {
 
-  define(['underscore', 'backbone', 'GameModel'], function(_, Backbone, GameModel) {
+  define(['backbone', 'GameModel'], function(Backbone, GameModel) {
     var GameList;
     GameList = Backbone.Collection.extend({
       model: GameModel,

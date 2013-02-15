@@ -15,24 +15,61 @@ module.exports = (app) ->
     if req.isAuthenticated()
       return next() 
     res.redirect '/login'
+    
+  sendJsonGames = (res) ->
+    Game.find (err, games) ->
+      res.json games    
 
+  ###
+    Index
+  ###
   app.get '/', ensureAuthenticated, (req, res) ->
     res.render 'game_list', 
       title: 'Welcome ' + req.user.username
   
+  ###
+    Games
+  ###
   app.get '/games', ensureAuthenticated, (req, res) ->
-    Game.find (err, games) ->
-      res.json games
+    sendJsonGames res
       
   app.post '/games', ensureAuthenticated, (req, res) ->
     newGame = new Game req.body
-    newGame.save (err, user) -> 
-      Game.find (err, games) ->
-        res.json games
-  
+    newGame.save (err, game) -> 
+      if err
+        res.json {err: err}
+      else
+        res.json game
+      
+  app.get '/games/:id', ensureAuthenticated, (req, res) ->
+    Game.findOne {id: req.params[0]}, (err, game) ->
+      if err
+        res.json {err: err}
+      else
+        res.json game    
+    
+  app.delete '/games/:id', ensureAuthenticated, (req, res) ->
+    Game.findById req.params.id, (err, game) ->
+      if err
+        res.json {err: err}
+      else if game
+        game.remove (err) -> 
+          if err
+            res.json {err: err}
+          else
+            sendJsonGames res
+      else
+        sendJsonGames res
+    
+  ###
+    User
+  ###      
   app.get '/user', ensureAuthenticated, (req, res) ->
     res.json { username: req.user.username, userid: req.user.id }
     
+  ###
+    Login
+  ###   
   app.get '/login', (req, res) ->
     errors = req.flash().error || []
     res.render 'login', { errors: errors }

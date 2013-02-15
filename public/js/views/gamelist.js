@@ -7,16 +7,15 @@
 
 (function() {
 
-  define(['underscore', 'backbone', 'GameLineView'], function(_, Backbone, GameLineView) {
+  define(['backbone', 'GameLineView'], function(Backbone, GameLineView) {
     var GameListView;
     GameListView = Backbone.View.extend({
       el: $("#games"),
-      template: _.template($('#game-template').html()),
       initialize: function() {
         this.games = this.options.games;
         this.playerid = this.options.playerid;
         this.list = this.$('.list');
-        return this.games.on('change', this.render, this);
+        return this.games.on('add', this.addGame, this);
       },
       events: {
         "click #create": "createGame"
@@ -25,10 +24,10 @@
         var _this = this;
         this.list.empty();
         return this.games.each(function(game) {
-          return _this.renderGame(game);
+          return _this.addGame(game);
         });
       },
-      renderGame: function(game) {
+      addGame: function(game) {
         var line;
         line = new GameLineView({
           model: game
@@ -41,6 +40,8 @@
           players: [this.playerid],
           currentplayer: 0,
           cells: [0, 0, 0, 0, 0, 0, 0, 0, 0]
+        }, {
+          wait: true
         });
       }
     });

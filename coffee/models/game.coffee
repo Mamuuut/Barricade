@@ -2,7 +2,7 @@
   game_model.coffee
 ###
 
-define [ 'underscore', 'backbone' ], (_, Backbone) ->
+define [ 'backbone' ], (Backbone) ->
   GameModel = Backbone.Model.extend
     idAttribute: "_id",
     
