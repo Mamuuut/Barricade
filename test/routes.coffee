@@ -17,13 +17,15 @@ describe 'Routes', ->
         username: username,
         password: realPassword
   
-      user.save (err, user) -> 
-        done()
+      user.save (err, user) ->
+        Game.remove (err, games) ->
+          done()
       
-  after ->
-    User.remove
-    Game.remove
-  
+  after (done) ->
+    User.remove (err, games) ->
+      Game.remove (err, games) ->
+        done()
+    
   ###
     Login routes
   ###
