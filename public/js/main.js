@@ -20,7 +20,7 @@
     paths: {
       jquery: 'libs/jquery-1.9.1.min',
       underscore: 'libs/underscore-min',
-      backbone: 'libs/backbone',
+      backbone: 'libs/backbone-min',
       GameModel: 'models/game',
       GameList: 'collections/games',
       GameLineView: 'views/gameline',
