@@ -13,7 +13,7 @@ define( ['GameModel'], function(GameModel) {
         		gameModel.get('date').should.exist;
 		    });
 		    
-			it('should have a default player', function() {
+			it('should have a default currentplayer equal to 0', function() {
         		gameModel.get('currentplayer').should.exist.equal(0);
 		    });
 		    
@@ -21,8 +21,8 @@ define( ['GameModel'], function(GameModel) {
 				expect(gameModel.get('players')).to.be.an('array');
 		    });
 		    
-			it('should have a default cells array', function() {
-				expect(gameModel.get('cells')).to.be.an('array');
+			it('should have a default status equal to 0', function() {
+				gameModel.get('status').should.exist.equal(0);
 		    });
 		});
 	});

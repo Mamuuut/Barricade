@@ -1,8 +1,18 @@
 requirejs.config({
+  shim: {
+    backbone: {
+      deps: [ "underscore", "jquery" ],
+      exports: "Backbone"
+    },
+    underscore: {
+	  exports: "_"
+  	}
+  },
+  
   paths: {
     'mocha'        		: '../../js/libs/mocha',
     'chai'             	: '../../js/libs/chai',
-    'jquery'           	: '../../js/libs/require-jquery',
+    'jquery'           	: '../../js/libs/jquery-1.9.1.min',
     'underscore'       	: '../../js/libs/underscore-min',
     'backbone'         	: '../../js/libs/backbone-min',
     'GameModel'        	: '../../js/models/game',

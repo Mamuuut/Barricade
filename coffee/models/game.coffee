@@ -10,6 +10,6 @@ define [ 'backbone' ], (Backbone) ->
       date: new Date(),
       players: [],
       currentplayer: 0,
-      cells: []
+      status: 0
       
   GameModel
