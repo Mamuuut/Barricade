@@ -13,7 +13,8 @@ Game = new Schema
   date: { type: Date, default: Date.now },
   players: [String],
   currentplayer: { type: Number, default: 0 },
-  status: { type: Number, default: 0 }
+  status: { type: Number, default: 0 },
+  winner: { type: String, default: "" } 
 
 ###
   Status
@@ -33,6 +34,13 @@ Game.methods.start = (playerId) ->
     return true
   return false
 
+Game.methods.completeGame = (playerId) ->
+  if @isPlaying()
+    @status = 2
+    @winner = playerId
+    return true
+  return false
+
 ###
   Players
 ###
@@ -46,14 +54,17 @@ Game.methods.hasPlayer = (playerId) ->
   return -1 isnt @players.indexOf playerId
 
 Game.methods.addPlayer = (playerId) ->
-  if !@hasPlayer(playerId) and @nbplayers < MAX_PLAYERS and !@isPlaying()
+  if !@hasPlayer(playerId) and @nbplayers < MAX_PLAYERS and @isWaitingPlayer()
     @players.push playerId
     return playerId
   return false
 
 Game.methods.removePlayer = (playerId) ->
-  if @hasPlayer playerId
+  if (@hasPlayer playerId) and !@isComplete()
     @players.splice @players.indexOf(playerId), 1
+    @currentplayer = @currentplayer % @nbplayers
+    if (@nbplayers is 1) and @isPlaying()
+      @completeGame @players[0]
     return playerId
   return false
   

@@ -19,7 +19,8 @@
       events: {
         "click .delete": "deleteGame",
         "click .join": "joinGame",
-        "click .start": "startGame"
+        "click .start": "startGame",
+        "click .quit": "quitGame"
       },
       /*
             Rendering
@@ -40,7 +41,8 @@
         this.updateJoinBtn();
         this.updatePlayBtn();
         this.updateStartBtn();
-        return this.updateDeleteBtn();
+        this.updateDeleteBtn();
+        return this.updateQuitBtn();
       },
       updateDeleteBtn: function() {
         if (this.model.canDelete(this.playerid)) {
@@ -70,6 +72,13 @@
           return this.$('.play').hide();
         }
       },
+      updateQuitBtn: function() {
+        if (this.model.canQuit(this.playerid)) {
+          return this.$('.quit').show();
+        } else {
+          return this.$('.quit').hide();
+        }
+      },
       updateNbPlayers: function() {
         return this.$('.players').html(this.model.getPlayersStr());
       },
@@ -93,6 +102,9 @@
       },
       startGame: function() {
         return this.trigger('start', this.model.id);
+      },
+      quitGame: function() {
+        return this.trigger('quit', this.model.id);
       }
     });
     return GameLineView;

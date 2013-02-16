@@ -31,13 +31,16 @@ describe 'Game model', ->
       
     it 'should currentplayer equal 0', ->
       game.should.have.property('currentplayer').equal(0)
+    
+    it 'should have winner -1', ->
+      game.should.have.property('winner').equal("")
    
     it 'should be waiting for players', ->
       game.isWaitingPlayer().should.be.true
       
     it 'should nbplayers equal 1', ->
       game.should.have.property('nbplayers').equal(1)
-    
+      
     it 'should have playerid1', ->
       game.hasPlayer( player1 ).should.be.true
       
@@ -106,4 +109,13 @@ describe 'Game model', ->
     it 'should not be possible', ->
       res = game.addPlayer player2
       res.should.be.false
+      
+  describe 'Last player', ->
+    it 'should complete the game', ->
+      game.removePlayer player3
+      game.removePlayer player4
+      game.should.have.property('nbplayers').equal(1)
+      game.isComplete().should.be.true
+      game.should.have.property('winner').equal(player1)
+      
       

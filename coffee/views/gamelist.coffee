@@ -13,11 +13,12 @@ define [ 'backbone', 'GameLineView' ], (Backbone, GameLineView) ->
       @list = @.$ '.list'
       @games.on 'reset', @render, @
       @games.on 'add', @addGame, @
+      @games.on 'remove', @removeGame, @
       
       @gameListSocket = io.connect('/game_list')
       @gameListSocket.on 'update game', (gameId) =>
         @games.get(gameId).fetch()
-      @gameListSocket.on 'new game', =>
+      @gameListSocket.on 'update list', =>
         @games.fetch()
 
     events: 
@@ -32,12 +33,21 @@ define [ 'backbone', 'GameLineView' ], (Backbone, GameLineView) ->
       console.log 'addGame', game
       line = new GameLineView { model: game, playerid: @playerid }
       line.render()
+      
+      # Socket
       line.on 'join', (gameId) =>
         @gameListSocket.emit 'join game', gameId
       line.on 'start', (gameId) =>
         @gameListSocket.emit 'start game', gameId
+      line.on 'quit', (gameId) =>
+        @gameListSocket.emit 'quit game', gameId
+      
       @list.append line.$el
-            
+      
+    removeGame: (game) ->
+      console.log 'removeGame', game
+      @gameListSocket.emit 'remove game', game.Id
+          
     createGame: ->
       @games.create {
         players: [@playerid],

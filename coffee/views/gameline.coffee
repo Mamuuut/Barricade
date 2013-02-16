@@ -15,7 +15,8 @@ define [ 'underscore', 'backbone' ], (_, Backbone) ->
     events: 
       "click .delete":  "deleteGame",
       "click .join":    "joinGame",
-      "click .start":   "startGame"
+      "click .start":   "startGame",
+      "click .quit":    "quitGame"
     
     ###
       Rendering
@@ -30,10 +31,12 @@ define [ 'underscore', 'backbone' ], (_, Backbone) ->
     updateLine: ->
       @updateNbPlayers()
       @updateStatus()
+      
       @updateJoinBtn()
       @updatePlayBtn()
       @updateStartBtn()
       @updateDeleteBtn()
+      @updateQuitBtn()
     
     updateDeleteBtn: ->
       if @model.canDelete @playerid
@@ -58,6 +61,12 @@ define [ 'underscore', 'backbone' ], (_, Backbone) ->
         @$('.play').show()
       else
         @$('.play').hide()
+    
+    updateQuitBtn: ->
+      if @model.canQuit @playerid
+        @$('.quit').show()
+      else
+        @$('.quit').hide()
 
     updateNbPlayers: ->
       @$('.players').html @model.getPlayersStr() 
@@ -79,5 +88,8 @@ define [ 'underscore', 'backbone' ], (_, Backbone) ->
          
     startGame: ->
       @trigger 'start', @model.id
+         
+    quitGame: ->
+      @trigger 'quit', @model.id
      
   GameLineView

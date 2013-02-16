@@ -19,9 +19,14 @@
           date: new Date(),
           players: [],
           currentplayer: 0,
-          status: 0
+          status: 0,
+          winner: ""
         };
       },
+      /*
+            Helpers
+      */
+
       getNbPlayers: function() {
         return this.get('players').length;
       },
@@ -31,26 +36,39 @@
       getStatusStr: function() {
         return STATUS[this.get('status')];
       },
+      getDateStr: function() {
+        return new Date(this.get('date')).toUTCString();
+      },
       hasPlayer: function(playerId) {
         return -1 !== _.indexOf(this.get('players'), playerId);
       },
       isMaster: function(playerId) {
         return 0 === _.indexOf(this.get('players'), playerId);
       },
-      getDateStr: function() {
-        return new Date(this.get('date')).toUTCString();
+      isWaitingPlayer: function() {
+        return 'waiting_player' === this.getStatusStr();
       },
+      isComplete: function() {
+        return 'complete' === this.getStatusStr();
+      },
+      /*
+            Actions
+      */
+
       canDelete: function(playerId) {
-        return (this.isMaster(playerId)) && 'waiting' === this.getStatusStr();
+        return (this.isMaster(playerId)) && this.isWaitingPlayer();
       },
       canPlay: function(playerId) {
         return (this.hasPlayer(playerId)) && 'playing' === this.getStatusStr();
       },
       canJoin: function(playerId) {
-        return (!this.hasPlayer(playerId)) && this.getNbPlayers() < MAX_PLAYERS;
+        return (!this.hasPlayer(playerId)) && this.getNbPlayers() < MAX_PLAYERS && this.isWaitingPlayer();
       },
       canStart: function(playerId) {
-        return (this.isMaster(playerId)) && (this.getNbPlayers() >= MIN_PLAYERS) && 'waiting' === this.getStatusStr();
+        return (this.isMaster(playerId)) && (this.getNbPlayers() >= MIN_PLAYERS) && this.isWaitingPlayer();
+      },
+      canQuit: function(playerId) {
+        return (this.hasPlayer(playerId)) && (this.getNbPlayers() > 1) && !this.isComplete();
       }
     });
     return GameModel;

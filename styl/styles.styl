@@ -77,19 +77,13 @@ h1
       &:nth-child(odd)
         background-color #fffcdd
       &:hover
-        .delete
-        .join
-        .play
-        .start
+        .action
           color: #aaa
         background-color #000
         color #fff
       .players
         padding 0 8px
-      .delete
-      .join
-      .play
-      .start
+      .action
         text-decoration underline
         cursor pointer
         float right
@@ -101,7 +95,7 @@ h1
       &.playing:after
         game-status #00ff00
       &.complete:after
-        game-status #ff0000
+        game-status #ccc
         
   #create
     margin 4px 0

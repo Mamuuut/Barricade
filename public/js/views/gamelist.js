@@ -19,11 +19,12 @@
         this.list = this.$('.list');
         this.games.on('reset', this.render, this);
         this.games.on('add', this.addGame, this);
+        this.games.on('remove', this.removeGame, this);
         this.gameListSocket = io.connect('/game_list');
         this.gameListSocket.on('update game', function(gameId) {
           return _this.games.get(gameId).fetch();
         });
-        return this.gameListSocket.on('new game', function() {
+        return this.gameListSocket.on('update list', function() {
           return _this.games.fetch();
         });
       },
@@ -52,7 +53,14 @@
         line.on('start', function(gameId) {
           return _this.gameListSocket.emit('start game', gameId);
         });
+        line.on('quit', function(gameId) {
+          return _this.gameListSocket.emit('quit game', gameId);
+        });
         return this.list.append(line.$el);
+      },
+      removeGame: function(game) {
+        console.log('removeGame', game);
+        return this.gameListSocket.emit('remove game', game.Id);
       },
       createGame: function() {
         var _this = this;
