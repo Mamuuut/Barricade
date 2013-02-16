@@ -12,18 +12,12 @@
     initialize = function() {
       var gameList;
       gameList = new GameList;
-      return $.get('/user', function(data) {
-        var gameListView, socket;
-        socket = io.connect();
-        socket.emit('new user', {
-          name: data.username,
-          id: data.userid
-        });
-        Chat.initialize(socket, data.username);
+      return $.get('/user', function(user) {
+        var gameListView;
+        Chat.initialize(user);
         gameListView = new GameListView({
           games: gameList,
-          playerid: data.userid,
-          socket: socket
+          playerid: user.id
         });
         return gameList.fetch();
       });

@@ -94,8 +94,8 @@ describe 'Routes', ->
             .get( '/user' )
             .set('cookie', cookie)
             .end (err, res) ->
-              res.body.should.have.property('username').equal(username)
-              res.body.should.have.property('userid').equal(user.id)
+              res.body.should.have.property('name').equal(username)
+              res.body.should.have.property('id').equal(user.id)
               done()
       
       ###

@@ -5,6 +5,7 @@
 define [ 'backbone', 'GameLineView' ], (Backbone, GameLineView) ->
   GameListView = Backbone.View.extend
     el: $("#games"),  
+    gameListSocket: null,
      
     initialize: ->
       @games = @options.games
@@ -13,10 +14,10 @@ define [ 'backbone', 'GameLineView' ], (Backbone, GameLineView) ->
       @games.on 'reset', @render, @
       @games.on 'add', @addGame, @
       
-      @socket = @options.socket
-      @socket.on 'update game', (gameId) =>
+      @gameListSocket = io.connect('/game_list')
+      @gameListSocket.on 'update game', (gameId) =>
         @games.get(gameId).fetch()
-      @socket.on 'new game', =>
+      @gameListSocket.on 'new game', =>
         @games.fetch()
 
     events: 
@@ -33,7 +34,7 @@ define [ 'backbone', 'GameLineView' ], (Backbone, GameLineView) ->
       line.render()
       line.on 'join', (gameId) =>
         console.log 'join', gameId
-        @socket.emit 'join game', gameId
+        @gameListSocket.emit 'join game', gameId
       @list.append line.$el
             
     createGame: ->
@@ -44,7 +45,7 @@ define [ 'backbone', 'GameLineView' ], (Backbone, GameLineView) ->
         }, { 
         wait: true,
         success: =>
-          @socket.emit 'new game' 
+          @gameListSocket.emit 'new game' 
         } 
    
    GameListView

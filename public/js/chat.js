@@ -9,8 +9,13 @@
 
   define(function() {
     var initialize;
-    initialize = function(socket, username) {
-      socket.on('new message', function(userMessage) {
+    initialize = function(user) {
+      var chatSocket;
+      chatSocket = io.connect('/chat');
+      chatSocket.on('connect', function() {
+        return chatSocket.emit('new user', user);
+      });
+      chatSocket.on('new message', function(userMessage) {
         var newMessage;
         newMessage = $('<span>' + '<b>' + userMessage.username + ' : </b>' + userMessage.message + '<br/>' + '</span>');
         ($('#conversation')).prepend(newMessage);
@@ -23,7 +28,7 @@
         if (e.which === 13) {
           message = ($('#new_message')).val();
           ($('#new_message')).val('');
-          return socket.emit('send message', message);
+          return chatSocket.emit('send message', message);
         }
       });
     };

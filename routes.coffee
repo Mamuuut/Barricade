@@ -65,7 +65,9 @@ module.exports = (app) ->
     User
   ###      
   app.get '/user', ensureAuthenticated, (req, res) ->
-    res.json { username: req.user.username, userid: req.user.id }
+    res.json 
+      name: req.user.username, 
+      id: req.user.id
     
   ###
     Login
