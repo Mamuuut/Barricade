@@ -44,7 +44,7 @@ define [ 'underscore', 'backbone' ], (_, Backbone) ->
       (!@hasPlayer playerId) and @getNbPlayers() < MAX_PLAYERS
       
     canStart: (playerId) ->
-      (@isMaster playerId) and @getNbPlayers() >= MIN_PLAYERS
+      (@isMaster playerId) and (@getNbPlayers() >= MIN_PLAYERS) and 'waiting' is @getStatusStr()
       
       
   GameModel

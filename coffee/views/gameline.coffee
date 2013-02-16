@@ -13,8 +13,9 @@ define [ 'underscore', 'backbone' ], (_, Backbone) ->
       @model.on 'change', @updateLine, @
      
     events: 
-      "click .delete":  "deleteGame"
-      "click .join":    "joinGame"
+      "click .delete":  "deleteGame",
+      "click .join":    "joinGame",
+      "click .start":   "startGame"
     
     ###
       Rendering
@@ -75,5 +76,8 @@ define [ 'underscore', 'backbone' ], (_, Backbone) ->
          
     joinGame: ->
       @trigger 'join', @model.id
+         
+    startGame: ->
+      @trigger 'start', @model.id
      
   GameLineView

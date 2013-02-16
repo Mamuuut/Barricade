@@ -18,7 +18,8 @@
       },
       events: {
         "click .delete": "deleteGame",
-        "click .join": "joinGame"
+        "click .join": "joinGame",
+        "click .start": "startGame"
       },
       /*
             Rendering
@@ -89,6 +90,9 @@
       },
       joinGame: function() {
         return this.trigger('join', this.model.id);
+      },
+      startGame: function() {
+        return this.trigger('start', this.model.id);
       }
     });
     return GameLineView;

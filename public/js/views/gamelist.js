@@ -47,8 +47,10 @@
         });
         line.render();
         line.on('join', function(gameId) {
-          console.log('join', gameId);
           return _this.gameListSocket.emit('join game', gameId);
+        });
+        line.on('start', function(gameId) {
+          return _this.gameListSocket.emit('start game', gameId);
         });
         return this.list.append(line.$el);
       },

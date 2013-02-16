@@ -33,8 +33,9 @@ define [ 'backbone', 'GameLineView' ], (Backbone, GameLineView) ->
       line = new GameLineView { model: game, playerid: @playerid }
       line.render()
       line.on 'join', (gameId) =>
-        console.log 'join', gameId
         @gameListSocket.emit 'join game', gameId
+      line.on 'start', (gameId) =>
+        @gameListSocket.emit 'start game', gameId
       @list.append line.$el
             
     createGame: ->

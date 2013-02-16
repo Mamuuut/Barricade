@@ -50,7 +50,7 @@
         return (!this.hasPlayer(playerId)) && this.getNbPlayers() < MAX_PLAYERS;
       },
       canStart: function(playerId) {
-        return (this.isMaster(playerId)) && this.getNbPlayers() >= MIN_PLAYERS;
+        return (this.isMaster(playerId)) && (this.getNbPlayers() >= MIN_PLAYERS) && 'waiting' === this.getStatusStr();
       }
     });
     return GameModel;
