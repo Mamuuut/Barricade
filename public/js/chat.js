@@ -9,9 +9,7 @@
 
   define(function() {
     var initialize;
-    initialize = function(username) {
-      var socket;
-      socket = io.connect();
+    initialize = function(socket, username) {
       socket.on('new message', function(userMessage) {
         var newMessage;
         newMessage = $('<span>' + '<b>' + userMessage.username + ' : </b>' + userMessage.message + '<br/>' + '</span>');
@@ -20,7 +18,7 @@
           return newMessage.addClass('visible', 0);
         });
       });
-      ($('#new_message')).keypress(function(e) {
+      return ($('#new_message')).keypress(function(e) {
         var message;
         if (e.which === 13) {
           message = ($('#new_message')).val();
@@ -28,7 +26,6 @@
           return socket.emit('send message', message);
         }
       });
-      return socket.emit('new user', username);
     };
     return {
       initialize: initialize

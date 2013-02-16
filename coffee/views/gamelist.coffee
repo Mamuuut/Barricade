@@ -10,8 +10,15 @@ define [ 'backbone', 'GameLineView' ], (Backbone, GameLineView) ->
       @games = @options.games
       @playerid = @options.playerid
       @list = @.$ '.list'
+      @games.on 'reset', @render, @
       @games.on 'add', @addGame, @
-     
+      
+      @socket = @options.socket
+      @socket.on 'update game', (gameId) =>
+        @games.get(gameId).fetch()
+      @socket.on 'new game', =>
+        @games.fetch()
+
     events: 
       "click #create": "createGame"
     
@@ -21,8 +28,12 @@ define [ 'backbone', 'GameLineView' ], (Backbone, GameLineView) ->
         @addGame game
       
     addGame: (game) ->
+      console.log 'addGame', game
       line = new GameLineView { model: game, playerid: @playerid }
       line.render()
+      line.on 'join', (gameId) =>
+        console.log 'join', gameId
+        @socket.emit 'join game', gameId
       @list.append line.$el
             
     createGame: ->
@@ -30,6 +41,10 @@ define [ 'backbone', 'GameLineView' ], (Backbone, GameLineView) ->
         players: [@playerid],
         currentplayer: 0,
         cells: [0,0,0,0,0,0,0,0,0] 
-        }, { wait: true } 
+        }, { 
+        wait: true,
+        success: =>
+          @socket.emit 'new game' 
+        } 
    
    GameListView

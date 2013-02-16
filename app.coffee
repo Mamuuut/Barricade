@@ -7,7 +7,7 @@ express = require 'express'
 passport = require 'passport'
 espresso = require './espresso.coffee'
 DB = require './accessDB'
-chat = require './chat'
+socket = require './socket'
 routes = require './routes'
 
 ### create express server ###
@@ -43,7 +43,7 @@ espresso.core.exec espresso.core.node_modules_path + 'stylus -w -c styl -o publi
 
 ### io configuration ###
 io = (require 'socket.io').listen app
-new chat.startup io
+new socket.startup io
 
 ### app routes ###
 new routes app

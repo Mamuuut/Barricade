@@ -85,11 +85,22 @@ describe 'Game model', ->
       res = game.removePlayer player2
       res.should.be.false
       
-  describe 'Start game', ->  
+  describe 'Start game not being master', ->  
+    it 'should not be possible', ->
+      res = game.start player3 
+      res.should.be.false
+      game.isPlaying().should.be.false
+      
+  describe 'Start game being master', ->  
     it 'should be possible', ->
-      res = game.start()
+      res = game.start player1 
       res.should.be.true
       game.isPlaying().should.be.true
+      
+  describe 'Start already started game', ->  
+    it 'should not be possible', ->
+      res = game.start player1 
+      res.should.be.false
       
   describe 'Add player when already playing', ->  
     it 'should not be possible', ->

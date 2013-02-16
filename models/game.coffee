@@ -27,8 +27,8 @@ Game.methods.isPlaying = ->
 Game.methods.isComplete = ->
   'complete' is STATUS[@status]
 
-Game.methods.start = ->
-  if MIN_PLAYERS <= @nbplayers
+Game.methods.start = (playerId) ->
+  if (MIN_PLAYERS <= @nbplayers) and (@isMaster playerId) and @isWaitingPlayer()
     @status = 1
     return true
   return false
@@ -38,6 +38,9 @@ Game.methods.start = ->
 ###
 Game.virtual('nbplayers').get ->
   @players.toObject().length
+
+Game.methods.isMaster = (playerId) ->
+  return 0 is @players.indexOf playerId
 
 Game.methods.hasPlayer = (playerId) ->
   return -1 isnt @players.indexOf playerId

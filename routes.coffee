@@ -42,7 +42,7 @@ module.exports = (app) ->
         res.json game
       
   app.get '/games/:id', ensureAuthenticated, (req, res) ->
-    Game.findOne {id: req.params[0]}, (err, game) ->
+    Game.findById req.params.id, (err, game) ->
       if err
         res.json {err: err}
       else

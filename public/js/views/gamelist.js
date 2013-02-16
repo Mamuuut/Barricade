@@ -12,10 +12,19 @@
     GameListView = Backbone.View.extend({
       el: $("#games"),
       initialize: function() {
+        var _this = this;
         this.games = this.options.games;
         this.playerid = this.options.playerid;
         this.list = this.$('.list');
-        return this.games.on('add', this.addGame, this);
+        this.games.on('reset', this.render, this);
+        this.games.on('add', this.addGame, this);
+        this.socket = this.options.socket;
+        this.socket.on('update game', function(gameId) {
+          return _this.games.get(gameId).fetch();
+        });
+        return this.socket.on('new game', function() {
+          return _this.games.fetch();
+        });
       },
       events: {
         "click #create": "createGame"
@@ -28,21 +37,31 @@
         });
       },
       addGame: function(game) {
-        var line;
+        var line,
+          _this = this;
+        console.log('addGame', game);
         line = new GameLineView({
           model: game,
           playerid: this.playerid
         });
         line.render();
+        line.on('join', function(gameId) {
+          console.log('join', gameId);
+          return _this.socket.emit('join game', gameId);
+        });
         return this.list.append(line.$el);
       },
       createGame: function() {
+        var _this = this;
         return this.games.create({
           players: [this.playerid],
           currentplayer: 0,
           cells: [0, 0, 0, 0, 0, 0, 0, 0, 0]
         }, {
-          wait: true
+          wait: true,
+          success: function() {
+            return _this.socket.emit('new game');
+          }
         });
       }
     });

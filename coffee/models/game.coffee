@@ -25,8 +25,17 @@ define [ 'underscore', 'backbone' ], (_, Backbone) ->
     getStatusStr: ->
       STATUS[@get('status')]
       
+    hasPlayer: (playerId) ->
+      -1 isnt _.indexOf @get('players'), playerId
+      
+    isMaster: (playerId) ->
+      0 is _.indexOf @get('players'), playerId
+      
     getDateStr: ->
       new Date(@get('date')).toUTCString()
+      
+    canDelete: (playerId) ->
+      (@isMaster playerId) and 'waiting' is @getStatusStr()
       
     canPlay: (playerId) ->
       (@hasPlayer playerId) and 'playing' is @getStatusStr()
@@ -35,9 +44,7 @@ define [ 'underscore', 'backbone' ], (_, Backbone) ->
       (!@hasPlayer playerId) and @getNbPlayers() < MAX_PLAYERS
       
     canStart: (playerId) ->
-      (0 is _.indexOf @get('players'), playerId) and @getNbPlayers() >= MIN_PLAYERS
+      (@isMaster playerId) and @getNbPlayers() >= MIN_PLAYERS
       
-    hasPlayer: (playerId) ->
-      -1 isnt _.indexOf @get('players'), playerId
       
   GameModel

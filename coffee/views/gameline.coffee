@@ -10,10 +10,15 @@ define [ 'underscore', 'backbone' ], (_, Backbone) ->
      
     initialize: ->
       @playerid = @options.playerid
+      @model.on 'change', @updateLine, @
      
     events: 
-      "click .delete": "deleteGame"
+      "click .delete":  "deleteGame"
+      "click .join":    "joinGame"
     
+    ###
+      Rendering
+    ### 
     render: ->
       params = 
         status: @model.get('status'), 
@@ -27,6 +32,13 @@ define [ 'underscore', 'backbone' ], (_, Backbone) ->
       @updateJoinBtn()
       @updatePlayBtn()
       @updateStartBtn()
+      @updateDeleteBtn()
+    
+    updateDeleteBtn: ->
+      if @model.canDelete @playerid
+        @$('.delete').show()
+      else
+        @$('.delete').hide()
     
     updateStartBtn: ->
       if @model.canStart @playerid
@@ -51,11 +63,17 @@ define [ 'underscore', 'backbone' ], (_, Backbone) ->
     
     updateStatus: ->
       @$el.addClass @model.getStatusStr()
-            
+    
+    ###
+      Event handlers
+    ###        
     deleteGame: ->
       @model.destroy( {
         success: (model, response) =>
           @$el.remove()
-      } )
+      } )   
+         
+    joinGame: ->
+      @trigger 'join', @model.id
      
   GameLineView

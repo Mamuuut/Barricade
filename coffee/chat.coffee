@@ -3,8 +3,7 @@
 ###
 
 define ->
-  initialize = (username) ->
-    socket = io.connect()
+  initialize = (socket, username) ->
     socket.on 'new message', (userMessage) ->
       newMessage = $( '<span>' +
         '<b>' + userMessage.username + ' : </b>' + userMessage.message + '<br/>' +
@@ -18,7 +17,5 @@ define ->
           message = ($ '#new_message').val()
           ($ '#new_message').val('')
           socket.emit 'send message', message
-    
-    socket.emit 'new user', username
     
   initialize: initialize    

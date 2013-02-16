@@ -13,11 +13,17 @@
       tagName: 'li',
       template: _.template($('#game-template').html()),
       initialize: function() {
-        return this.playerid = this.options.playerid;
+        this.playerid = this.options.playerid;
+        return this.model.on('change', this.updateLine, this);
       },
       events: {
-        "click .delete": "deleteGame"
+        "click .delete": "deleteGame",
+        "click .join": "joinGame"
       },
+      /*
+            Rendering
+      */
+
       render: function() {
         var params;
         params = {
@@ -32,7 +38,15 @@
         this.updateStatus();
         this.updateJoinBtn();
         this.updatePlayBtn();
-        return this.updateStartBtn();
+        this.updateStartBtn();
+        return this.updateDeleteBtn();
+      },
+      updateDeleteBtn: function() {
+        if (this.model.canDelete(this.playerid)) {
+          return this.$('.delete').show();
+        } else {
+          return this.$('.delete').hide();
+        }
       },
       updateStartBtn: function() {
         if (this.model.canStart(this.playerid)) {
@@ -61,6 +75,10 @@
       updateStatus: function() {
         return this.$el.addClass(this.model.getStatusStr());
       },
+      /*
+            Event handlers
+      */
+
       deleteGame: function() {
         var _this = this;
         return this.model.destroy({
@@ -68,6 +86,9 @@
             return _this.$el.remove();
           }
         });
+      },
+      joinGame: function() {
+        return this.trigger('join', this.model.id);
       }
     });
     return GameLineView;

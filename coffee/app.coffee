@@ -8,12 +8,14 @@ define ['chat', 'GameList', 'GameListView'], (Chat, GameList, GameListView) ->
       gameList = new GameList
           
       $.get '/user', (data) ->
-        Chat.initialize data.username
+        socket = io.connect()
+        socket.emit 'new user', 
+          name: data.username,
+          id: data.userid
         
-        gameListView = new GameListView { games: gameList, playerid: data.userid }
-        gameList.fetch 
-          success: (games) ->
-            console.log games
-            gameListView.render()
+        Chat.initialize socket, data.username
+        
+        gameListView = new GameListView { games: gameList, playerid: data.userid, socket: socket }
+        gameList.fetch()
       
     initialize: initialize
