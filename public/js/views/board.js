@@ -2,54 +2,57 @@
 (function() {
 
   define(['backbone', 'GameModel'], function(Backbone, GameModel) {
-    var BoardView, CELL_HEIGHT, CELL_WIDTH, COLORS, MARGIN;
+    var BoardView, CELL_HEIGHT, CELL_WIDTH, MARGIN;
     CELL_WIDTH = 30;
     CELL_HEIGHT = 30;
     MARGIN = 45;
-    COLORS = ['#000000', "#ff0000", "00ff00", "ffff00", "0000ff"];
     BoardView = Backbone.View.extend({
       el: $("#board_container"),
       boardSocket: null,
+      hoveredCell: null,
       initialize: function() {
         this.playerid = this.options.playerid;
-        if (this.$('canvas')[0].getContext && this.$('canvas')[0].getContext('2d')) {
-          this.context = this.$('canvas')[0].getContext('2d');
-        }
         return this.boardSocket = io.connect('/game_list');
       },
       events: {
         "click .back": "backToGameList"
       },
       render: function() {
-        if (this.context) {
-          this.drawCells();
-          return this.drawPawns();
-        }
+        this.drawCells();
+        return this.drawPawns();
       },
       drawCells: function() {
         var _this = this;
         return _.each(GameModel.BOARD, function(line, j) {
           return _.each(line, function(i) {
-            return _this.drawCell(i, j, "#ffffff");
+            return _this.drawCell(i, j);
           });
         });
       },
       drawPawns: function() {
         var _this = this;
-        return _.each(this.model.get('pawns'), function(pawns, pawnId) {
+        return _.each(this.model.get('pawns'), function(pawns, pawnClass) {
           return _.each(pawns, function(posStr) {
             var pos;
             pos = posStr.split(':');
-            return _this.drawCell(pos[0], pos[1], COLORS[pawnId]);
+            return _this.drawCell(pos[0], pos[1], pawnClass);
           });
         });
       },
-      drawCell: function(i, j, color) {
-        var x, y;
+      drawCell: function(i, j, cellClass) {
+        var cell, x, y;
         x = MARGIN + CELL_WIDTH * i;
         y = MARGIN + CELL_WIDTH * j;
-        this.context.fillStyle = color;
-        return this.context.fillRect(x, y, CELL_WIDTH, CELL_HEIGHT);
+        cell = $('<div/>');
+        cell.addClass('cell');
+        cell.addClass(cellClass);
+        cell.css({
+          width: CELL_WIDTH + 'px',
+          height: CELL_HEIGHT + 'px',
+          left: x + 'px',
+          top: y + 'px'
+        });
+        return this.$('#board').append(cell);
       },
       play: function(game) {
         this.model = game;
