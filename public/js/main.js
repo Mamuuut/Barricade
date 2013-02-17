@@ -24,7 +24,10 @@
       GameModel: 'models/game',
       GameList: 'collections/games',
       GameLineView: 'views/gameline',
-      GameListView: 'views/gamelist'
+      GameListView: 'views/gamelist',
+      BoardView: 'views/board',
+      MainView: 'views/main',
+      ChatView: 'views/chat'
     }
   });
 

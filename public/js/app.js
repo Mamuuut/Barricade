@@ -7,19 +7,28 @@
 
 (function() {
 
-  define(['chat', 'GameList', 'GameListView'], function(Chat, GameList, GameListView) {
+  define(['ChatView', 'GameList', 'GameListView', 'BoardView', 'MainView'], function(ChatView, GameList, GameListView, BoardView, MainView) {
     var initialize;
     initialize = function() {
       var gameList;
       gameList = new GameList;
       return $.get('/user', function(user) {
-        var gameListView;
-        Chat.initialize(user);
+        var boardView, chatView, gameListView, mainView;
+        chatView = new ChatView({
+          user: user
+        });
         gameListView = new GameListView({
           games: gameList,
           playerid: user.id
         });
-        return gameList.fetch();
+        gameList.fetch();
+        boardView = new BoardView({
+          playerid: user.id
+        });
+        return mainView = new MainView({
+          gameListView: gameListView,
+          boardView: boardView
+        });
       });
     };
     return {

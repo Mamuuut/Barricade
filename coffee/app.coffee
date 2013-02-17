@@ -2,15 +2,21 @@
   app.coffee
 ###
 
-define ['chat', 'GameList', 'GameListView'], (Chat, GameList, GameListView) ->
+define ['ChatView', 'GameList', 'GameListView', 'BoardView', 'MainView'], (ChatView, GameList, GameListView, BoardView, MainView) ->
     initialize = ->
       
       gameList = new GameList
           
       $.get '/user', (user) ->
-        Chat.initialize user
+        chatView = new ChatView { user: user }
         
         gameListView = new GameListView { games: gameList, playerid: user.id }
         gameList.fetch()
+        
+        boardView = new BoardView { playerid: user.id }
+      
+        mainView = new MainView 
+          gameListView: gameListView,
+          boardView: boardView
       
     initialize: initialize

@@ -41,6 +41,8 @@ define [ 'backbone', 'GameLineView' ], (Backbone, GameLineView) ->
         @gameListSocket.emit 'start game', gameId
       line.on 'quit', (gameId) =>
         @gameListSocket.emit 'quit game', gameId
+      line.on 'play', (game) =>
+        @trigger 'play', game
       
       @list.append line.$el
       

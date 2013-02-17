@@ -20,7 +20,8 @@
         "click .delete": "deleteGame",
         "click .join": "joinGame",
         "click .start": "startGame",
-        "click .quit": "quitGame"
+        "click .quit": "quitGame",
+        "click .play": "playGame"
       },
       /*
             Rendering
@@ -105,6 +106,9 @@
       },
       quitGame: function() {
         return this.trigger('quit', this.model.id);
+      },
+      playGame: function() {
+        return this.trigger('play', this.model);
       }
     });
     return GameLineView;

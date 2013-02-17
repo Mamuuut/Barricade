@@ -1,20 +1,15 @@
-extends index
+div#games
+  h1 Game list
+  ul.list
+  button#create New Game
 
-block append content
-  div#games
-    h1 Game list
-    ul.list
-    button#create New Game
-  
-  include chat
-  
-  script#game-template(type="text/template")
-    |<div class="view">
-    |  <label class="players"></label>
-    |  <label class="date"><%= date %></label>
-    |  <a class="action delete">Delete</a>
-    |  <a class="action quit">Quit</a>
-    |  <a class="action start">Start</a>
-    |  <a class="action join">Join</a>
-    |  <a class="action play">Play</a>
-    |</div>
+script#game-template(type="text/template")
+  |<div class="view">
+  |  <label class="players"></label>
+  |  <label class="date"><%= date %></label>
+  |  <a class="action delete">Delete</a>
+  |  <a class="action quit">Quit</a>
+  |  <a class="action start">Start</a>
+  |  <a class="action join">Join</a>
+  |  <a class="action play">Play</a>
+  |</div>

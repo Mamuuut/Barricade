@@ -24,7 +24,7 @@ module.exports = (app) ->
     Index
   ###
   app.get '/', ensureAuthenticated, (req, res) ->
-    res.render 'game_list', 
+    res.render 'index', 
       title: 'Welcome ' + req.user.username
   
   ###

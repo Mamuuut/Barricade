@@ -38,6 +38,14 @@ game-status(color)
   top 0
   left 0
   border 1px solid #888
+
+action-button(hover-color = #fff)
+  text-decoration underline
+  cursor pointer
+  float right
+  margin-left 4px
+  &:hover
+    color hover-color
   
 body
   background-color: #3d3d3d
@@ -63,47 +71,76 @@ h1
 .content
   container 600px
   min-height 300px
-
-#games
-  .list
-    padding 0
-    margin 0
-    list-style-type none
-    li
-      position relative
-      padding 4px 4px 4px 18px
-      &:nth-child(even)
-        background-color #deddff
-      &:nth-child(odd)
-        background-color #fffcdd
-      &:hover
-        .action
-          color: #aaa
-        background-color #000
-        color #fff
-      .players
-        padding 0 8px
-      .action
-        text-decoration underline
-        cursor pointer
-        float right
-        margin-left 4px
+    
+  #board_container
+    margin-bottom 16px
+    display none
+    .action
+      action-button #555
+    #board
+      margin-top 8px
+      background-color #000
+  
+  #games
+    margin-bottom 16px
+    .list
+      padding 0
+      margin 0
+      list-style-type none
+      li
+        position relative
+        padding 4px 4px 4px 18px
+        &:nth-child(even)
+          background-color #deddff
+        &:nth-child(odd)
+          background-color #fffcdd
         &:hover
+          .action
+            color #aaa
+          background-color #000
           color #fff
-      &.waiting_player:after
-        game-status #ff8800
-      &.playing:after
-        game-status #00ff00
-      &.complete:after
-        game-status #ccc
-        
-  #create
-    margin 4px 0
-  padding-bottom 16px
+        .players
+          padding 0 8px
+        .action
+          action-button()
+        &.waiting_player:after
+          game-status #ff8800
+        &.playing:after
+          game-status #00ff00
+        &.complete:after
+          game-status #ccc
+          
+    #create
+      margin 4px 0
+  
+  &.playing
+    #board_container
+      display block
+    #games
+      display none
 
 #chat
+  background-color #fff
+  padding 8px
+  position fixed
+  right 0
+  bottom 0
+  width 400px
+  &.minimized
+    width auto 
+    .switch
+      border 1px solid
+    #message
+    #conversation
+      display none
+  h1
+    margin-right 24px    
+  .switch
+    width 14px
+    height 14px
+    border-bottom 1px solid
+    action-button #555
   #message
-    margin-top 8px
     padding 5px
     #new_message
       padding 4px
@@ -116,14 +153,13 @@ h1
     overflow-y auto
     overflow-x hidden
     border solid 1px #acacac
-    border-top-width 0
     padding 8px
     span
       opacity 0
       transition opacity 1s
       &.visible
         opacity 1
-
+          
 .login
   container 300px
   span.error

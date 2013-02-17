@@ -1,5 +1,12 @@
 div#chat
+  a.action.switch
   h1 Chat
+  div#conversation
   div#message
     input#new_message
-  div#conversation
+  
+script#chat-template(type="text/template")
+  |<span>
+  |  <b><%= username %>:</b><%= message %><br/>
+  |</span>
+  

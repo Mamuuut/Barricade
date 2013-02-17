@@ -56,6 +56,9 @@
         line.on('quit', function(gameId) {
           return _this.gameListSocket.emit('quit game', gameId);
         });
+        line.on('play', function(game) {
+          return _this.trigger('play', game);
+        });
         return this.list.append(line.$el);
       },
       removeGame: function(game) {

@@ -16,7 +16,8 @@ define [ 'underscore', 'backbone' ], (_, Backbone) ->
       "click .delete":  "deleteGame",
       "click .join":    "joinGame",
       "click .start":   "startGame",
-      "click .quit":    "quitGame"
+      "click .quit":    "quitGame",
+      "click .play":    "playGame"
     
     ###
       Rendering
@@ -91,5 +92,8 @@ define [ 'underscore', 'backbone' ], (_, Backbone) ->
          
     quitGame: ->
       @trigger 'quit', @model.id
+         
+    playGame: ->
+      @trigger 'play', @model
      
   GameLineView
