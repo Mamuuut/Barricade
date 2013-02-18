@@ -25,7 +25,9 @@
         var _this = this;
         return _.each(GameModel.BOARD, function(line, j) {
           return _.each(line, function(i) {
-            return _this.drawCell(i, j);
+            var cellClass;
+            cellClass = GameModel.getCellClass(i + ":" + j);
+            return _this.drawCell(i, j, cellClass);
           });
         });
       },

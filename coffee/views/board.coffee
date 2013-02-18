@@ -23,7 +23,8 @@ define [ 'backbone', 'GameModel' ], (Backbone, GameModel) ->
     drawCells: ->
       _.each GameModel.BOARD, (line, j) =>
         _.each line, (i) =>
-          @drawCell i, j
+          cellClass = GameModel.getCellClass i + ":" + j
+          @drawCell i, j, cellClass
     
     drawPawns: ->
       _.each (@model.get 'pawns'), (pawns, pawnClass) =>

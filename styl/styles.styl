@@ -86,11 +86,21 @@ h1
       width 600px
       height 600px
       .cell 
-        border-radius 15px
-        width 30px
-        height 30px
+        border-radius 50%
         position absolute
         background-color #fff
+        &.start:after
+        &.exit:after
+          content: ''
+          border-radius 50%
+          width: 50%
+          height: 50%
+          top: 25%
+          left: 25%
+          position absolute
+          background-color #fff
+        &.exit
+          background-color #000
         &.black
           background-color #000
         &.red

@@ -5,9 +5,11 @@
 passport = require 'passport'
 Game = require './models/game'
         
-# Remove all users from DB for test purpose only
+# Remove all games from DB for test purpose only
+###
 Game.remove (err, games) ->
   console.log 'clear games', games
+###
 
 module.exports = (app) ->
   
