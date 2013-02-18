@@ -216,6 +216,8 @@
     GameModel.COLORS = COLORS;
     GameModel.BOARD = BOARD;
     GameModel.getCellClass = getCellClass;
+    GameModel.posStrToArray = posStrToArray;
+    GameModel.posArrayToStr = posArrayToStr;
     return GameModel;
   });
 

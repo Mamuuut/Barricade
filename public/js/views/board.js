@@ -19,7 +19,8 @@
       },
       events: {
         "click .back": "backToGameList",
-        "click .pawn.hoverable": "pawnSelected"
+        "click .pawn.hoverable": "pawnSelected",
+        "click .cell.target": "targetClick"
       },
       render: function() {
         this.drawCells();
@@ -31,7 +32,7 @@
           return _.each(line, function(i) {
             var cellClass, posStr;
             cellClass = GameModel.getCellClass(i + ":" + j);
-            posStr = i + ':' + j;
+            posStr = GameModel.posArrayToStr([i, j]);
             return _this.cells[posStr] = _this.drawOne(i, j, cellClass);
           });
         });
@@ -60,8 +61,19 @@
           top: y + 'px'
         });
         this.$('#board').append(cell);
-        cell.data('pos', i + ':' + j);
+        cell.data('pos', GameModel.posArrayToStr([i, j]));
         return cell;
+      },
+      movePawn: function(pawn, posStr) {
+        var posArray, x, y;
+        posArray = GameModel.posStrToArray(posStr);
+        x = MARGIN + CELL_WIDTH * posArray[0];
+        y = MARGIN + CELL_WIDTH * posArray[1];
+        pawn.data('pos', posStr);
+        return pawn.css({
+          left: x + 'px',
+          top: y + 'px'
+        });
       },
       updatePlayerTurn: function() {
         var color, diceClass;
@@ -92,6 +104,15 @@
         return _.each(moves, function(posStr) {
           return _this.cells[posStr].addClass('target');
         });
+      },
+      targetClick: function(event) {
+        var cell, pawn;
+        cell = $(event.currentTarget);
+        pawn = this.$('.pawn.selected');
+        this.movePawn(pawn, cell.data('pos'));
+        console.log(pawn, cell.data('pos'));
+        this.$('.pawn').removeClass('selected');
+        return this.$('.cell').removeClass('target');
       },
       backToGameList: function() {
         return this.trigger('back');

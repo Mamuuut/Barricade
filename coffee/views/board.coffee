@@ -18,7 +18,8 @@ define [ 'backbone', 'GameModel' ], (Backbone, GameModel) ->
 
     events: 
       "click .back":            "backToGameList",  
-      "click .pawn.hoverable":  "pawnSelected"
+      "click .pawn.hoverable":  "pawnSelected", 
+      "click .cell.target":     "targetClick"
     
     render: ->
       @drawCells()
@@ -28,7 +29,7 @@ define [ 'backbone', 'GameModel' ], (Backbone, GameModel) ->
       _.each GameModel.BOARD, (line, j) =>
         _.each line, (i) =>
           cellClass = GameModel.getCellClass i + ":" + j
-          posStr = i + ':' + j
+          posStr = GameModel.posArrayToStr [i,j]
           @cells[posStr] = @drawOne i, j, cellClass
           
     drawPawns: ->
@@ -49,8 +50,17 @@ define [ 'backbone', 'GameModel' ], (Backbone, GameModel) ->
         left: x + 'px',
         top: y + 'px'
       @$('#board').append cell
-      cell.data 'pos', (i + ':' + j)
+      cell.data 'pos', GameModel.posArrayToStr [i,j]
       cell
+    
+    movePawn: (pawn, posStr) ->
+      posArray = GameModel.posStrToArray posStr
+      x = MARGIN + CELL_WIDTH * posArray[0]
+      y = MARGIN + CELL_WIDTH * posArray[1]
+      pawn.data 'pos', posStr
+      pawn.css
+        left: x + 'px',
+        top: y + 'px'
     
     updatePlayerTurn: ->
       color = GameModel.COLORS[@model.get('turn').player]
@@ -79,6 +89,14 @@ define [ 'backbone', 'GameModel' ], (Backbone, GameModel) ->
       moves = @model.getMoves pawn.data('pos')
       _.each moves, (posStr) =>
         @cells[posStr].addClass 'target'
+    
+    targetClick: (event) ->
+      cell = $(event.currentTarget)
+      pawn = @$ '.pawn.selected'
+      @movePawn pawn, cell.data('pos')
+      console.log pawn, cell.data('pos')
+      @$('.pawn').removeClass 'selected'
+      @$('.cell').removeClass 'target'
         
     backToGameList: ->
       @trigger 'back'

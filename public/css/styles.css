@@ -25,7 +25,9 @@ h1{font-size:16px;margin:0}
 .content #board_container #board #dice div.center{top:12px}
 .content #board_container #board #dice div.bottom{bottom:3px}
 .content #board_container #board .cell{-webkit-border-radius:50%;-moz-border-radius:50%;-ms-border-radius:50%;-o-border-radius:50%;border-radius:50%;position:absolute;background-color:#fff;}
+.content #board_container #board .cell.target{cursor:pointer}
 .content #board_container #board .cell.target:after{content:'';position:absolute;width:30px;height:30px;-webkit-border-radius:30%;-moz-border-radius:30%;-ms-border-radius:30%;-o-border-radius:30%;border-radius:30%;-webkit-box-shadow:0 0 -7px 7px #f80;-moz-box-shadow:0 0 -7px 7px #f80;-ms-box-shadow:0 0 -7px 7px #f80;-o-box-shadow:0 0 -7px 7px #f80;box-shadow:0 0 -7px 7px #f80;z-index:1}
+.content #board_container #board .cell.target:hover:after{-webkit-border-radius:50%;-moz-border-radius:50%;-ms-border-radius:50%;-o-border-radius:50%;border-radius:50%}
 .content #board_container #board .cell.start,.content #board_container #board .cell.exit{-webkit-box-shadow:0 0 0 8px #fff inset;-moz-box-shadow:0 0 0 8px #fff inset;-ms-box-shadow:0 0 0 8px #fff inset;-o-box-shadow:0 0 0 8px #fff inset;box-shadow:0 0 0 8px #fff inset}
 .content #board_container #board .cell.exit,.content #board_container #board .cell.barricade{background-color:#333}
 .content #board_container #board .pawn.hoverable{cursor:pointer}
