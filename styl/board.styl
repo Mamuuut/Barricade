@@ -1,7 +1,12 @@
 #board_container
   display none
-  .action
-    action-button #555
+  #board_header
+    .action
+      action-button #555
+    &:after
+      content ''
+      display block
+      clear both
   #board
     position relative
     margin-top 8px
