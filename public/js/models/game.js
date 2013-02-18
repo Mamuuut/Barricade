@@ -164,6 +164,9 @@
       isBarricade: function(posStr) {
         return -1 !== _.indexOf(this.get('pawns').barricade, posStr);
       },
+      isCurrentPlayerPawn: function(posStr) {
+        return -1 !== _.indexOf(this.get('pawns')[this.getTurnColor()], posStr);
+      },
       getMoves: function(posStr, leftMoves, accepted, rejected) {
         var neighbours,
           _this = this;
@@ -178,19 +181,16 @@
         console.log('posStr', posStr, 'leftMoves', leftMoves, 'neighbours', neighbours);
         _.each(neighbours, function(neighbourPosStr) {
           if (-1 === _.indexOf(rejected, neighbourPosStr)) {
-            if (!_this.isBarricade(neighbourPosStr)) {
-              if (leftMoves !== 0) {
+            if (leftMoves !== 0) {
+              if (!_this.isBarricade(neighbourPosStr)) {
                 rejected.push(neighbourPosStr);
                 return _this.getMoves(neighbourPosStr, leftMoves - 1, accepted, rejected);
-              } else {
-                return accepted.push(neighbourPosStr);
               }
-            } else if (leftMoves === 0) {
+            } else if (!_this.isCurrentPlayerPawn(neighbourPosStr)) {
               return accepted.push(neighbourPosStr);
             }
           }
         });
-        console.log('accepted', accepted);
         return accepted;
       },
       /*

@@ -1,34 +1,4 @@
-border-radius(n)
-  -webkit-border-radius n
-  -moz-border-radius n
-  -ms-border-radius n
-  -o-border-radius n
-  border-radius n
-
-box-shadow()
-  -webkit-box-shadow arguments
-  -moz-box-shadow arguments
-  -ms-box-shadow arguments
-  -o-box-shadow arguments
-  box-shadow arguments
-  
-background-gradient()
-  background-image -webkit-linear-gradient(arguments)
-  background-image -moz-linear-gradient(arguments)
-  background-image -o-linear-gradient(arguments)
-  background-image linear-gradient(arguments)
-
-animation()
-  animation arguments
-  -moz-animation arguments
-  -webkit-animation arguments
-  -o-animation arguments
-    
-transition()
-  transition arguments
-  -moz-transition arguments
-  -webkit-transition arguments
-  -o-transition arguments
+@import 'utils'
 
 container(width)
   border 1px solid #000
@@ -38,7 +8,15 @@ container(width)
   margin 8px auto 
   width width
   padding 8px
-  
+
+action-button(hover-color = #fff)
+  text-decoration underline
+  cursor pointer
+  float right
+  margin-left 4px
+  &:hover
+    color hover-color
+
 game-status(color)
   content ''
   position absolute
@@ -50,14 +28,6 @@ game-status(color)
   top 0
   left 0
   border 1px solid #888
-
-action-button(hover-color = #fff)
-  text-decoration underline
-  cursor pointer
-  float right
-  margin-left 4px
-  &:hover
-    color hover-color
     
 body
   background-color: #3d3d3d
@@ -82,252 +52,19 @@ h1
     right 0
     margin 10px
     color #fff
-  
+
 .content
   container 600px
   min-height 300px
-    
-  #board_container
-    display none
-    .action
-      action-button #555
-    #board
-      position relative
-      margin-top 8px
-      background-color #888
-      width 600px
-      height 600px
-      #turn
-        border-radius 50%
-        float: left
-        width 30px
-        height 30px
-        margin 8px
-      #dice
-        position relative
-        float left
-        border-radius 4px
-        width 30px
-        height 30px
-        margin 8px
-        background-color #fff
-        background-gradient top, #fefefe, #f1f1f1 80%
-        box-shadow 0px 5px 0 #CCC, 0 6px 3px #444
-        &.one
-          .hcenter.center
-            display: block
-        &.two
-          .top.left
-          .bottom.right
-            display: block
-        &.three
-          .hcenter.center
-          .top.left
-          .bottom.right
-            display: block
-        &.four
-          .top.left
-          .top.right
-          .bottom.left
-          .bottom.right
-            display: block
-        &.five
-          .top.left
-          .top.right
-          .bottom.left
-          .bottom.right
-          .hcenter.center
-            display: block
-        &.six
-          .top.left
-          .top.right
-          .center.left
-          .center.right
-          .bottom.left
-          .bottom.right
-            display: block
-        div
-          background-color #000
-          width 6px
-          height 6px
-          border-radius 50%
-          position absolute
-          display none
-          &.left
-            left 3px
-          &.hcenter
-            left 12px
-          &.right
-            right 3px
-          &.top
-            top 3px
-          &.center
-            top 12px
-          &.bottom
-            bottom 3px
-      .cell 
-        border-radius 50%
-        position absolute
-        background-color #fff
-        &.target
-          cursor pointer
-        &.target:after
-          content ''
-          position absolute
-          width 30px
-          height 30px
-          border-radius 30%  
-          box-shadow 0 0 -7px 7px #f80 
-          z-index 1
-        &.target:hover:after
-          border-radius 50% 
-        &.start
-        &.exit
-          box-shadow 0 0 0 8px #fff inset
-        &.exit
-        &.barricade
-          background-color #333
-      .pawn
-        &.hoverable
-          cursor pointer
-          &:hover:after
-        &.selected:after
-          content ''
-          position absolute
-          width 26px
-          height 26px
-          border-radius 50%
-          border 2px solid #fff  
-          box-shadow 0 0 8px #fff inset 
-      .pawn
-      #turn
-        box-shadow 2px 2px 2px #444, -3px -3px 9px #000 inset
-      .red
-        background-color #f00
-      .green
-        background-color #0f0
-      .yellow
-        background-color #ff0
-      .blue
-        background-color #00f  
-            
-  
-  #games
-    .list
-      padding 0
-      margin 0
-      list-style-type none
-      li
-        position relative
-        padding 4px 4px 4px 18px
-        &:nth-child(even)
-          background-color #deddff
-        &:nth-child(odd)
-          background-color #fffcdd
-        &:hover
-          .action
-            color #aaa
-          background-color #000
-          color #fff
-        .players
-          padding 0 8px
-        .action
-          action-button()
-        &.waiting_player:after
-          game-status #ff8800
-        &.playing:after
-          game-status #00ff00
-        &.complete:after
-          game-status #ccc
-          
-    #create
-      margin 4px 0
   
   &.playing
     #board_container
       display block
     #games
       display none
-
-#chat
-  background-color #fff
-  padding 8px
-  position fixed
-  right 0
-  bottom 0
-  width 400px
-  &.minimized
-    width auto 
-    .switch
-      border 1px solid
-    #message
-    #conversation
-      display none
-  h1
-    margin-right 24px    
-  .switch
-    width 14px
-    height 14px
-    border-bottom 1px solid
-    action-button #555
-  #message
-    padding 5px
-    #new_message
-      padding 4px
-      margin -7px -5px
-      width 100%    
-      border 1px solid #acacac
-      border-radius 0
-  #conversation
-    height 200px
-    overflow-y auto
-    overflow-x hidden
-    border solid 1px #acacac
-    padding 8px
-    span
-      opacity 0
-      transition opacity 1s
-      &.visible
-        opacity 1
+  
+@import 'login'
+@import 'chat'
+@import 'game_list'
+@import 'board'
           
-.login
-  container 300px
-  span.error
-    color #f00
-  form
-    margin 8px 0 0
-    input[type=text], input[type=password]
-      border-radius 3px
-      box-shadow: 0 1px 0 #fff, 0 -2px 5px rgba(0,0,0,0.08) inset
-      background #eae7e7
-      border 1px solid #c8c8c8
-      color #777
-      margin 0 0 10px
-      padding 10px
-      width 278px
-      
-      &:hover
-        border 1px solid #ffc200
-        box-shadow 0 0 2px #ffc200 inset
-      &:focus
-        background-color #fff
-        border 1px solid #ffc200
-        box-shadow 0 0 2px #ffc200 inset
-        outline none
-
-    input[type=submit]
-      margin 0
-      color: #fff
-      border-radius 3px
-      background-color #3d3d3d
-      border 1px solid #555
-      padding 4px 10px
-      float right
-      &:hover
-        cursor pointer
-        background-color #eae7e7
-        border 1px solid #eae7e7
-        color #555
-      
-    div.cb
-      clear both

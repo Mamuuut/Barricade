@@ -158,6 +158,9 @@ define [ 'underscore', 'backbone' ], (_, Backbone) ->
     isBarricade: (posStr) ->
       -1 isnt _.indexOf @get('pawns').barricade, posStr
     
+    isCurrentPlayerPawn: (posStr) ->
+      -1 isnt _.indexOf @get('pawns')[@getTurnColor()], posStr
+    
     getMoves: (posStr, leftMoves, accepted, rejected) ->
       leftMoves = if leftMoves? then leftMoves else @get('turn').dice
       if getHouse(posStr)
@@ -171,17 +174,12 @@ define [ 'underscore', 'backbone' ], (_, Backbone) ->
       
       _.each neighbours, (neighbourPosStr) =>
         if -1 is _.indexOf(rejected, neighbourPosStr)
-          if !@isBarricade neighbourPosStr
-            if leftMoves isnt 0
+          if leftMoves isnt 0
+            if !@isBarricade neighbourPosStr
               rejected.push neighbourPosStr
               @getMoves neighbourPosStr, leftMoves - 1, accepted, rejected
-            else
-              accepted.push neighbourPosStr
-          else if leftMoves is 0
-            accepted.push neighbourPosStr
-
-      console.log 'accepted', accepted
-      
+          else if !@isCurrentPlayerPawn neighbourPosStr
+            accepted.push neighbourPosStr      
       accepted
       
     ###

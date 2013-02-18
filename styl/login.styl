@@ -1,0 +1,41 @@
+.login
+  container 300px
+  span.error
+    color #f00
+  form
+    margin 8px 0 0
+    input[type=text], input[type=password]
+      border-radius 3px
+      box-shadow: 0 1px 0 #fff, 0 -2px 5px rgba(0,0,0,0.08) inset
+      background #eae7e7
+      border 1px solid #c8c8c8
+      color #777
+      margin 0 0 10px
+      padding 10px
+      width 278px
+      
+      &:hover
+        border 1px solid #ffc200
+        box-shadow 0 0 2px #ffc200 inset
+      &:focus
+        background-color #fff
+        border 1px solid #ffc200
+        box-shadow 0 0 2px #ffc200 inset
+        outline none
+
+    input[type=submit]
+      margin 0
+      color: #fff
+      border-radius 3px
+      background-color #3d3d3d
+      border 1px solid #555
+      padding 4px 10px
+      float right
+      &:hover
+        cursor pointer
+        background-color #eae7e7
+        border 1px solid #eae7e7
+        color #555
+      
+    div.cb
+      clear both

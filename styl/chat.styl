@@ -1,0 +1,40 @@
+#chat
+  background-color #fff
+  padding 8px
+  position fixed
+  right 0
+  bottom 0
+  width 400px
+  &.minimized
+    width auto 
+    .switch
+      border 1px solid
+    #message
+    #conversation
+      display none
+  h1
+    margin-right 24px    
+  .switch
+    width 14px
+    height 14px
+    border-bottom 1px solid
+    action-button #555
+  #message
+    padding 5px
+    #new_message
+      padding 4px
+      margin -7px -5px
+      width 100%    
+      border 1px solid #acacac
+      border-radius 0
+  #conversation
+    height 200px
+    overflow-y auto
+    overflow-x hidden
+    border solid 1px #acacac
+    padding 8px
+    span
+      opacity 0
+      transition opacity 1s
+      &.visible
+        opacity 1

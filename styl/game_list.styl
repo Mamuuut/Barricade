@@ -1,0 +1,30 @@
+#games
+  .list
+    padding 0
+    margin 0
+    list-style-type none
+    li
+      position relative
+      padding 4px 4px 4px 18px
+      &:nth-child(even)
+        background-color #deddff
+      &:nth-child(odd)
+        background-color #fffcdd
+      &:hover
+        .action
+          color #aaa
+        background-color #000
+        color #fff
+      .players
+        padding 0 8px
+      .action
+        action-button()
+      &.waiting_player:after
+        game-status #ff8800
+      &.playing:after
+        game-status #00ff00
+      &.complete:after
+        game-status #ccc
+        
+  #create
+    margin 4px 0

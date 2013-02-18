@@ -1,0 +1,123 @@
+#board_container
+  display none
+  .action
+    action-button #555
+  #board
+    position relative
+    margin-top 8px
+    background-color #888
+    width 600px
+    height 600px
+    #turn
+      border-radius 50%
+      float: left
+      width 30px
+      height 30px
+      margin 8px
+    #dice
+      position relative
+      float left
+      border-radius 4px
+      width 30px
+      height 30px
+      margin 8px
+      background-color #fff
+      background-gradient top, #fefefe, #f1f1f1 80%
+      box-shadow 0px 5px 0 #CCC, 0 6px 3px #444
+      &.one
+        .hcenter.center
+          display: block
+      &.two
+        .top.left
+        .bottom.right
+          display: block
+      &.three
+        .hcenter.center
+        .top.left
+        .bottom.right
+          display: block
+      &.four
+        .top.left
+        .top.right
+        .bottom.left
+        .bottom.right
+          display: block
+      &.five
+        .top.left
+        .top.right
+        .bottom.left
+        .bottom.right
+        .hcenter.center
+          display: block
+      &.six
+        .top.left
+        .top.right
+        .center.left
+        .center.right
+        .bottom.left
+        .bottom.right
+          display: block
+      div
+        background-color #000
+        width 6px
+        height 6px
+        border-radius 50%
+        position absolute
+        display none
+        &.left
+          left 3px
+        &.hcenter
+          left 12px
+        &.right
+          right 3px
+        &.top
+          top 3px
+        &.center
+          top 12px
+        &.bottom
+          bottom 3px
+    .cell 
+      border-radius 50%
+      position absolute
+      background-color #fff
+      &.target
+        cursor pointer
+      &.target:after
+        content ''
+        position absolute
+        width 30px
+        height 30px
+        border-radius 30%  
+        box-shadow 0 0 -7px 7px #f80 
+        z-index 1
+      &.target:hover:after
+        border-radius 50% 
+      &.start
+      &.exit
+        box-shadow 0 0 0 8px #fff inset
+      &.exit
+      &.barricade
+        background-color #333
+    .pawn
+      &.hoverable
+        cursor pointer
+      &.hoverable:hover:after
+      &.selected:after
+        content ''
+        position absolute
+        width 26px
+        height 26px
+        border-radius 50%
+        border 2px solid #fff  
+        box-shadow 0 0 8px #fff inset 
+    .pawn
+    #turn
+      box-shadow 2px 2px 2px #444, -3px -3px 9px #000 inset
+    .red
+      background-color #f00
+    .green
+      background-color #0f0
+    .yellow
+      background-color #ff0
+    .blue
+      background-color #00f  

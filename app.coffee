@@ -41,7 +41,7 @@ coffee.stdout.on 'data', (data) ->
   espresso.core.minify() if app.env == 'production'
 
 ### watch stylus sources ###
-espresso.core.exec espresso.core.node_modules_path + 'stylus -w -c styl -o public/css'
+espresso.core.exec espresso.core.node_modules_path + 'stylus -w -c styl/styles.styl -o public/css/'
 
 ### io configuration ###
 io = (require 'socket.io').listen app

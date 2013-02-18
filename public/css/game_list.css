@@ -1,0 +1,11 @@
+#games .list{padding:0;margin:0;list-style-type:none;}
+#games .list li{position:relative;padding:4px 4px 4px 18px;}
+#games .list li:nth-child(even){background-color:#deddff}
+#games .list li:nth-child(odd){background-color:#fffcdd}
+#games .list li:hover{background-color:#000;color:#fff}
+#games .list li:hover .action{color:#aaa}
+#games .list li .players{padding:0 8px}
+#games .list li.waiting_player:after{game-status:#f80}
+#games .list li.playing:after{game-status:#0f0}
+#games .list li.complete:after{game-status:#ccc}
+#games #create{margin:4px 0}
