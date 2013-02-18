@@ -4,7 +4,7 @@
 
 define [ 'underscore', 'backbone' ], (_, Backbone) ->
   ###
-    Static rules
+    Static
   ###
   MIN_PLAYERS = 2
   MAX_PLAYERS = 4
@@ -41,6 +41,71 @@ define [ 'underscore', 'backbone' ], (_, Backbone) ->
     yellow: ["9:14","10:14","11:14","9:15","10:15","11:15","9:16","11:16"],
     blue: ["13:14","14:14","15:14","13:15","14:15","15:15","13:16","15:16"]
   
+  ###
+    Pos convertor
+  ###
+  posStrToArray = (posStr) ->
+    strArray = posStr.split ':'
+    [parseInt(strArray[0]), parseInt(strArray[1])]
+  
+  posArrayToStr = (posArray) ->
+    posArray[0] + ':' + posArray[1] 
+  
+  ###
+    Return pos house if exists
+  ###
+  getHouse = (posStr) ->
+    house = undefined
+    _.each HOUSES, (houses, color) ->
+      if -1 isnt _.indexOf houses, posStr 
+        house = color
+    house
+  
+  isCell = (posStr) ->
+    posArray = posStrToArray posStr
+    BOARD[posArray[1]] and -1 isnt _.indexOf BOARD[posArray[1]], posArray[0] 
+  
+  isValidNeighbour = (posStr) ->
+    !getHouse(posStr) and isCell(posStr)
+  
+  ###
+    Return neighbour cells on the board
+  ###
+  getNeighbours = (posStr) ->
+    posArray = posStrToArray posStr
+    x = posArray[0]
+    y = posArray[1]
+    neighbours = [
+      (x - 1) + ':' + y,
+      x + ':' + (y - 1),
+      x + ':' + (y + 1),
+      (x + 1) + ':' + y
+    ]
+    _.filter neighbours, (posStr) ->
+      isValidNeighbour posStr
+    
+  ###
+    Check cell class 
+      - none
+      - exit
+      - start (red, green, yellow, blue)
+      - house (red, green, yellow, blue)
+  ###
+  getCellClass = (pos) ->
+    cellClass = undefined
+    if EXIT is pos
+      cellClass = 'exit'
+    _.each START, (start, color) ->
+      if start is pos
+        cellClass = 'start ' + color
+    house = getHouse pos
+    if house
+      cellClass = 'house ' + house
+    cellClass
+  
+  ###
+    GameModel
+  ###
   GameModel = Backbone.Model.extend
     idAttribute: "_id",
     
@@ -55,7 +120,7 @@ define [ 'underscore', 'backbone' ], (_, Backbone) ->
         green: _.clone(HOUSES.green),
         yellow: _.clone(HOUSES.yellow),
         blue: _.clone(HOUSES.blue),
-        black: ["8:1","8:3","8:4","8:5","6:7","10:7","0:11","4:11","8:11","12:11","16:11"]
+        barricade: ["8:1","8:3","8:4","8:5","6:7","10:7","0:11","4:11","8:11","12:11","16:11"]
     
     ###
       Helpers
@@ -75,6 +140,9 @@ define [ 'underscore', 'backbone' ], (_, Backbone) ->
     hasPlayer: (playerId) ->
       -1 isnt _.indexOf @get('players'), playerId
       
+    getTurnColor: ->
+      COLORS[@get('turn').player]
+      
     isMaster: (playerId) ->
       0 is _.indexOf @get('players'), playerId
       
@@ -83,6 +151,38 @@ define [ 'underscore', 'backbone' ], (_, Backbone) ->
       
     isComplete: ->
       'complete' is @getStatusStr()        
+    
+    ###
+      Board move
+    ###
+    isBarricade: (posStr) ->
+      -1 isnt _.indexOf @get('pawns').barricade, posStr
+    
+    getMoves: (posStr, leftMoves, accepted, rejected) ->
+      leftMoves = if leftMoves? then leftMoves else @get('turn').dice
+      if getHouse(posStr)
+        leftMoves--
+        posStr = START[@getTurnColor()]
+      accepted = accepted or []
+      rejected = rejected or [posStr]
+      neighbours = getNeighbours posStr
+      
+      console.log 'posStr', posStr, 'leftMoves', leftMoves, 'neighbours', neighbours
+      
+      _.each neighbours, (neighbourPosStr) =>
+        if -1 is _.indexOf(rejected, neighbourPosStr)
+          if !@isBarricade neighbourPosStr
+            if leftMoves isnt 0
+              rejected.push neighbourPosStr
+              @getMoves neighbourPosStr, leftMoves - 1, accepted, rejected
+            else
+              accepted.push neighbourPosStr
+          else if leftMoves is 0
+            accepted.push neighbourPosStr
+
+      console.log 'accepted', accepted
+      
+      accepted
       
     ###
       Actions
@@ -104,15 +204,5 @@ define [ 'underscore', 'backbone' ], (_, Backbone) ->
       
   GameModel.COLORS = COLORS
   GameModel.BOARD = BOARD
-  GameModel.getCellClass = (pos) ->
-    cellClass = undefined
-    if EXIT is pos
-      cellClass = 'exit'
-    _.each START, (start, color) ->
-      if start is pos
-        cellClass = 'start ' + color
-    _.each HOUSES, (house, color) ->
-      if -1 isnt _.indexOf house, pos 
-        cellClass = 'house ' + color
-    cellClass
+  GameModel.getCellClass = getCellClass
   GameModel

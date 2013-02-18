@@ -17,7 +17,13 @@ background-gradient()
   background-image -moz-linear-gradient(arguments)
   background-image -o-linear-gradient(arguments)
   background-image linear-gradient(arguments)
-  
+
+animation()
+  animation arguments
+  -moz-animation arguments
+  -webkit-animation arguments
+  -o-animation arguments
+    
 transition()
   transition arguments
   -moz-transition arguments
@@ -52,7 +58,7 @@ action-button(hover-color = #fff)
   margin-left 4px
   &:hover
     color hover-color
-  
+    
 body
   background-color: #3d3d3d
   font 12px Arial
@@ -163,19 +169,32 @@ h1
         border-radius 50%
         position absolute
         background-color #fff
-        &.start:after
-        &.exit:after
-          content: ''
-          border-radius 50%
-          width: 50%
-          height: 50%
-          top: 25%
-          left: 25%
+        &.target:after
+          content ''
           position absolute
-          background-color #fff
+          width 30px
+          height 30px
+          border-radius 30%  
+          box-shadow 0 0 -7px 7px #f80 
+          z-index 1
+        &.start
         &.exit
-        &.black
-          background-color #000
+          box-shadow 0 0 0 8px #fff inset
+        &.exit
+        &.barricade
+          background-color #333
+      .pawn
+        &.hoverable
+          cursor pointer
+        &.hoverable:hover:after
+        &.selected:after
+          content ''
+          position absolute
+          width 26px
+          height 26px
+          border-radius 50%
+          border 2px solid #fff  
+          box-shadow 0 0 8px #fff inset 
       .pawn
       #turn
         box-shadow 2px 2px 2px #444, -3px -3px 9px #000 inset

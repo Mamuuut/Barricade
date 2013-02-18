@@ -8,14 +8,17 @@ define [ 'backbone', 'GameModel' ], (Backbone, GameModel) ->
   BoardView = Backbone.View.extend
     el: $("#board_container"),  
     boardSocket: null,
-    hoveredCell: null
+    hoveredCell: null,
+    cells: {},
+    pawns: {},
      
     initialize: ->
       @playerid = @options.playerid
       @boardSocket = io.connect('/game_list')
 
     events: 
-      "click .back":  "backToGameList"  
+      "click .back":            "backToGameList",  
+      "click .pawn.hoverable":  "pawnSelected"
     
     render: ->
       @drawCells()
@@ -25,15 +28,16 @@ define [ 'backbone', 'GameModel' ], (Backbone, GameModel) ->
       _.each GameModel.BOARD, (line, j) =>
         _.each line, (i) =>
           cellClass = GameModel.getCellClass i + ":" + j
-          @drawCell i, j, cellClass
-    
+          posStr = i + ':' + j
+          @cells[posStr] = @drawOne i, j, cellClass
+          
     drawPawns: ->
       _.each (@model.get 'pawns'), (pawns, pawnClass) =>
         _.each pawns, (posStr) =>
           pos = posStr.split ':'
-          @drawCell pos[0], pos[1], 'pawn ' + pawnClass
+          @pawns[posStr] = @drawOne pos[0], pos[1], 'pawn ' + pawnClass
     
-    drawCell: (i, j, cellClass) ->
+    drawOne: (i, j, cellClass) ->
       x = MARGIN + CELL_WIDTH * i
       y = MARGIN + CELL_WIDTH * j
       cell = $ '<div/>'
@@ -45,6 +49,8 @@ define [ 'backbone', 'GameModel' ], (Backbone, GameModel) ->
         left: x + 'px',
         top: y + 'px'
       @$('#board').append cell
+      cell.data 'pos', (i + ':' + j)
+      cell
     
     updatePlayerTurn: ->
       color = GameModel.COLORS[@model.get('turn').player]
@@ -55,11 +61,25 @@ define [ 'backbone', 'GameModel' ], (Backbone, GameModel) ->
       @$('#dice').removeClass()
       @$('#dice').addClass diceClass
       
+      @$('.pawn').removeClass 'hoverable'
+      @$('.pawn.' + color).addClass 'hoverable'
+      
     play: (game) -> 
+      @$('.pawn').removeClass 'selected'
+      @$('.cell').removeClass 'target'
       @model = game
       @render()
       @updatePlayerTurn()
-      
+        
+    pawnSelected: (event) ->
+      @$('.pawn').removeClass 'selected'
+      @$('.cell').removeClass 'target'
+      pawn = $(event.currentTarget) 
+      pawn.addClass 'selected'
+      moves = @model.getMoves pawn.data('pos')
+      _.each moves, (posStr) =>
+        @cells[posStr].addClass 'target'
+        
     backToGameList: ->
       @trigger 'back'
       

@@ -9,10 +9,10 @@
 
   define(['underscore', 'backbone'], function(_, Backbone) {
     /*
-        Static rules
+        Static
     */
 
-    var BOARD, COLORS, EXIT, GameModel, HOUSES, MAX_PLAYERS, MIN_PLAYERS, START, STATUS;
+    var BOARD, COLORS, EXIT, GameModel, HOUSES, MAX_PLAYERS, MIN_PLAYERS, START, STATUS, getCellClass, getHouse, getNeighbours, isCell, isValidNeighbour, posArrayToStr, posStrToArray;
     MIN_PLAYERS = 2;
     MAX_PLAYERS = 4;
     STATUS = ['waiting_player', 'playing', 'complete'];
@@ -31,6 +31,83 @@
       yellow: ["9:14", "10:14", "11:14", "9:15", "10:15", "11:15", "9:16", "11:16"],
       blue: ["13:14", "14:14", "15:14", "13:15", "14:15", "15:15", "13:16", "15:16"]
     };
+    /*
+        Pos convertor
+    */
+
+    posStrToArray = function(posStr) {
+      var strArray;
+      strArray = posStr.split(':');
+      return [parseInt(strArray[0]), parseInt(strArray[1])];
+    };
+    posArrayToStr = function(posArray) {
+      return posArray[0] + ':' + posArray[1];
+    };
+    /*
+        Return pos house if exists
+    */
+
+    getHouse = function(posStr) {
+      var house;
+      house = void 0;
+      _.each(HOUSES, function(houses, color) {
+        if (-1 !== _.indexOf(houses, posStr)) {
+          return house = color;
+        }
+      });
+      return house;
+    };
+    isCell = function(posStr) {
+      var posArray;
+      posArray = posStrToArray(posStr);
+      return BOARD[posArray[1]] && -1 !== _.indexOf(BOARD[posArray[1]], posArray[0]);
+    };
+    isValidNeighbour = function(posStr) {
+      return !getHouse(posStr) && isCell(posStr);
+    };
+    /*
+        Return neighbour cells on the board
+    */
+
+    getNeighbours = function(posStr) {
+      var neighbours, posArray, x, y;
+      posArray = posStrToArray(posStr);
+      x = posArray[0];
+      y = posArray[1];
+      neighbours = [(x - 1) + ':' + y, x + ':' + (y - 1), x + ':' + (y + 1), (x + 1) + ':' + y];
+      return _.filter(neighbours, function(posStr) {
+        return isValidNeighbour(posStr);
+      });
+    };
+    /*
+        Check cell class 
+          - none
+          - exit
+          - start (red, green, yellow, blue)
+          - house (red, green, yellow, blue)
+    */
+
+    getCellClass = function(pos) {
+      var cellClass, house;
+      cellClass = void 0;
+      if (EXIT === pos) {
+        cellClass = 'exit';
+      }
+      _.each(START, function(start, color) {
+        if (start === pos) {
+          return cellClass = 'start ' + color;
+        }
+      });
+      house = getHouse(pos);
+      if (house) {
+        cellClass = 'house ' + house;
+      }
+      return cellClass;
+    };
+    /*
+        GameModel
+    */
+
     GameModel = Backbone.Model.extend({
       idAttribute: "_id",
       defaults: function() {
@@ -45,7 +122,7 @@
             green: _.clone(HOUSES.green),
             yellow: _.clone(HOUSES.yellow),
             blue: _.clone(HOUSES.blue),
-            black: ["8:1", "8:3", "8:4", "8:5", "6:7", "10:7", "0:11", "4:11", "8:11", "12:11", "16:11"]
+            barricade: ["8:1", "8:3", "8:4", "8:5", "6:7", "10:7", "0:11", "4:11", "8:11", "12:11", "16:11"]
           }
         };
       },
@@ -68,6 +145,9 @@
       hasPlayer: function(playerId) {
         return -1 !== _.indexOf(this.get('players'), playerId);
       },
+      getTurnColor: function() {
+        return COLORS[this.get('turn').player];
+      },
       isMaster: function(playerId) {
         return 0 === _.indexOf(this.get('players'), playerId);
       },
@@ -76,6 +156,42 @@
       },
       isComplete: function() {
         return 'complete' === this.getStatusStr();
+      },
+      /*
+            Board move
+      */
+
+      isBarricade: function(posStr) {
+        return -1 !== _.indexOf(this.get('pawns').barricade, posStr);
+      },
+      getMoves: function(posStr, leftMoves, accepted, rejected) {
+        var neighbours,
+          _this = this;
+        leftMoves = leftMoves != null ? leftMoves : this.get('turn').dice;
+        if (getHouse(posStr)) {
+          leftMoves--;
+          posStr = START[this.getTurnColor()];
+        }
+        accepted = accepted || [];
+        rejected = rejected || [posStr];
+        neighbours = getNeighbours(posStr);
+        console.log('posStr', posStr, 'leftMoves', leftMoves, 'neighbours', neighbours);
+        _.each(neighbours, function(neighbourPosStr) {
+          if (-1 === _.indexOf(rejected, neighbourPosStr)) {
+            if (!_this.isBarricade(neighbourPosStr)) {
+              if (leftMoves !== 0) {
+                rejected.push(neighbourPosStr);
+                return _this.getMoves(neighbourPosStr, leftMoves - 1, accepted, rejected);
+              } else {
+                return accepted.push(neighbourPosStr);
+              }
+            } else if (leftMoves === 0) {
+              return accepted.push(neighbourPosStr);
+            }
+          }
+        });
+        console.log('accepted', accepted);
+        return accepted;
       },
       /*
             Actions
@@ -99,24 +215,7 @@
     });
     GameModel.COLORS = COLORS;
     GameModel.BOARD = BOARD;
-    GameModel.getCellClass = function(pos) {
-      var cellClass;
-      cellClass = void 0;
-      if (EXIT === pos) {
-        cellClass = 'exit';
-      }
-      _.each(START, function(start, color) {
-        if (start === pos) {
-          return cellClass = 'start ' + color;
-        }
-      });
-      _.each(HOUSES, function(house, color) {
-        if (-1 !== _.indexOf(house, pos)) {
-          return cellClass = 'house ' + color;
-        }
-      });
-      return cellClass;
-    };
+    GameModel.getCellClass = getCellClass;
     return GameModel;
   });
 
