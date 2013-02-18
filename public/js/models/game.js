@@ -12,10 +12,11 @@
         Static rules
     */
 
-    var BOARD, EXIT, GameModel, HOUSES, MAX_PLAYERS, MIN_PLAYERS, START, STATUS;
+    var BOARD, COLORS, EXIT, GameModel, HOUSES, MAX_PLAYERS, MIN_PLAYERS, START, STATUS;
     MIN_PLAYERS = 2;
     MAX_PLAYERS = 4;
     STATUS = ['waiting_player', 'playing', 'complete'];
+    COLORS = ['red', 'green', 'yellow', 'blue'];
     BOARD = [[8], [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16], [0, 16], [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16], [8], [6, 7, 8, 9, 10], [6, 10], [4, 5, 6, 7, 8, 9, 10, 11, 12], [4, 12], [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], [2, 6, 10, 14], [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16], [0, 4, 8, 12, 16], [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16], [1, 2, 3, 5, 6, 7, 9, 10, 11, 13, 14, 15], [1, 2, 3, 5, 6, 7, 9, 10, 11, 13, 14, 15], [1, 3, 5, 7, 9, 11, 13, 15]];
     EXIT = "8:0";
     START = {
@@ -96,6 +97,7 @@
         return (this.hasPlayer(playerId)) && (this.getNbPlayers() > 1) && !this.isComplete();
       }
     });
+    GameModel.COLORS = COLORS;
     GameModel.BOARD = BOARD;
     GameModel.getCellClass = function(pos) {
       var cellClass;

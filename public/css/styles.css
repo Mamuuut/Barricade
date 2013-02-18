@@ -9,14 +9,29 @@ h1{font-size:16px;margin:0}
 .content #board_container .action{text-decoration:underline;cursor:pointer;float:right;margin-left:4px;}
 .content #board_container .action:hover{color:#555}
 .content #board_container #board{position:relative;margin-top:8px;background-color:#888;width:600px;height:600px;}
+.content #board_container #board #turn{-webkit-border-radius:50%;-moz-border-radius:50%;-ms-border-radius:50%;-o-border-radius:50%;border-radius:50%;float:left;width:30px;height:30px;margin:8px}
+.content #board_container #board #dice{position:relative;float:left;-webkit-border-radius:4px;-moz-border-radius:4px;-ms-border-radius:4px;-o-border-radius:4px;border-radius:4px;width:30px;height:30px;margin:8px;background-color:#fff;background-image:-webkit-linear-gradient(top,#fefefe,#f1f1f1 80%);background-image:-moz-linear-gradient(top,#fefefe,#f1f1f1 80%);background-image:-o-linear-gradient(top,#fefefe,#f1f1f1 80%);background-image:linear-gradient(top,#fefefe,#f1f1f1 80%);-webkit-box-shadow:0 5px 0 #ccc,0 6px 3px #444;-moz-box-shadow:0 5px 0 #ccc,0 6px 3px #444;-ms-box-shadow:0 5px 0 #ccc,0 6px 3px #444;-o-box-shadow:0 5px 0 #ccc,0 6px 3px #444;box-shadow:0 5px 0 #ccc,0 6px 3px #444;}
+.content #board_container #board #dice.one .hcenter.center{display:block}
+.content #board_container #board #dice.two .top.left,.content #board_container #board #dice.two .bottom.right{display:block}
+.content #board_container #board #dice.three .hcenter.center,.content #board_container #board #dice.three .top.left,.content #board_container #board #dice.three .bottom.right{display:block}
+.content #board_container #board #dice.four .top.left,.content #board_container #board #dice.four .top.right,.content #board_container #board #dice.four .bottom.left,.content #board_container #board #dice.four .bottom.right{display:block}
+.content #board_container #board #dice.five .top.left,.content #board_container #board #dice.five .top.right,.content #board_container #board #dice.five .bottom.left,.content #board_container #board #dice.five .bottom.right,.content #board_container #board #dice.five .hcenter.center{display:block}
+.content #board_container #board #dice.six .top.left,.content #board_container #board #dice.six .top.right,.content #board_container #board #dice.six .center.left,.content #board_container #board #dice.six .center.right,.content #board_container #board #dice.six .bottom.left,.content #board_container #board #dice.six .bottom.right{display:block}
+.content #board_container #board #dice div{background-color:#000;width:6px;height:6px;-webkit-border-radius:50%;-moz-border-radius:50%;-ms-border-radius:50%;-o-border-radius:50%;border-radius:50%;position:absolute;display:none;}
+.content #board_container #board #dice div.left{left:3px}
+.content #board_container #board #dice div.hcenter{left:12px}
+.content #board_container #board #dice div.right{right:3px}
+.content #board_container #board #dice div.top{top:3px}
+.content #board_container #board #dice div.center{top:12px}
+.content #board_container #board #dice div.bottom{bottom:3px}
 .content #board_container #board .cell{-webkit-border-radius:50%;-moz-border-radius:50%;-ms-border-radius:50%;-o-border-radius:50%;border-radius:50%;position:absolute;background-color:#fff;}
 .content #board_container #board .cell.start:after,.content #board_container #board .cell.exit:after{content:'';-webkit-border-radius:50%;-moz-border-radius:50%;-ms-border-radius:50%;-o-border-radius:50%;border-radius:50%;width:50%;height:50%;top:25%;left:25%;position:absolute;background-color:#fff}
-.content #board_container #board .cell.exit{background-color:#000}
-.content #board_container #board .cell.black{background-color:#000}
-.content #board_container #board .cell.red{background-color:#f00}
-.content #board_container #board .cell.green{background-color:#0f0}
-.content #board_container #board .cell.yellow{background-color:#ff0}
-.content #board_container #board .cell.blue{background-color:#00f}
+.content #board_container #board .cell.exit,.content #board_container #board .cell.black{background-color:#000}
+.content #board_container #board .pawn,.content #board_container #board #turn{-webkit-box-shadow:2px 2px 2px #444,-3px -3px 9px #000 inset;-moz-box-shadow:2px 2px 2px #444,-3px -3px 9px #000 inset;-ms-box-shadow:2px 2px 2px #444,-3px -3px 9px #000 inset;-o-box-shadow:2px 2px 2px #444,-3px -3px 9px #000 inset;box-shadow:2px 2px 2px #444,-3px -3px 9px #000 inset}
+.content #board_container #board .red{background-color:#f00}
+.content #board_container #board .green{background-color:#0f0}
+.content #board_container #board .yellow{background-color:#ff0}
+.content #board_container #board .blue{background-color:#00f}
 .content #games .list{padding:0;margin:0;list-style-type:none;}
 .content #games .list li{position:relative;padding:4px 4px 4px 18px;}
 .content #games .list li:nth-child(even){background-color:#deddff}

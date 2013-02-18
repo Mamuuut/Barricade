@@ -9,10 +9,17 @@ MIN_PLAYERS = 2
 MAX_PLAYERS = 4
 STATUS = ['waiting_player', 'playing', 'complete']
 
+randomDice = ->
+  return Math.ceil (6 * Math.random())
+
 Game = new Schema
   date: { type: Date, default: Date.now },
   players: [String],
-  currentplayer: { type: Number, default: 0 },
+  turn: { 
+    player: {type: Number, default: 0}
+    dice: {type: Number, default: ->
+      randomDice()}
+  },
   status: { type: Number, default: 0 },
   winner: { type: String, default: "" } 
 
@@ -61,14 +68,20 @@ Game.methods.addPlayer = (playerId) ->
 
 Game.methods.removePlayer = (playerId) ->
   if (@hasPlayer playerId) and !@isComplete()
+    if playerId is @players[@turn.player]
+      @turn.dice = randomDice()
+    
     @players.splice @players.indexOf(playerId), 1
-    @currentplayer = @currentplayer % @nbplayers
+    
+    @turn.player = @turn.player % @nbplayers
+    
     if (@nbplayers is 1) and @isPlaying()
       @completeGame @players[0]
     return playerId
   return false
   
 Game.methods.nextPlayer = ->
-  @currentplayer = ++@currentplayer % @nbplayers
+  @turn.player = ++@turn.player % @nbplayers
+  @turn.dice = randomDice()
 
 module.exports = mongoose.model 'Game', Game

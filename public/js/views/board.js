@@ -2,10 +2,11 @@
 (function() {
 
   define(['backbone', 'GameModel'], function(Backbone, GameModel) {
-    var BoardView, CELL_HEIGHT, CELL_WIDTH, MARGIN;
+    var BoardView, CELL_HEIGHT, CELL_WIDTH, DICE_CLASSES, MARGIN;
     CELL_WIDTH = 30;
     CELL_HEIGHT = 30;
     MARGIN = 45;
+    DICE_CLASSES = ['one', 'two', 'three', 'four', 'five', 'six'];
     BoardView = Backbone.View.extend({
       el: $("#board_container"),
       boardSocket: null,
@@ -37,7 +38,7 @@
           return _.each(pawns, function(posStr) {
             var pos;
             pos = posStr.split(':');
-            return _this.drawCell(pos[0], pos[1], pawnClass);
+            return _this.drawCell(pos[0], pos[1], 'pawn ' + pawnClass);
           });
         });
       },
@@ -56,9 +57,19 @@
         });
         return this.$('#board').append(cell);
       },
+      updatePlayerTurn: function() {
+        var color, diceClass;
+        color = GameModel.COLORS[this.model.get('turn').player];
+        this.$('#turn').removeClass();
+        this.$('#turn').addClass(color);
+        diceClass = DICE_CLASSES[this.model.get('turn').dice];
+        this.$('#dice').removeClass();
+        return this.$('#dice').addClass(diceClass);
+      },
       play: function(game) {
         this.model = game;
-        return this.render();
+        this.render();
+        return this.updatePlayerTurn();
       },
       backToGameList: function() {
         return this.trigger('back');

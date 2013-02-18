@@ -12,6 +12,12 @@ box-shadow()
   -o-box-shadow arguments
   box-shadow arguments
   
+background-gradient()
+  background-image -webkit-linear-gradient(arguments)
+  background-image -moz-linear-gradient(arguments)
+  background-image -o-linear-gradient(arguments)
+  background-image linear-gradient(arguments)
+  
 transition()
   transition arguments
   -moz-transition arguments
@@ -85,6 +91,74 @@ h1
       background-color #888
       width 600px
       height 600px
+      #turn
+        border-radius 50%
+        float: left
+        width 30px
+        height 30px
+        margin 8px
+      #dice
+        position relative
+        float left
+        border-radius 4px
+        width 30px
+        height 30px
+        margin 8px
+        background-color #fff
+        background-gradient top, #fefefe, #f1f1f1 80%
+        box-shadow 0px 5px 0 #CCC, 0 6px 3px #444
+        &.one
+          .hcenter.center
+            display: block
+        &.two
+          .top.left
+          .bottom.right
+            display: block
+        &.three
+          .hcenter.center
+          .top.left
+          .bottom.right
+            display: block
+        &.four
+          .top.left
+          .top.right
+          .bottom.left
+          .bottom.right
+            display: block
+        &.five
+          .top.left
+          .top.right
+          .bottom.left
+          .bottom.right
+          .hcenter.center
+            display: block
+        &.six
+          .top.left
+          .top.right
+          .center.left
+          .center.right
+          .bottom.left
+          .bottom.right
+            display: block
+        div
+          background-color #000
+          width 6px
+          height 6px
+          border-radius 50%
+          position absolute
+          display none
+          &.left
+            left 3px
+          &.hcenter
+            left 12px
+          &.right
+            right 3px
+          &.top
+            top 3px
+          &.center
+            top 12px
+          &.bottom
+            bottom 3px
       .cell 
         border-radius 50%
         position absolute
@@ -100,17 +174,20 @@ h1
           position absolute
           background-color #fff
         &.exit
-          background-color #000
         &.black
           background-color #000
-        &.red
-          background-color #f00
-        &.green
-          background-color #0f0
-        &.yellow
-          background-color #ff0
-        &.blue
-          background-color #00f      
+      .pawn
+      #turn
+        box-shadow 2px 2px 2px #444, -3px -3px 9px #000 inset
+      .red
+        background-color #f00
+      .green
+        background-color #0f0
+      .yellow
+        background-color #ff0
+      .blue
+        background-color #00f  
+            
   
   #games
     .list

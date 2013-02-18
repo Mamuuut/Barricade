@@ -29,8 +29,10 @@ describe 'Game model', ->
     it 'should have players array with one player', ->
       game.should.have.property('players').be.an.instanceOf(Array).with.lengthOf(1)
       
-    it 'should currentplayer equal 0', ->
-      game.should.have.property('currentplayer').equal(0)
+    it 'should have default turn', ->
+      game.should.have.property('turn')
+      game.turn.should.have.property('player').equal(0)
+      game.turn.should.have.property('dice')
     
     it 'should have winner -1', ->
       game.should.have.property('winner').equal("")
@@ -67,15 +69,15 @@ describe 'Game model', ->
       game.hasPlayer( player5 ).should.be.false
 
   describe 'Next player', ->
-    it 'should be 1', ->
+    it 'should loop', ->
       game.nextPlayer()
-      game.should.have.property('currentplayer').equal(1)
+      game.turn.player.should.equal(1)
       game.nextPlayer()
-      game.should.have.property('currentplayer').equal(2)
+      game.turn.player.should.equal(2)
       game.nextPlayer()
-      game.should.have.property('currentplayer').equal(3)
+      game.turn.player.should.equal(3)
       game.nextPlayer()
-      game.should.have.property('currentplayer').equal(0)
+      game.turn.player.should.equal(0)
 
   describe 'Remove player', ->
     it 'should remove player playerid2', ->

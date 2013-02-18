@@ -9,6 +9,7 @@ define [ 'underscore', 'backbone' ], (_, Backbone) ->
   MIN_PLAYERS = 2
   MAX_PLAYERS = 4
   STATUS = ['waiting_player', 'playing', 'complete']
+  COLORS = ['red', 'green', 'yellow', 'blue']
   BOARD = [
     [8],
     [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16],
@@ -101,6 +102,7 @@ define [ 'underscore', 'backbone' ], (_, Backbone) ->
     canQuit: (playerId) ->
       (@hasPlayer playerId) and (@getNbPlayers() > 1) and !@isComplete()
       
+  GameModel.COLORS = COLORS
   GameModel.BOARD = BOARD
   GameModel.getCellClass = (pos) ->
     cellClass = undefined
