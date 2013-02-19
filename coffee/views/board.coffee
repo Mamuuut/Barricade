@@ -1,66 +1,54 @@
 
-define [ 'backbone', 'GameModel' ], (Backbone, GameModel) ->
-  CELL_WIDTH = 30
-  CELL_HEIGHT = 30
-  MARGIN = 45
+define [ 'backbone', 'GameModel', 'CellView', 'CellGrid', 'CellModel' ], (Backbone, GameModel, CellView, CellGrid, CellModel) ->
   DICE_CLASSES = ['one', 'two', 'three', 'four', 'five', 'six']
+  CELLS = [
+    [8],
+    [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16],
+    [0,16],
+    [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16],
+    [8],
+    [6,7,8,9,10],
+    [6,10],
+    [4,5,6,7,8,9,10,11,12],
+    [4,12],
+    [2,3,4,5,6,7,8,9,10,11,12,13,14],
+    [2,6,10,14],
+    [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16],
+    [0,4,8,12,16],
+    [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16],
+    [1,2,3,5,6,7,9,10,11,13,14,15],
+    [1,2,3,5,6,7,9,10,11,13,14,15],
+    [1,3,5,7,9,11,13,15],
+  ]
   
   BoardView = Backbone.View.extend
     el: $("#board_container"),  
     boardSocket: null,
-    hoveredCell: null,
-    cells: {},
-    pawns: {},
      
     initialize: ->
       @playerid = @options.playerid
-      @boardSocket = io.connect('/game_list')
+      @cells = new CellGrid()
+      _.each CELLS, (line, y) =>
+        _.each line, (x) =>
+          @cells.push new CellModel(pos: {x:x, y:y})
+      @render()
+      
+      #@boardSocket = io.connect('/game_list')
 
     events: 
       "click .back":            "backToGameList",  
-      "click .pawn.hoverable":  "pawnSelected", 
       "click .cell.target":     "targetClick"
     
     render: ->
-      @drawCells()
-      @drawPawns()
+      @$('.cell').remove()
+      @cells.each (cell) =>
+        cellView = new CellView {model: cell}
+        cellView.render()
+        @$('#board').append cellView.$el
     
-    drawCells: ->
-      _.each GameModel.BOARD, (line, j) =>
-        _.each line, (i) =>
-          cellClass = GameModel.getCellClass i + ":" + j
-          posStr = GameModel.posArrayToStr [i,j]
-          @cells[posStr] = @drawOne i, j, cellClass
-          
-    drawPawns: ->
-      _.each (@model.get 'pawns'), (pawns, pawnClass) =>
-        _.each pawns, (posStr) =>
-          pos = posStr.split ':'
-          @pawns[posStr] = @drawOne pos[0], pos[1], 'pawn ' + pawnClass
-    
-    drawOne: (i, j, cellClass) ->
-      x = MARGIN + CELL_WIDTH * i
-      y = MARGIN + CELL_WIDTH * j
-      cell = $ '<div/>'
-      cell.addClass 'cell'
-      cell.addClass cellClass
-      cell.css
-        width: CELL_WIDTH + 'px',
-        height: CELL_HEIGHT + 'px',
-        left: x + 'px',
-        top: y + 'px'
-      @$('#board').append cell
-      cell.data 'pos', GameModel.posArrayToStr [i,j]
-      cell
-    
-    movePawn: (pawn, posStr) ->
-      posArray = GameModel.posStrToArray posStr
-      x = MARGIN + CELL_WIDTH * posArray[0]
-      y = MARGIN + CELL_WIDTH * posArray[1]
-      pawn.data 'pos', posStr
-      pawn.css
-        left: x + 'px',
-        top: y + 'px'
+    updatePawns: ->
+      @cells.each (cell) =>
+        cell.set 'pawn', @model.getPawn cell.getPosStr()
     
     updatePlayerTurn: ->
       color = GameModel.COLORS[@model.get('turn').player]
@@ -71,21 +59,20 @@ define [ 'backbone', 'GameModel' ], (Backbone, GameModel) ->
       @$('#dice').removeClass()
       @$('#dice').addClass diceClass
       
-      @$('.pawn').removeClass 'hoverable'
-      @$('.pawn.' + color).addClass 'hoverable'
+      @cells.setHoverable color
       
     play: (game) -> 
-      @$('.pawn').removeClass 'selected'
+      @$('.cell').removeClass 'selected'
       @$('.cell').removeClass 'target'
       @model = game
-      @render()
+      @updatePawns()
       @updatePlayerTurn()
         
-    pawnSelected: (event) ->
-      @$('.pawn').removeClass 'selected'
+    cellSelected: (event) ->
+      @$('.cell').removeClass 'selected'
       @$('.cell').removeClass 'target'
-      pawn = $(event.currentTarget) 
-      pawn.addClass 'selected'
+      cell = $(event.currentTarget) 
+      cell.addClass 'selected'
       moves = @model.getMoves pawn.data('pos')
       _.each moves, (posStr) =>
         @cells[posStr].addClass 'target'

@@ -81,10 +81,15 @@
           top 12px
         &.bottom
           bottom 3px
+
     .cell 
       border-radius 50%
       position absolute
       background-color #fff
+      &.start
+      &.exit
+        box-shadow 0 0 0 8px #fff inset
+        
       &.target
         cursor pointer
       &.target:after
@@ -97,25 +102,25 @@
         z-index 1
       &.target:hover:after
         border-radius 50% 
-      &.start
-      &.exit
-        box-shadow 0 0 0 8px #fff inset
-      &.exit
-      &.barricade
-        background-color #333
-    .pawn
+        
       &.hoverable
         cursor pointer
       &.hoverable:hover:after
       &.selected:after
         content ''
         position absolute
+        top 0
         width 26px
         height 26px
         border-radius 50%
         border 2px solid #fff  
         box-shadow 0 0 8px #fff inset 
-    .pawn
+        
+      div
+        border-radius 50%
+        width: 100%
+        height: 100%
+    .cell div
     #turn
       box-shadow 2px 2px 2px #444, -3px -3px 9px #000 inset
     .red
@@ -126,3 +131,6 @@
       background-color #ff0
     .blue
       background-color #00f  
+    .exit
+    .barricade
+      background-color #333

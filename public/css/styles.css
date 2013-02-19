@@ -61,15 +61,16 @@ h1{font-size:16px;margin:0}
 #board_container #board #dice div.center{top:12px}
 #board_container #board #dice div.bottom{bottom:3px}
 #board_container #board .cell{-webkit-border-radius:50%;-moz-border-radius:50%;-ms-border-radius:50%;-o-border-radius:50%;border-radius:50%;position:absolute;background-color:#fff;}
+#board_container #board .cell.start,#board_container #board .cell.exit{-webkit-box-shadow:0 0 0 8px #fff inset;-moz-box-shadow:0 0 0 8px #fff inset;-ms-box-shadow:0 0 0 8px #fff inset;-o-box-shadow:0 0 0 8px #fff inset;box-shadow:0 0 0 8px #fff inset}
 #board_container #board .cell.target{cursor:pointer}
 #board_container #board .cell.target:after{content:'';position:absolute;width:30px;height:30px;-webkit-border-radius:30%;-moz-border-radius:30%;-ms-border-radius:30%;-o-border-radius:30%;border-radius:30%;-webkit-box-shadow:0 0 -7px 7px #f80;-moz-box-shadow:0 0 -7px 7px #f80;-ms-box-shadow:0 0 -7px 7px #f80;-o-box-shadow:0 0 -7px 7px #f80;box-shadow:0 0 -7px 7px #f80;z-index:1}
 #board_container #board .cell.target:hover:after{-webkit-border-radius:50%;-moz-border-radius:50%;-ms-border-radius:50%;-o-border-radius:50%;border-radius:50%}
-#board_container #board .cell.start,#board_container #board .cell.exit{-webkit-box-shadow:0 0 0 8px #fff inset;-moz-box-shadow:0 0 0 8px #fff inset;-ms-box-shadow:0 0 0 8px #fff inset;-o-box-shadow:0 0 0 8px #fff inset;box-shadow:0 0 0 8px #fff inset}
-#board_container #board .cell.exit,#board_container #board .cell.barricade{background-color:#333}
-#board_container #board .pawn.hoverable{cursor:pointer}
-#board_container #board .pawn.hoverable:hover:after,#board_container #board .pawn.selected:after{content:'';position:absolute;width:26px;height:26px;-webkit-border-radius:50%;-moz-border-radius:50%;-ms-border-radius:50%;-o-border-radius:50%;border-radius:50%;border:2px solid #fff;-webkit-box-shadow:0 0 8px #fff inset;-moz-box-shadow:0 0 8px #fff inset;-ms-box-shadow:0 0 8px #fff inset;-o-box-shadow:0 0 8px #fff inset;box-shadow:0 0 8px #fff inset}
-#board_container #board .pawn,#board_container #board #turn{-webkit-box-shadow:2px 2px 2px #444,-3px -3px 9px #000 inset;-moz-box-shadow:2px 2px 2px #444,-3px -3px 9px #000 inset;-ms-box-shadow:2px 2px 2px #444,-3px -3px 9px #000 inset;-o-box-shadow:2px 2px 2px #444,-3px -3px 9px #000 inset;box-shadow:2px 2px 2px #444,-3px -3px 9px #000 inset}
+#board_container #board .cell.hoverable{cursor:pointer}
+#board_container #board .cell.hoverable:hover:after,#board_container #board .cell.selected:after{content:'';position:absolute;top:0;width:26px;height:26px;-webkit-border-radius:50%;-moz-border-radius:50%;-ms-border-radius:50%;-o-border-radius:50%;border-radius:50%;border:2px solid #fff;-webkit-box-shadow:0 0 8px #fff inset;-moz-box-shadow:0 0 8px #fff inset;-ms-box-shadow:0 0 8px #fff inset;-o-box-shadow:0 0 8px #fff inset;box-shadow:0 0 8px #fff inset}
+#board_container #board .cell div{-webkit-border-radius:50%;-moz-border-radius:50%;-ms-border-radius:50%;-o-border-radius:50%;border-radius:50%;width:100%;height:100%}
+#board_container #board .cell div,#board_container #board #turn{-webkit-box-shadow:2px 2px 2px #444,-3px -3px 9px #000 inset;-moz-box-shadow:2px 2px 2px #444,-3px -3px 9px #000 inset;-ms-box-shadow:2px 2px 2px #444,-3px -3px 9px #000 inset;-o-box-shadow:2px 2px 2px #444,-3px -3px 9px #000 inset;box-shadow:2px 2px 2px #444,-3px -3px 9px #000 inset}
 #board_container #board .red{background-color:#f00}
 #board_container #board .green{background-color:#0f0}
 #board_container #board .yellow{background-color:#ff0}
 #board_container #board .blue{background-color:#00f}
+#board_container #board .exit,#board_container #board .barricade{background-color:#333}

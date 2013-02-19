@@ -7,103 +7,16 @@
 
 (function() {
 
-  define(['underscore', 'backbone'], function(_, Backbone) {
+  define(['underscore', 'backbone', 'CellModel'], function(_, Backbone, CellModel) {
     /*
         Static
     */
 
-    var BOARD, COLORS, EXIT, GameModel, HOUSES, MAX_PLAYERS, MIN_PLAYERS, START, STATUS, getCellClass, getHouse, getNeighbours, isCell, isValidNeighbour, posArrayToStr, posStrToArray;
+    var COLORS, GameModel, MAX_PLAYERS, MIN_PLAYERS, STATUS;
     MIN_PLAYERS = 2;
     MAX_PLAYERS = 4;
     STATUS = ['waiting_player', 'playing', 'complete'];
     COLORS = ['red', 'green', 'yellow', 'blue'];
-    BOARD = [[8], [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16], [0, 16], [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16], [8], [6, 7, 8, 9, 10], [6, 10], [4, 5, 6, 7, 8, 9, 10, 11, 12], [4, 12], [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], [2, 6, 10, 14], [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16], [0, 4, 8, 12, 16], [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16], [1, 2, 3, 5, 6, 7, 9, 10, 11, 13, 14, 15], [1, 2, 3, 5, 6, 7, 9, 10, 11, 13, 14, 15], [1, 3, 5, 7, 9, 11, 13, 15]];
-    EXIT = "8:0";
-    START = {
-      red: "2:13",
-      green: "6:13",
-      yellow: "10:13",
-      blue: "14:13"
-    };
-    HOUSES = {
-      red: ["1:14", "2:14", "3:14", "1:15", "2:15", "3:15", "1:16", "3:16"],
-      green: ["5:14", "6:14", "7:14", "5:15", "6:15", "7:15", "5:16", "7:16"],
-      yellow: ["9:14", "10:14", "11:14", "9:15", "10:15", "11:15", "9:16", "11:16"],
-      blue: ["13:14", "14:14", "15:14", "13:15", "14:15", "15:15", "13:16", "15:16"]
-    };
-    /*
-        Pos convertor
-    */
-
-    posStrToArray = function(posStr) {
-      var strArray;
-      strArray = posStr.split(':');
-      return [parseInt(strArray[0]), parseInt(strArray[1])];
-    };
-    posArrayToStr = function(posArray) {
-      return posArray[0] + ':' + posArray[1];
-    };
-    /*
-        Return pos house if exists
-    */
-
-    getHouse = function(posStr) {
-      var house;
-      house = void 0;
-      _.each(HOUSES, function(houses, color) {
-        if (-1 !== _.indexOf(houses, posStr)) {
-          return house = color;
-        }
-      });
-      return house;
-    };
-    isCell = function(posStr) {
-      var posArray;
-      posArray = posStrToArray(posStr);
-      return BOARD[posArray[1]] && -1 !== _.indexOf(BOARD[posArray[1]], posArray[0]);
-    };
-    isValidNeighbour = function(posStr) {
-      return !getHouse(posStr) && isCell(posStr);
-    };
-    /*
-        Return neighbour cells on the board
-    */
-
-    getNeighbours = function(posStr) {
-      var neighbours, posArray, x, y;
-      posArray = posStrToArray(posStr);
-      x = posArray[0];
-      y = posArray[1];
-      neighbours = [(x - 1) + ':' + y, x + ':' + (y - 1), x + ':' + (y + 1), (x + 1) + ':' + y];
-      return _.filter(neighbours, function(posStr) {
-        return isValidNeighbour(posStr);
-      });
-    };
-    /*
-        Check cell class 
-          - none
-          - exit
-          - start (red, green, yellow, blue)
-          - house (red, green, yellow, blue)
-    */
-
-    getCellClass = function(pos) {
-      var cellClass, house;
-      cellClass = void 0;
-      if (EXIT === pos) {
-        cellClass = 'exit';
-      }
-      _.each(START, function(start, color) {
-        if (start === pos) {
-          return cellClass = 'start ' + color;
-        }
-      });
-      house = getHouse(pos);
-      if (house) {
-        cellClass = 'house ' + house;
-      }
-      return cellClass;
-    };
     /*
         GameModel
     */
@@ -118,10 +31,10 @@
           status: 0,
           winner: "",
           pawns: {
-            red: _.clone(HOUSES.red),
-            green: _.clone(HOUSES.green),
-            yellow: _.clone(HOUSES.yellow),
-            blue: _.clone(HOUSES.blue),
+            red: _.clone(CellModel.HOUSES.red),
+            green: _.clone(CellModel.HOUSES.green),
+            yellow: _.clone(CellModel.HOUSES.yellow),
+            blue: _.clone(CellModel.HOUSES.blue),
             barricade: ["8:1", "8:3", "8:4", "8:5", "6:7", "10:7", "0:11", "4:11", "8:11", "12:11", "16:11"]
           }
         };
@@ -148,6 +61,16 @@
       getTurnColor: function() {
         return COLORS[this.get('turn').player];
       },
+      getPawn: function(posStr) {
+        var pawnColor;
+        pawnColor = void 0;
+        _.each(this.get('pawns'), function(pawns, color) {
+          if (-1 !== _.indexOf(pawns, posStr)) {
+            return pawnColor = color;
+          }
+        });
+        return pawnColor;
+      },
       isMaster: function(playerId) {
         return 0 === _.indexOf(this.get('players'), playerId);
       },
@@ -161,38 +84,6 @@
             Board move
       */
 
-      isBarricade: function(posStr) {
-        return -1 !== _.indexOf(this.get('pawns').barricade, posStr);
-      },
-      isCurrentPlayerPawn: function(posStr) {
-        return -1 !== _.indexOf(this.get('pawns')[this.getTurnColor()], posStr);
-      },
-      getMoves: function(posStr, leftMoves, accepted, rejected) {
-        var neighbours,
-          _this = this;
-        leftMoves = leftMoves != null ? leftMoves : this.get('turn').dice;
-        if (getHouse(posStr)) {
-          leftMoves--;
-          posStr = START[this.getTurnColor()];
-        }
-        accepted = accepted || [];
-        rejected = rejected || [posStr];
-        neighbours = getNeighbours(posStr);
-        console.log('posStr', posStr, 'leftMoves', leftMoves, 'neighbours', neighbours);
-        _.each(neighbours, function(neighbourPosStr) {
-          if (-1 === _.indexOf(rejected, neighbourPosStr)) {
-            if (leftMoves !== 0) {
-              if (!_this.isBarricade(neighbourPosStr)) {
-                rejected.push(neighbourPosStr);
-                return _this.getMoves(neighbourPosStr, leftMoves - 1, accepted, rejected);
-              }
-            } else if (!_this.isCurrentPlayerPawn(neighbourPosStr)) {
-              return accepted.push(neighbourPosStr);
-            }
-          }
-        });
-        return accepted;
-      },
       /*
             Actions
       */
@@ -214,10 +105,6 @@
       }
     });
     GameModel.COLORS = COLORS;
-    GameModel.BOARD = BOARD;
-    GameModel.getCellClass = getCellClass;
-    GameModel.posStrToArray = posStrToArray;
-    GameModel.posArrayToStr = posArrayToStr;
     return GameModel;
   });
 
