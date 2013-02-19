@@ -8,7 +8,7 @@
 (function() {
 
   define(['underscore', 'backbone'], function(_, Backbone) {
-    var CellModel, EXIT, HOUSES, PAWNS, START, TYPES, getHouse, getStart, posArrayToStr;
+    var CellModel, EXIT, HOUSES, PAWNS, START, TYPES, getHouseColor, getStart, getStartColor, posObjectToStr, posStrToObject;
     TYPES = ['normal', 'exit', 'start', 'house'];
     PAWNS = ['red', 'green', 'yellow', 'blue', 'barricade'];
     EXIT = "8:0";
@@ -24,10 +24,21 @@
       yellow: ["9:14", "10:14", "11:14", "9:15", "10:15", "11:15", "9:16", "11:16"],
       blue: ["13:14", "14:14", "15:14", "13:15", "14:15", "15:15", "13:16", "15:16"]
     };
-    posArrayToStr = function(posArray) {
-      return posArray.x + ':' + posArray.y;
+    posObjectToStr = function(posObject) {
+      return posObject.x + ':' + posObject.y;
     };
-    getStart = function(posStr) {
+    posStrToObject = function(posStr) {
+      var posArray;
+      posArray = posStr.split(':');
+      return {
+        x: parseInt(posArray[0]),
+        y: parseInt(posArray[1])
+      };
+    };
+    getStart = function(color) {
+      return START[color];
+    };
+    getStartColor = function(posStr) {
       var color;
       color = void 0;
       _.each(START, function(startPosStr, startColor) {
@@ -37,7 +48,7 @@
       });
       return color;
     };
-    getHouse = function(posStr) {
+    getHouseColor = function(posStr) {
       var color;
       color = void 0;
       _.each(HOUSES, function(houses, houseColor) {
@@ -55,6 +66,8 @@
           pawn: void 0,
           hoverable: false,
           selected: false,
+          targeted: false,
+          neighbours: [],
           pos: {
             x: 0,
             y: 0
@@ -64,8 +77,8 @@
       initialize: function() {
         var houseColor, posStr, startColor;
         posStr = this.getPosStr();
-        startColor = getStart(posStr);
-        houseColor = getHouse(posStr);
+        startColor = getStartColor(posStr);
+        houseColor = getHouseColor(posStr);
         if (EXIT === posStr) {
           return this.set('type', 'exit');
         } else if (startColor) {
@@ -76,11 +89,20 @@
           return this.set('color', houseColor);
         }
       },
+      isHouse: function() {
+        return 'house' === this.get('type');
+      },
+      isBarricade: function() {
+        return 'barricade' === this.get('pawn');
+      },
       getPosStr: function() {
-        return posArrayToStr(this.get('pos'));
+        return posObjectToStr(this.get('pos'));
       }
     });
     CellModel.HOUSES = HOUSES;
+    CellModel.PAWNS = PAWNS;
+    CellModel.getStart = getStart;
+    CellModel.posStrToObject = posStrToObject;
     return CellModel;
   });
 

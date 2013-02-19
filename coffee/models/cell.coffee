@@ -18,17 +18,27 @@ define [ 'underscore', 'backbone' ], (_, Backbone) ->
     yellow: ["9:14","10:14","11:14","9:15","10:15","11:15","9:16","11:16"],
     blue: ["13:14","14:14","15:14","13:15","14:15","15:15","13:16","15:16"]
    
-  posArrayToStr = (posArray) ->
-    posArray.x + ':' + posArray.y 
+  posObjectToStr = (posObject) ->
+    posObject.x + ':' + posObject.y 
+    
+  posStrToObject = (posStr) ->
+    posArray = posStr.split ':'
+    {
+      x: parseInt(posArray[0]),
+      y: parseInt(posArray[1])
+    }
   
-  getStart = (posStr) ->
+  getStart = (color) ->
+    START[color]
+  
+  getStartColor = (posStr) ->
     color = undefined
     _.each START, (startPosStr, startColor) ->
       if startPosStr is posStr
         color = startColor
     color
   
-  getHouse = (posStr) ->
+  getHouseColor = (posStr) ->
     color = undefined
     _.each HOUSES, (houses, houseColor) ->
       if -1 isnt _.indexOf houses, posStr
@@ -43,14 +53,16 @@ define [ 'underscore', 'backbone' ], (_, Backbone) ->
       pawn: undefined,
       hoverable: false,
       selected: false,
+      targeted: false,
+      neighbours: []
       pos: 
         x: 0,
         y: 0
         
     initialize: ->
       posStr = @getPosStr()
-      startColor = getStart posStr
-      houseColor = getHouse posStr
+      startColor = getStartColor posStr
+      houseColor = getHouseColor posStr
       if EXIT is posStr
         @set 'type', 'exit' 
       else if startColor
@@ -59,9 +71,18 @@ define [ 'underscore', 'backbone' ], (_, Backbone) ->
       else if houseColor
         @set 'type', 'house'
         @set 'color', houseColor
-
+    
+    isHouse: ->
+      'house' is @get 'type'
+    
+    isBarricade: ->
+      'barricade' is @get 'pawn'
+    
     getPosStr: ->
-      posArrayToStr @get('pos')
+      posObjectToStr @get('pos')
 
-  CellModel.HOUSES = HOUSES      
+  CellModel.HOUSES          = HOUSES  
+  CellModel.PAWNS           = PAWNS   
+  CellModel.getStart        = getStart
+  CellModel.posStrToObject  = posStrToObject
   CellModel

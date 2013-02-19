@@ -14,6 +14,7 @@ define [ 'underscore', 'backbone' ], (_, Backbone) ->
       @model.on 'change:pawn',      @updatePawn, @
       @model.on 'change:hoverable', @updateHoverable, @
       @model.on 'change:selected',  @updateSelected, @
+      @model.on 'change:targeted',  @updateTargeted, @
       
     events: 
       "click":  "cellSelected", 
@@ -46,6 +47,12 @@ define [ 'underscore', 'backbone' ], (_, Backbone) ->
         @$el.addClass 'selected'
       else
         @$el.removeClass 'selected'
+
+    updateTargeted: ->
+      if @model.get('targeted')
+        @$el.addClass 'targeted'
+      else
+        @$el.removeClass 'targeted'
 
     updatePawn: ->
       pawn = @model.get 'pawn'

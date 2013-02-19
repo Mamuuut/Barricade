@@ -13,7 +13,8 @@
       initialize: function() {
         this.model.on('change:pawn', this.updatePawn, this);
         this.model.on('change:hoverable', this.updateHoverable, this);
-        return this.model.on('change:selected', this.updateSelected, this);
+        this.model.on('change:selected', this.updateSelected, this);
+        return this.model.on('change:targeted', this.updateTargeted, this);
       },
       events: {
         "click": "cellSelected"
@@ -45,6 +46,13 @@
           return this.$el.addClass('selected');
         } else {
           return this.$el.removeClass('selected');
+        }
+      },
+      updateTargeted: function() {
+        if (this.model.get('targeted')) {
+          return this.$el.addClass('targeted');
+        } else {
+          return this.$el.removeClass('targeted');
         }
       },
       updatePawn: function() {

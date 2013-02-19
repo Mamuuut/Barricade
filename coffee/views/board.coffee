@@ -1,5 +1,5 @@
 
-define [ 'backbone', 'GameModel', 'CellView', 'CellGrid', 'CellModel' ], (Backbone, GameModel, CellView, CellGrid, CellModel) ->
+define [ 'backbone', 'CellView', 'CellGrid', 'CellModel' ], (Backbone, CellView, CellGrid, CellModel) ->
   DICE_CLASSES = ['one', 'two', 'three', 'four', 'five', 'six']
   CELLS = [
     [8],
@@ -31,6 +31,7 @@ define [ 'backbone', 'GameModel', 'CellView', 'CellGrid', 'CellModel' ], (Backbo
       _.each CELLS, (line, y) =>
         _.each line, (x) =>
           @cells.push new CellModel(pos: {x:x, y:y})
+      @cells.initializeNeighbours()
       @render()
       
       #@boardSocket = io.connect('/game_list')
@@ -51,15 +52,16 @@ define [ 'backbone', 'GameModel', 'CellView', 'CellGrid', 'CellModel' ], (Backbo
         cell.set 'pawn', @model.getPawn cell.getPosStr()
     
     updatePlayerTurn: ->
-      color = GameModel.COLORS[@model.get('turn').player]
+      turn = @model.get('turn')
+      color = CellModel.PAWNS[turn.player]
       @$('#turn').removeClass()
       @$('#turn').addClass color
       
-      diceClass = DICE_CLASSES[@model.get('turn').dice]
+      diceClass = DICE_CLASSES[turn.dice]
       @$('#dice').removeClass()
       @$('#dice').addClass diceClass
       
-      @cells.setHoverable color
+      @cells.setTurn turn
       
     play: (game) -> 
       @$('.cell').removeClass 'selected'
