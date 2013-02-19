@@ -14,11 +14,9 @@ Implemented features
 TODO list
 ---------
 
-*   Create game view
-*   Game list view
-*   Board game view
-*   Game logic
+*   Add Client game logic
 *   Add game schema for mongoDB
+*   Add Server game logic
 *   ...
 
 Frameworks and libs
