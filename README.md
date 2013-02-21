@@ -4,6 +4,7 @@ Barricade
 =========
 
 Board game using Express and MongoDB
+This project was based on the [Espresso Boilerplate](http://www.espressoboilerplate.org/)
 
 Implemented features
 ---------
