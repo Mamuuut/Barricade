@@ -23,11 +23,11 @@ TODO list
 Frameworks and libs
 ---------
 
-*   Express http://expressjs.com/
-*   Espresso Boilerplate http://www.espressoboilerplate.org/
-*   Passport http://passportjs.org/
-*   Mongoose http://mongoosejs.com/
-*   CoffeeScript http://coffeescript.org/
-*   Jade http://jade-lang.com/
-*   Stylus http://learnboost.github.com/stylus/
-*   RequireJS http://requirejs.org/
+*   [Express](http://expressjs.com/)
+*   [Espresso](Boilerplate http://www.espressoboilerplate.org/)
+*   [Passport](http://passportjs.org/)
+*   [Mongoose](http://mongoosejs.com/)
+*   [CoffeeScript](http://coffeescript.org/)
+*   [Jade](http://jade-lang.com/)
+*   [Stylus](http://learnboost.github.com/stylus/)
+*   [RequireJS](http://requirejs.org/)
