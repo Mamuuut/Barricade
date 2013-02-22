@@ -34,6 +34,9 @@ define [ 'underscore', 'backbone' ], (_, Backbone) ->
       @$el.addClass @model.get 'type'
       @$el.addClass @model.get 'color'
       
+      @pawn = @$ '.pawn'
+      @target = @$ '.target'
+      
       @updatePawn()
     
     updateHoverable: ->
@@ -50,19 +53,21 @@ define [ 'underscore', 'backbone' ], (_, Backbone) ->
 
     updateTargeted: ->
       if @model.get('targeted')
-        @$el.addClass 'targeted'
+        @target.show()
       else
-        @$el.removeClass 'targeted'
+        @target.hide()
 
     updatePawn: ->
-      pawn = @model.get 'pawn'
-      if pawn
-        @$('div').addClass pawn
-        @$('div').show()
+      @pawn.attr 'class', 'pawn'
+      pawnClass = @model.get 'pawn'
+      if pawnClass
+        @pawn.addClass pawnClass
+        @pawn.show()
       else
-        @$('div').hide()
+        @pawn.hide()
 
     cellSelected: ->
-      @model.set 'selected', true
+      if @model.get('hoverable')
+        @model.set 'selected', true
       
   CellView

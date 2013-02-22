@@ -38,7 +38,7 @@ define [ 'backbone', 'CellView', 'CellGrid', 'CellModel' ], (Backbone, CellView,
 
     events: 
       "click .back":            "backToGameList",  
-      "click .cell.target":     "targetClick"
+      "click .cell .target":     "targetClick"
     
     render: ->
       @$('.cell').remove()
@@ -64,8 +64,7 @@ define [ 'backbone', 'CellView', 'CellGrid', 'CellModel' ], (Backbone, CellView,
       @cells.setTurn turn
       
     play: (game) -> 
-      @$('.cell').removeClass 'selected'
-      @$('.cell').removeClass 'target'
+      @cells.clearTargets()
       @model = game
       @updatePawns()
       @updatePlayerTurn()
@@ -82,10 +81,8 @@ define [ 'backbone', 'CellView', 'CellGrid', 'CellModel' ], (Backbone, CellView,
     targetClick: (event) ->
       cell = $(event.currentTarget)
       pawn = @$ '.pawn.selected'
-      @movePawn pawn, cell.data('pos')
+      #@movePawn pawn, cell.data('pos')
       console.log pawn, cell.data('pos')
-      @$('.pawn').removeClass 'selected'
-      @$('.cell').removeClass 'target'
         
     backToGameList: ->
       @trigger 'back'

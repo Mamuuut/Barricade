@@ -27,7 +27,7 @@
       },
       events: {
         "click .back": "backToGameList",
-        "click .cell.target": "targetClick"
+        "click .cell .target": "targetClick"
       },
       render: function() {
         var _this = this;
@@ -59,8 +59,7 @@
         return this.cells.setTurn(turn);
       },
       play: function(game) {
-        this.$('.cell').removeClass('selected');
-        this.$('.cell').removeClass('target');
+        this.cells.clearTargets();
         this.model = game;
         this.updatePawns();
         return this.updatePlayerTurn();
@@ -81,10 +80,7 @@
         var cell, pawn;
         cell = $(event.currentTarget);
         pawn = this.$('.pawn.selected');
-        this.movePawn(pawn, cell.data('pos'));
-        console.log(pawn, cell.data('pos'));
-        this.$('.pawn').removeClass('selected');
-        return this.$('.cell').removeClass('target');
+        return console.log(pawn, cell.data('pos'));
       },
       backToGameList: function() {
         return this.trigger('back');

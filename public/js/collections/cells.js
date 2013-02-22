@@ -58,6 +58,7 @@
           this.selected = cell;
           this.clearTargets();
           targets = this.getTargets(cell);
+          console.log(targets);
           return _.each(targets, function(target) {
             return target.set({
               targeted: true

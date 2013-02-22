@@ -1,3 +1,5 @@
+cell-size = 30px
+
 #board_container
   display none
   #board_header
@@ -16,15 +18,15 @@
     #turn
       border-radius 50%
       float: left
-      width 30px
-      height 30px
+      width cell-size
+      height @width
       margin 8px
     #dice
       position relative
       float left
       border-radius 4px
-      width 30px
-      height 30px
+      width cell-size
+      height @width
       margin 8px
       background-color #fff
       background-gradient top, #fefefe, #f1f1f1 80%
@@ -65,22 +67,23 @@
       div
         background-color #000
         width 6px
-        height 6px
+        height @width
         border-radius 50%
         position absolute
         display none
+        space = ((cell-size - @width * 3)/4)
         &.left
-          left 3px
+          left space
         &.hcenter
-          left 12px
+          left @width + 2 * space
         &.right
-          right 3px
+          right space
         &.top
-          top 3px
+          top space
         &.center
-          top 12px
+          top @width + 2 * space
         &.bottom
-          bottom 3px
+          bottom space
 
     .cell 
       border-radius 50%
@@ -90,18 +93,40 @@
       &.exit
         box-shadow 0 0 0 8px #fff inset
         
-      &.targeted
+      .target
+        display none
         cursor pointer
-      &.targeted:after
-        content ''
-        position absolute
-        width 30px
-        height 30px
-        border-radius 30%  
-        box-shadow 0 0 -7px 7px #f80 
         z-index 1
-      &.targeted:hover:after
-        border-radius 50% 
+        position absolute
+        width cell-size + 4px
+        height @width
+        top ((cell-size - @width) / 2)
+        left @top
+        tr-color = #f80
+        tr-size = 8px
+        &:hover
+          width cell-size
+          height @width
+          top 0
+          left 0
+        div
+          position absolute
+        .topleft
+          triangle-topleft tr-size tr-color
+          top 0
+          left 0
+        .topright
+          triangle-topright tr-size tr-color
+          top 0
+          right 0
+        .bottomleft
+          triangle-bottomleft tr-size tr-color
+          bottom 0
+          left 0
+        .bottomright
+          triangle-bottomright tr-size tr-color
+          bottom 0
+          right 0
         
       &.hoverable
         cursor pointer
@@ -116,11 +141,11 @@
         border 2px solid #fff  
         box-shadow 0 0 8px #fff inset 
         
-      div
+      .pawn
         border-radius 50%
         width: 100%
         height: 100%
-    .cell div
+    .cell .pawn
     #turn
       box-shadow 2px 2px 2px #444, -3px -3px 9px #000 inset
     .red

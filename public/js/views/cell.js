@@ -32,6 +32,8 @@
         });
         this.$el.addClass(this.model.get('type'));
         this.$el.addClass(this.model.get('color'));
+        this.pawn = this.$('.pawn');
+        this.target = this.$('.target');
         return this.updatePawn();
       },
       updateHoverable: function() {
@@ -50,23 +52,26 @@
       },
       updateTargeted: function() {
         if (this.model.get('targeted')) {
-          return this.$el.addClass('targeted');
+          return this.target.show();
         } else {
-          return this.$el.removeClass('targeted');
+          return this.target.hide();
         }
       },
       updatePawn: function() {
-        var pawn;
-        pawn = this.model.get('pawn');
-        if (pawn) {
-          this.$('div').addClass(pawn);
-          return this.$('div').show();
+        var pawnClass;
+        this.pawn.attr('class', 'pawn');
+        pawnClass = this.model.get('pawn');
+        if (pawnClass) {
+          this.pawn.addClass(pawnClass);
+          return this.pawn.show();
         } else {
-          return this.$('div').hide();
+          return this.pawn.hide();
         }
       },
       cellSelected: function() {
-        return this.model.set('selected', true);
+        if (this.model.get('hoverable')) {
+          return this.model.set('selected', true);
+        }
       }
     });
     return CellView;

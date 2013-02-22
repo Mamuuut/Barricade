@@ -43,6 +43,7 @@ define [ 'backbone', 'CellModel' ], (Backbone, CellModel) ->
         @selected = cell
         @clearTargets()
         targets = @getTargets cell
+        console.log targets
         _.each targets, (target) =>
           target.set {targeted: true}
     
