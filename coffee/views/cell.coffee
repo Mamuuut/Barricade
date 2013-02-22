@@ -40,19 +40,19 @@ define [ 'underscore', 'backbone' ], (_, Backbone) ->
       @updatePawn()
     
     updateHoverable: ->
-      if @model.get('hoverable')
+      if @model.get 'hoverable'
         @$el.addClass 'hoverable'
       else
         @$el.removeClass 'hoverable'
     
     updateSelected: ->
-      if @model.get('selected')
+      if @model.get 'selected'
         @$el.addClass 'selected'
       else
         @$el.removeClass 'selected'
 
     updateTargeted: ->
-      if @model.get('targeted')
+      if @model.get 'targeted'
         @target.show()
       else
         @target.hide()
@@ -67,7 +67,8 @@ define [ 'underscore', 'backbone' ], (_, Backbone) ->
         @pawn.hide()
 
     cellSelected: ->
-      if @model.get('hoverable')
+      if @model.get 'hoverable'
         @model.set 'selected', true
-      
+      else if @model.get 'targeted'
+        @model.trigger 'target:selected', @model
   CellView

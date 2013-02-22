@@ -72,6 +72,13 @@ define [ 'underscore', 'backbone' ], (_, Backbone) ->
         @set 'type', 'house'
         @set 'color', houseColor
     
+    reset: ->
+      @set 
+        pawn: undefined,
+        hoverable: false,
+        selected: false,
+        targeted: false
+    
     isHouse: ->
       'house' is @get 'type'
     

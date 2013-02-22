@@ -71,6 +71,8 @@
       cellSelected: function() {
         if (this.model.get('hoverable')) {
           return this.model.set('selected', true);
+        } else if (this.model.get('targeted')) {
+          return this.model.trigger('target:selected', this.model);
         }
       }
     });

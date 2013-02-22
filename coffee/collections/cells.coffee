@@ -8,6 +8,10 @@ define [ 'backbone', 'CellModel' ], (Backbone, CellModel) ->
     
     initialize: ->
       @on 'change:selected', @onSelected, @
+      @on 'target:selected', @onTargetSelected, @
+    
+    onAll: (event) ->
+      console.log event
     
     initializeNeighbours: ->
       @each (cell) =>
@@ -47,6 +51,9 @@ define [ 'backbone', 'CellModel' ], (Backbone, CellModel) ->
         _.each targets, (target) =>
           target.set {targeted: true}
     
+    onTargetSelected: (cell) ->
+      console.log cell.get 'pos'
+    
     getTargets: (cell, nbMoves, accepted, rejected) ->
       nbMoves = if nbMoves? then nbMoves else @turn.dice
       if cell.isHouse()
@@ -69,6 +76,10 @@ define [ 'backbone', 'CellModel' ], (Backbone, CellModel) ->
       targets = @where {targeted: true}
       _.each targets, (target) ->
         target.set {targeted: false}
+        
+    reset: ->
+      @each (cell) ->
+        cell.reset()
             
     setTurn: (turn) ->
       @turn = turn

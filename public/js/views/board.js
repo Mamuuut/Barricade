@@ -26,8 +26,7 @@
         return this.render();
       },
       events: {
-        "click .back": "backToGameList",
-        "click .cell .target": "targetClick"
+        "click .back": "backToGameList"
       },
       render: function() {
         var _this = this;
@@ -59,7 +58,7 @@
         return this.cells.setTurn(turn);
       },
       play: function(game) {
-        this.cells.clearTargets();
+        this.cells.reset();
         this.model = game;
         this.updatePawns();
         return this.updatePlayerTurn();
@@ -75,12 +74,6 @@
         return _.each(moves, function(posStr) {
           return _this.cells[posStr].addClass('target');
         });
-      },
-      targetClick: function(event) {
-        var cell, pawn;
-        cell = $(event.currentTarget);
-        pawn = this.$('.pawn.selected');
-        return console.log(pawn, cell.data('pos'));
       },
       backToGameList: function() {
         return this.trigger('back');

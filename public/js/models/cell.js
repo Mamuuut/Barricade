@@ -89,6 +89,14 @@
           return this.set('color', houseColor);
         }
       },
+      reset: function() {
+        return this.set({
+          pawn: void 0,
+          hoverable: false,
+          selected: false,
+          targeted: false
+        });
+      },
       isHouse: function() {
         return 'house' === this.get('type');
       },

@@ -8,7 +8,11 @@
       turn: void 0,
       selected: void 0,
       initialize: function() {
-        return this.on('change:selected', this.onSelected, this);
+        this.on('change:selected', this.onSelected, this);
+        return this.on('target:selected', this.onTargetSelected, this);
+      },
+      onAll: function(event) {
+        return console.log(event);
       },
       initializeNeighbours: function() {
         var _this = this;
@@ -66,6 +70,9 @@
           });
         }
       },
+      onTargetSelected: function(cell) {
+        return console.log(cell.get('pos'));
+      },
       getTargets: function(cell, nbMoves, accepted, rejected) {
         var neighbours,
           _this = this;
@@ -99,6 +106,11 @@
           return target.set({
             targeted: false
           });
+        });
+      },
+      reset: function() {
+        return this.each(function(cell) {
+          return cell.reset();
         });
       },
       setTurn: function(turn) {
