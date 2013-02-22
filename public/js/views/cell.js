@@ -13,11 +13,11 @@
       initialize: function() {
         this.model.on('change:pawn', this.updatePawn, this);
         this.model.on('change:hoverable', this.updateHoverable, this);
-        this.model.on('change:selected', this.updateSelected, this);
-        return this.model.on('change:targeted', this.updateTargeted, this);
+        this.model.on('change:source', this.updateSource, this);
+        return this.model.on('change:target', this.updateTarget, this);
       },
       events: {
-        "click": "cellSelected"
+        "click": "cellClicked"
       },
       render: function() {
         var left, top;
@@ -43,15 +43,20 @@
           return this.$el.removeClass('hoverable');
         }
       },
-      updateSelected: function() {
-        if (this.model.get('selected')) {
-          return this.$el.addClass('selected');
-        } else {
-          return this.$el.removeClass('selected');
+      updateSource: function() {
+        var sourceClass;
+        this.$el.removeClass('move-pawn move-barricade');
+        sourceClass = this.model.get('source');
+        if (sourceClass) {
+          return this.$el.addClass(sourceClass);
         }
       },
-      updateTargeted: function() {
-        if (this.model.get('targeted')) {
+      updateTarget: function() {
+        var targetClass;
+        this.target.attr('class', 'target');
+        targetClass = this.model.get('target');
+        if (targetClass) {
+          this.target.addClass(targetClass);
           return this.target.show();
         } else {
           return this.target.hide();
@@ -68,11 +73,15 @@
           return this.pawn.hide();
         }
       },
-      cellSelected: function() {
+      cellClicked: function() {
         if (this.model.get('hoverable')) {
-          return this.model.set('selected', true);
-        } else if (this.model.get('targeted')) {
-          return this.model.trigger('target:selected', this.model);
+          this.model.trigger('click:source:pawn', this.model);
+        }
+        if ('move-pawn' === this.model.get('target')) {
+          this.model.trigger('click:target:pawn', this.model);
+        }
+        if ('move-barricade' === this.model.get('target')) {
+          return this.model.trigger('click:target:barricade', this.model);
         }
       }
     });

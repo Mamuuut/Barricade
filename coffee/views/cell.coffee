@@ -13,11 +13,11 @@ define [ 'underscore', 'backbone' ], (_, Backbone) ->
     initialize: -> 
       @model.on 'change:pawn',      @updatePawn, @
       @model.on 'change:hoverable', @updateHoverable, @
-      @model.on 'change:selected',  @updateSelected, @
-      @model.on 'change:targeted',  @updateTargeted, @
+      @model.on 'change:source',    @updateSource, @
+      @model.on 'change:target',    @updateTarget, @
       
     events: 
-      "click":  "cellSelected", 
+      "click":  "cellClicked", 
     
     render: -> 
       @$el.html @template()
@@ -45,14 +45,17 @@ define [ 'underscore', 'backbone' ], (_, Backbone) ->
       else
         @$el.removeClass 'hoverable'
     
-    updateSelected: ->
-      if @model.get 'selected'
-        @$el.addClass 'selected'
-      else
-        @$el.removeClass 'selected'
-
-    updateTargeted: ->
-      if @model.get 'targeted'
+    updateSource: ->
+      @$el.removeClass 'move-pawn move-barricade'
+      sourceClass = @model.get 'source'
+      if sourceClass
+        @$el.addClass sourceClass
+      
+    updateTarget: ->
+      @target.attr 'class', 'target'
+      targetClass = @model.get 'target'
+      if targetClass
+        @target.addClass targetClass
         @target.show()
       else
         @target.hide()
@@ -66,9 +69,11 @@ define [ 'underscore', 'backbone' ], (_, Backbone) ->
       else
         @pawn.hide()
 
-    cellSelected: ->
+    cellClicked: ->
       if @model.get 'hoverable'
-        @model.set 'selected', true
-      else if @model.get 'targeted'
-        @model.trigger 'target:selected', @model
+        @model.trigger 'click:source:pawn', @model
+      if 'move-pawn' is @model.get 'target'
+        @model.trigger 'click:target:pawn', @model
+      if 'move-barricade' is @model.get 'target'
+        @model.trigger 'click:target:barricade', @model
   CellView

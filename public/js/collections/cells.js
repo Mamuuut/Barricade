@@ -6,13 +6,8 @@
     CellGrid = Backbone.Collection.extend({
       model: CellModel,
       turn: void 0,
-      selected: void 0,
       initialize: function() {
-        this.on('change:selected', this.onSelected, this);
-        return this.on('target:selected', this.onTargetSelected, this);
-      },
-      onAll: function(event) {
-        return console.log(event);
+        return this.on('click:source:pawn', this.onPawnSourceClicked, this);
       },
       initializeNeighbours: function() {
         var _this = this;
@@ -22,11 +17,35 @@
           });
         });
       },
-      getStart: function(color) {
-        var pos, posStr;
-        posStr = CellModel.getStart(color);
-        pos = CellModel.posStrToObject(posStr);
-        return this.getCells(pos.x, pos.y)[0];
+      reset: function() {
+        this.resetListener();
+        return this.each(function(cell) {
+          return cell.reset();
+        });
+      },
+      resetSources: function() {
+        return this.each(function(cell) {
+          return cell.set({
+            source: void 0
+          });
+        });
+      },
+      resetTargets: function() {
+        this.resetListener();
+        return this.each(function(cell) {
+          return cell.set({
+            target: void 0
+          });
+        });
+      },
+      resetListener: function() {
+        this.off('click:target:pawn');
+        return this.off('click:target:barricade');
+      },
+      getEmptyCells: function() {
+        return this.filter(function(cell) {
+          return cell.isEmpty();
+        });
       },
       getCells: function(x, y) {
         return this.filter(function(cell) {
@@ -34,6 +53,12 @@
           pos = cell.get('pos');
           return !cell.isHouse() && pos.x === x && pos.y === y;
         });
+      },
+      getStart: function(color) {
+        var pos, posStr;
+        posStr = CellModel.getStart(color);
+        pos = CellModel.posStrToObject(posStr);
+        return this.getCells(pos.x, pos.y)[0];
       },
       getTurnColor: function() {
         return CellModel.PAWNS[this.turn.player];
@@ -50,29 +75,10 @@
         neighbours = neighbours.concat(this.getCells(pos.x, pos.y + 1));
         return neighbours.concat(this.getCells(pos.x + 1, pos.y));
       },
-      onSelected: function(cell, selected) {
-        var targets,
-          _this = this;
-        if (selected) {
-          if (this.selected) {
-            this.selected.set({
-              selected: false
-            });
-          }
-          this.selected = cell;
-          this.clearTargets();
-          targets = this.getTargets(cell);
-          console.log(targets);
-          return _.each(targets, function(target) {
-            return target.set({
-              targeted: true
-            });
-          });
-        }
-      },
-      onTargetSelected: function(cell) {
-        return console.log(cell.get('pos'));
-      },
+      /*
+            Recursive path through neighbours
+      */
+
       getTargets: function(cell, nbMoves, accepted, rejected) {
         var neighbours,
           _this = this;
@@ -97,22 +103,6 @@
         });
         return accepted;
       },
-      clearTargets: function() {
-        var targets;
-        targets = this.where({
-          targeted: true
-        });
-        return _.each(targets, function(target) {
-          return target.set({
-            targeted: false
-          });
-        });
-      },
-      reset: function() {
-        return this.each(function(cell) {
-          return cell.reset();
-        });
-      },
       setTurn: function(turn) {
         var _this = this;
         this.turn = turn;
@@ -123,6 +113,46 @@
             hoverable: isHoverable
           });
         });
+      },
+      onPawnSourceClicked: function(cell) {
+        var targets,
+          _this = this;
+        this.resetSources();
+        this.resetTargets();
+        cell.set({
+          source: 'move-pawn'
+        });
+        targets = this.getTargets(cell);
+        console.log(targets);
+        _.each(targets, function(target) {
+          return target.set({
+            target: 'move-pawn'
+          });
+        });
+        return this.on('click:target:pawn', this.onPawnTargetClicked, this);
+      },
+      onPawnTargetClicked: function(cell) {
+        console.log('onPawnTargetClicked', cell.get('pos'));
+        if (cell.isBarricade()) {
+          this.resetTargets();
+          cell.set({
+            source: 'move-barricade'
+          });
+          this.on('click:target:barricade', this.onBarricadeTargetClicked, this);
+          return _.each(this.getEmptyCells(), function(target) {
+            return target.set({
+              target: 'move-barricade'
+            });
+          });
+        } else {
+          this.resetTargets();
+          return this.resetSources();
+        }
+      },
+      onBarricadeTargetClicked: function(cell) {
+        console.log('onBarricadeTargetClicked', cell.get('pos'));
+        this.resetTargets();
+        return this.resetSources();
       }
     });
     return CellGrid;

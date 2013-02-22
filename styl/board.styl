@@ -1,5 +1,8 @@
 cell-size = 30px
 
+pawn-shadow() 
+  box-shadow 2px 2px 2px #444, -3px -3px 9px #000 inset
+
 #board_container
   display none
   #board_header
@@ -98,40 +101,55 @@ cell-size = 30px
         cursor pointer
         z-index 1
         position absolute
-        width cell-size + 4px
-        height @width
-        top ((cell-size - @width) / 2)
-        left @top
         tr-color = #f80
         tr-size = 8px
-        &:hover
+        
+        &.move-barricade
           width cell-size
           height @width
           top 0
           left 0
-        div
-          position absolute
-        .topleft
-          triangle-topleft tr-size tr-color
-          top 0
-          left 0
-        .topright
-          triangle-topright tr-size tr-color
-          top 0
-          right 0
-        .bottomleft
-          triangle-bottomleft tr-size tr-color
-          bottom 0
-          left 0
-        .bottomright
-          triangle-bottomright tr-size tr-color
-          bottom 0
-          right 0
+          &:hover
+            border-radius 50%
+            background-color #333
+            opacity 0.7
+            pawn-shadow()
+            
+        &.move-pawn
+          width cell-size + 4px
+          height @width
+          top ((cell-size - @width) / 2)
+          left @top
+          &:hover
+            width cell-size
+            height @width
+            top 0
+            left 0
+          div
+            position absolute
+          .topleft
+            triangle-topleft tr-size tr-color
+            top 0
+            left 0
+          .topright
+            triangle-topright tr-size tr-color
+            top 0
+            right 0
+          .bottomleft
+            triangle-bottomleft tr-size tr-color
+            bottom 0
+            left 0
+          .bottomright
+            triangle-bottomright tr-size tr-color
+            bottom 0
+            right 0
         
       &.hoverable
         cursor pointer
+      &.move-barricade .pawn
+        opacity 0.7
       &.hoverable:hover:after
-      &.selected:after
+      &.move-pawn:after
         content ''
         position absolute
         top 0
@@ -147,7 +165,7 @@ cell-size = 30px
         height: 100%
     .cell .pawn
     #turn
-      box-shadow 2px 2px 2px #444, -3px -3px 9px #000 inset
+      pawn-shadow()
     .red
       background-color #f00
     .green

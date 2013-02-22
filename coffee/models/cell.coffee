@@ -51,9 +51,9 @@ define [ 'underscore', 'backbone' ], (_, Backbone) ->
       type: 'normal',
       color: undefined,
       pawn: undefined,
+      source: undefined,
+      target: undefined,
       hoverable: false,
-      selected: false,
-      targeted: false,
       neighbours: []
       pos: 
         x: 0,
@@ -74,13 +74,16 @@ define [ 'underscore', 'backbone' ], (_, Backbone) ->
     
     reset: ->
       @set 
-        pawn: undefined,
         hoverable: false,
-        selected: false,
-        targeted: false
+        pawn: undefined,
+        source: undefined,
+        target: undefined
     
     isHouse: ->
       'house' is @get 'type'
+    
+    isEmpty: ->
+      (!@get 'pawn') and !@isHouse()
     
     isBarricade: ->
       'barricade' is @get 'pawn'

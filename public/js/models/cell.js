@@ -64,9 +64,9 @@
           type: 'normal',
           color: void 0,
           pawn: void 0,
+          source: void 0,
+          target: void 0,
           hoverable: false,
-          selected: false,
-          targeted: false,
           neighbours: [],
           pos: {
             x: 0,
@@ -91,14 +91,17 @@
       },
       reset: function() {
         return this.set({
-          pawn: void 0,
           hoverable: false,
-          selected: false,
-          targeted: false
+          pawn: void 0,
+          source: void 0,
+          target: void 0
         });
       },
       isHouse: function() {
         return 'house' === this.get('type');
+      },
+      isEmpty: function() {
+        return (!this.get('pawn')) && !this.isHouse();
       },
       isBarricade: function() {
         return 'barricade' === this.get('pawn');

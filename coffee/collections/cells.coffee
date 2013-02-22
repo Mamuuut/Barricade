@@ -3,29 +3,47 @@ define [ 'backbone', 'CellModel' ], (Backbone, CellModel) ->
   CellGrid = Backbone.Collection.extend
     
     model: CellModel,
-    turn: undefined,
-    selected: undefined
+    turn: undefined
     
     initialize: ->
-      @on 'change:selected', @onSelected, @
-      @on 'target:selected', @onTargetSelected, @
-    
-    onAll: (event) ->
-      console.log event
+      @on 'click:source:pawn', @onPawnSourceClicked, @
     
     initializeNeighbours: ->
       @each (cell) =>
         cell.set {neighbours: @getNeighbours cell}
+        
+    reset: ->
+      @resetListener()
+      @each (cell) ->
+        cell.reset()
+        
+    resetSources: ->
+      @each (cell) ->
+        cell.set {source: undefined}
+    
+    resetTargets: ->
+      @resetListener()
+      @each (cell) ->
+        cell.set {target: undefined}
+            
+    resetListener: ->
+      @off 'click:target:pawn'
+      @off 'click:target:barricade'
+    
+    # Getters/Setters    
+    getEmptyCells: ->
+      @filter (cell) ->
+          cell.isEmpty()     
+         
+    getCells: (x, y) ->
+      @filter (cell) ->
+        pos = cell.get('pos')
+        !cell.isHouse() and pos.x is x and pos.y is y
     
     getStart: (color) ->
       posStr = CellModel.getStart color
       pos = CellModel.posStrToObject posStr
       @getCells(pos.x, pos.y)[0] 
-     
-    getCells: (x, y) ->
-      @filter (cell) ->
-        pos = cell.get('pos')
-        !cell.isHouse() and pos.x is x and pos.y is y
     
     getTurnColor: ->
       CellModel.PAWNS[@turn.player]
@@ -40,20 +58,9 @@ define [ 'backbone', 'CellModel' ], (Backbone, CellModel) ->
       neighbours = neighbours.concat @getCells(pos.x, pos.y + 1)
       neighbours.concat @getCells(pos.x + 1, pos.y)
       
-    onSelected: (cell, selected)->
-      if selected
-        if @selected
-          @selected.set {selected: false}
-        @selected = cell
-        @clearTargets()
-        targets = @getTargets cell
-        console.log targets
-        _.each targets, (target) =>
-          target.set {targeted: true}
-    
-    onTargetSelected: (cell) ->
-      console.log cell.get 'pos'
-    
+    ###
+      Recursive path through neighbours
+    ###
     getTargets: (cell, nbMoves, accepted, rejected) ->
       nbMoves = if nbMoves? then nbMoves else @turn.dice
       if cell.isHouse()
@@ -71,20 +78,39 @@ define [ 'backbone', 'CellModel' ], (Backbone, CellModel) ->
           else if neighbour.get('pawn') isnt @getTurnColor()
             accepted.push neighbour
       accepted
-    
-    clearTargets: ->
-      targets = @where {targeted: true}
-      _.each targets, (target) ->
-        target.set {targeted: false}
-        
-    reset: ->
-      @each (cell) ->
-        cell.reset()
             
     setTurn: (turn) ->
       @turn = turn
       @.each (cell) =>
         isHoverable = @getTurnColor() is cell.get 'pawn'
         cell.set {hoverable: isHoverable}  
+    
+    # Listeners  
+    onPawnSourceClicked: (cell)->
+      @resetSources()
+      @resetTargets()
+      cell.set {source: 'move-pawn'}
+      targets = @getTargets cell
+      console.log targets
+      _.each targets, (target) =>
+        target.set {target: 'move-pawn'}
+      @on 'click:target:pawn', @onPawnTargetClicked, @
+    
+    onPawnTargetClicked: (cell) ->
+      console.log 'onPawnTargetClicked', cell.get 'pos'
+      if cell.isBarricade()
+        @resetTargets()
+        cell.set {source: 'move-barricade'}
+        @on 'click:target:barricade', @onBarricadeTargetClicked, @
+        _.each @getEmptyCells(), (target) ->
+          target.set {target: 'move-barricade'}
+      else
+        @resetTargets()
+        @resetSources()
+      
+    onBarricadeTargetClicked: (cell) ->
+      console.log 'onBarricadeTargetClicked', cell.get 'pos'
+      @resetTargets()
+      @resetSources()
       
   CellGrid
