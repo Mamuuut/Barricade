@@ -31,9 +31,9 @@ define [ 'backbone', 'CellModel' ], (Backbone, CellModel) ->
       @off 'click:target:barricade'
     
     # Getters/Setters    
-    getEmptyCells: ->
+    getBarricadeTargets: ->
       @filter (cell) ->
-          cell.isEmpty()     
+          cell.isEmpty() and !cell.isExit()    
          
     getCells: (x, y) ->
       @filter (cell) ->
@@ -91,25 +91,22 @@ define [ 'backbone', 'CellModel' ], (Backbone, CellModel) ->
       @resetTargets()
       cell.set {source: 'move-pawn'}
       targets = @getTargets cell
-      console.log targets
       _.each targets, (target) =>
         target.set {target: 'move-pawn'}
       @on 'click:target:pawn', @onPawnTargetClicked, @
     
     onPawnTargetClicked: (cell) ->
-      console.log 'onPawnTargetClicked', cell.get 'pos'
       if cell.isBarricade()
         @resetTargets()
         cell.set {source: 'move-barricade'}
-        @on 'click:target:barricade', @onBarricadeTargetClicked, @
-        _.each @getEmptyCells(), (target) ->
+        _.each @getBarricadeTargets(), (target) ->
           target.set {target: 'move-barricade'}
+        @on 'click:target:barricade', @onBarricadeTargetClicked, @
       else
         @resetTargets()
         @resetSources()
       
     onBarricadeTargetClicked: (cell) ->
-      console.log 'onBarricadeTargetClicked', cell.get 'pos'
       @resetTargets()
       @resetSources()
       

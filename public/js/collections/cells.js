@@ -42,9 +42,9 @@
         this.off('click:target:pawn');
         return this.off('click:target:barricade');
       },
-      getEmptyCells: function() {
+      getBarricadeTargets: function() {
         return this.filter(function(cell) {
-          return cell.isEmpty();
+          return cell.isEmpty() && !cell.isExit();
         });
       },
       getCells: function(x, y) {
@@ -123,7 +123,6 @@
           source: 'move-pawn'
         });
         targets = this.getTargets(cell);
-        console.log(targets);
         _.each(targets, function(target) {
           return target.set({
             target: 'move-pawn'
@@ -132,25 +131,23 @@
         return this.on('click:target:pawn', this.onPawnTargetClicked, this);
       },
       onPawnTargetClicked: function(cell) {
-        console.log('onPawnTargetClicked', cell.get('pos'));
         if (cell.isBarricade()) {
           this.resetTargets();
           cell.set({
             source: 'move-barricade'
           });
-          this.on('click:target:barricade', this.onBarricadeTargetClicked, this);
-          return _.each(this.getEmptyCells(), function(target) {
+          _.each(this.getBarricadeTargets(), function(target) {
             return target.set({
               target: 'move-barricade'
             });
           });
+          return this.on('click:target:barricade', this.onBarricadeTargetClicked, this);
         } else {
           this.resetTargets();
           return this.resetSources();
         }
       },
       onBarricadeTargetClicked: function(cell) {
-        console.log('onBarricadeTargetClicked', cell.get('pos'));
         this.resetTargets();
         return this.resetSources();
       }

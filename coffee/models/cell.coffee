@@ -79,6 +79,9 @@ define [ 'underscore', 'backbone' ], (_, Backbone) ->
         source: undefined,
         target: undefined
     
+    isExit: ->
+      'exit' is @get 'type'
+    
     isHouse: ->
       'house' is @get 'type'
     

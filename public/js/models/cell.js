@@ -97,6 +97,9 @@
           target: void 0
         });
       },
+      isExit: function() {
+        return 'exit' === this.get('type');
+      },
       isHouse: function() {
         return 'house' === this.get('type');
       },
