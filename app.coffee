@@ -34,7 +34,7 @@ app.configure ->
   app.use passport.session()
 
 ### watch coffeescript sources ###
-coffee = espresso.core.exec espresso.core.node_modules_path + 'coffee -o public/js -w -c coffee'
+coffee = espresso.core.exec espresso.core.node_modules_path + 'coffee -o public/js -w -c public/coffee'
 coffee.stdout.on 'data', (data) ->
   #console.log data
   espresso.core.minify() if app.env == 'production'

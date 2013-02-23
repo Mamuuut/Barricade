@@ -2,12 +2,9 @@
  game.coffee
 ###
 
-mongoose = require('mongoose')
+mongoose = require 'mongoose'
 Schema = mongoose.Schema
-
-MIN_PLAYERS = 2
-MAX_PLAYERS = 4
-STATUS = ['waiting_player', 'playing', 'complete']
+Barricade = require '../public/coffee/barricade'
 
 randomDice = ->
   return Math.ceil (6 * Math.random())
@@ -27,16 +24,16 @@ Game = new Schema
   Status
 ###
 Game.methods.isWaitingPlayer = ->
-  'waiting_player' is STATUS[@status]
+  'waiting_player' is Barricade.status[@status]
 
 Game.methods.isPlaying = ->
-  'playing' is STATUS[@status]
+  'playing' is Barricade.status[@status]
 
 Game.methods.isComplete = ->
-  'complete' is STATUS[@status]
+  'complete' is Barricade.status[@status]
 
 Game.methods.start = (playerId) ->
-  if (MIN_PLAYERS <= @nbplayers) and (@isMaster playerId) and @isWaitingPlayer()
+  if (Barricade.minPlayers <= @nbplayers) and (@isMaster playerId) and @isWaitingPlayer()
     @status = 1
     return true
   return false
@@ -61,7 +58,7 @@ Game.methods.hasPlayer = (playerId) ->
   return -1 isnt @players.indexOf playerId
 
 Game.methods.addPlayer = (playerId) ->
-  if !@hasPlayer(playerId) and @nbplayers < MAX_PLAYERS and @isWaitingPlayer()
+  if !@hasPlayer(playerId) and @nbplayers < Barricade.maxPlayers and @isWaitingPlayer()
     @players.push playerId
     return playerId
   return false

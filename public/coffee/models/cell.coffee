@@ -1,22 +1,5 @@
-###
-  game_model.coffee
-###
 
-define [ 'underscore', 'backbone' ], (_, Backbone) ->
-  
-  TYPES = ['normal', 'exit', 'start', 'house']
-  PAWNS = ['red', 'green', 'yellow', 'blue', 'barricade']
-  EXIT = "8:0"
-  START = 
-    red: "2:13",
-    green: "6:13",
-    yellow: "10:13",
-    blue: "14:13"
-  HOUSES = 
-    red: ["1:14","2:14","3:14","1:15","2:15","3:15","1:16","3:16"],
-    green: ["5:14","6:14","7:14","5:15","6:15","7:15","5:16","7:16"],
-    yellow: ["9:14","10:14","11:14","9:15","10:15","11:15","9:16","11:16"],
-    blue: ["13:14","14:14","15:14","13:15","14:15","15:15","13:16","15:16"]
+define [ 'underscore', 'backbone', 'barricade' ], (_, Backbone, Barricade) ->
    
   posObjectToStr = (posObject) ->
     posObject.x + ':' + posObject.y 
@@ -29,18 +12,18 @@ define [ 'underscore', 'backbone' ], (_, Backbone) ->
     }
   
   getStart = (color) ->
-    START[color]
+    Barricade.start[color]
   
   getStartColor = (posStr) ->
     color = undefined
-    _.each START, (startPosStr, startColor) ->
+    _.each Barricade.start, (startPosStr, startColor) ->
       if startPosStr is posStr
         color = startColor
     color
   
   getHouseColor = (posStr) ->
     color = undefined
-    _.each HOUSES, (houses, houseColor) ->
+    _.each Barricade.houses, (houses, houseColor) ->
       if -1 isnt _.indexOf houses, posStr
         color = houseColor
     color
@@ -63,7 +46,7 @@ define [ 'underscore', 'backbone' ], (_, Backbone) ->
       posStr = @getPosStr()
       startColor = getStartColor posStr
       houseColor = getHouseColor posStr
-      if EXIT is posStr
+      if Barricade.exit is posStr
         @set 'type', 'exit' 
       else if startColor
         @set 'type', 'start'
@@ -94,8 +77,6 @@ define [ 'underscore', 'backbone' ], (_, Backbone) ->
     getPosStr: ->
       posObjectToStr @get('pos')
 
-  CellModel.HOUSES          = HOUSES  
-  CellModel.PAWNS           = PAWNS   
   CellModel.getStart        = getStart
   CellModel.posStrToObject  = posStrToObject
   CellModel

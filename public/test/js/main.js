@@ -16,7 +16,9 @@ requirejs.config({
     'underscore'       	: '../../js/libs/underscore-min',
     'backbone'         	: '../../js/libs/backbone-min',
     'GameModel'        	: '../../js/models/game',
+    'CellModel'        	: '../../js/models/cell',
     'GameList'         	: '../../js/collections/games',
+    'barricade'        	: '../../js/barricade',
     
     // ============ Specs follow ============
     'GameModelSpec'  	: 'models/game.spec',

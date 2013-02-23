@@ -1,25 +1,7 @@
 
-define [ 'backbone', 'CellView', 'CellGrid', 'CellModel' ], (Backbone, CellView, CellGrid, CellModel) ->
+define [ 'backbone', 'CellView', 'CellGrid', 'CellModel', 'barricade' ], (Backbone, CellView, CellGrid, CellModel, Barricade) ->
+  
   DICE_CLASSES = ['one', 'two', 'three', 'four', 'five', 'six']
-  CELLS = [
-    [8],
-    [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16],
-    [0,16],
-    [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16],
-    [8],
-    [6,7,8,9,10],
-    [6,10],
-    [4,5,6,7,8,9,10,11,12],
-    [4,12],
-    [2,3,4,5,6,7,8,9,10,11,12,13,14],
-    [2,6,10,14],
-    [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16],
-    [0,4,8,12,16],
-    [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16],
-    [1,2,3,5,6,7,9,10,11,13,14,15],
-    [1,2,3,5,6,7,9,10,11,13,14,15],
-    [1,3,5,7,9,11,13,15],
-  ]
   
   BoardView = Backbone.View.extend
     el: $("#board_container"),  
@@ -33,7 +15,7 @@ define [ 'backbone', 'CellView', 'CellGrid', 'CellModel' ], (Backbone, CellView,
       @playerid = @options.playerid
       
       @cells = new CellGrid()
-      _.each CELLS, (line, y) =>
+      _.each Barricade.cells, (line, y) =>
         _.each line, (x) =>
           @cells.push new CellModel(pos: {x:x, y:y})
       @cells.initializeNeighbours()
@@ -57,7 +39,7 @@ define [ 'backbone', 'CellView', 'CellGrid', 'CellModel' ], (Backbone, CellView,
     
     updatePlayerTurn: ->
       turn = @model.get('turn')
-      color = CellModel.PAWNS[turn.player]
+      color = Barricade.pawns[turn.player]
       @$('#turn').removeClass()
       @$('#turn').addClass color
       

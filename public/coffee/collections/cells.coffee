@@ -1,5 +1,5 @@
 
-define [ 'backbone', 'CellModel' ], (Backbone, CellModel) ->
+define [ 'backbone', 'CellModel', 'barricade' ], (Backbone, CellModel, Barricade) ->
   CellGrid = Backbone.Collection.extend
     
     model: CellModel,
@@ -46,7 +46,7 @@ define [ 'backbone', 'CellModel' ], (Backbone, CellModel) ->
       @getCells(pos.x, pos.y)[0] 
     
     getTurnColor: ->
-      CellModel.PAWNS[@turn.player]
+      Barricade.pawns[@turn.player]
     
     getNeighbours: (cell) ->
       neighbours = []

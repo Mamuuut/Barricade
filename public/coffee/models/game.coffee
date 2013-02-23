@@ -2,18 +2,8 @@
   game_model.coffee
 ###
 
-define [ 'underscore', 'backbone', 'CellModel' ], (_, Backbone, CellModel) ->
-  ###
-    Static
-  ###
-  MIN_PLAYERS = 2
-  MAX_PLAYERS = 4
-  STATUS = ['waiting_player', 'playing', 'complete']
-  COLORS = ['red', 'green', 'yellow', 'blue']
+define [ 'underscore', 'backbone', 'CellModel', 'barricade' ], (_, Backbone, CellModel, Barricade) ->
 
-  ###
-    GameModel
-  ###
   GameModel = Backbone.Model.extend
     idAttribute: "_id",
     
@@ -24,10 +14,10 @@ define [ 'underscore', 'backbone', 'CellModel' ], (_, Backbone, CellModel) ->
       status: 0,
       winner: "",
       pawns:
-        red: _.clone CellModel.HOUSES.red
-        green: _.clone CellModel.HOUSES.green
-        yellow: _.clone CellModel.HOUSES.yellow
-        blue: _.clone CellModel.HOUSES.blue
+        red:    _.clone Barricade.houses.red
+        green:  _.clone Barricade.houses.green
+        yellow: _.clone Barricade.houses.yellow
+        blue:   _.clone Barricade.houses.blue
         barricade: ["8:1","8:3","8:4","8:5","6:7","10:7","0:11","4:11","8:11","12:11","16:11"]
     
     ###
@@ -37,10 +27,10 @@ define [ 'underscore', 'backbone', 'CellModel' ], (_, Backbone, CellModel) ->
       @get('players').length
       
     getPlayersStr: ->
-      @getNbPlayers() + "/" + MAX_PLAYERS
+      @getNbPlayers() + "/" + Barricade.maxPlayers
     
     getStatusStr: ->
-      STATUS[@get('status')]
+      Barricade.status[@get('status')]
       
     getDateStr: ->
       new Date(@get('date')).toUTCString()
@@ -49,7 +39,7 @@ define [ 'underscore', 'backbone', 'CellModel' ], (_, Backbone, CellModel) ->
       -1 isnt _.indexOf @get('players'), playerId
       
     getTurnColor: ->
-      COLORS[@get('turn').player]
+      Barricade.colors[@get('turn').player]
     
     getPawn: (posStr) ->
       pawnColor = undefined
@@ -65,11 +55,7 @@ define [ 'underscore', 'backbone', 'CellModel' ], (_, Backbone, CellModel) ->
       'waiting_player' is @getStatusStr()
       
     isComplete: ->
-      'complete' is @getStatusStr()        
-    
-    ###
-      Board move
-    ###
+      'complete' is @getStatusStr()   
       
     ###
       Actions
@@ -81,13 +67,12 @@ define [ 'underscore', 'backbone', 'CellModel' ], (_, Backbone, CellModel) ->
       (@hasPlayer playerId) and 'playing' is @getStatusStr()
       
     canJoin: (playerId) ->
-      (!@hasPlayer playerId) and @getNbPlayers() < MAX_PLAYERS and @isWaitingPlayer()
+      (!@hasPlayer playerId) and (@getNbPlayers() < Barricade.maxPlayers) and @isWaitingPlayer()
       
     canStart: (playerId) ->
-      (@isMaster playerId) and (@getNbPlayers() >= MIN_PLAYERS) and @isWaitingPlayer()
+      (@isMaster playerId) and (@getNbPlayers() >= Barricade.minPlayers) and @isWaitingPlayer()
       
     canQuit: (playerId) ->
       (@hasPlayer playerId) and (@getNbPlayers() > 1) and !@isComplete()
 
-  GameModel.COLORS = COLORS
   GameModel

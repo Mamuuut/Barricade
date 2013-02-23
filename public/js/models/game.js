@@ -7,20 +7,8 @@
 
 (function() {
 
-  define(['underscore', 'backbone', 'CellModel'], function(_, Backbone, CellModel) {
-    /*
-        Static
-    */
-
-    var COLORS, GameModel, MAX_PLAYERS, MIN_PLAYERS, STATUS;
-    MIN_PLAYERS = 2;
-    MAX_PLAYERS = 4;
-    STATUS = ['waiting_player', 'playing', 'complete'];
-    COLORS = ['red', 'green', 'yellow', 'blue'];
-    /*
-        GameModel
-    */
-
+  define(['underscore', 'backbone', 'CellModel', 'barricade'], function(_, Backbone, CellModel, Barricade) {
+    var GameModel;
     GameModel = Backbone.Model.extend({
       idAttribute: "_id",
       defaults: function() {
@@ -31,10 +19,10 @@
           status: 0,
           winner: "",
           pawns: {
-            red: _.clone(CellModel.HOUSES.red),
-            green: _.clone(CellModel.HOUSES.green),
-            yellow: _.clone(CellModel.HOUSES.yellow),
-            blue: _.clone(CellModel.HOUSES.blue),
+            red: _.clone(Barricade.houses.red),
+            green: _.clone(Barricade.houses.green),
+            yellow: _.clone(Barricade.houses.yellow),
+            blue: _.clone(Barricade.houses.blue),
             barricade: ["8:1", "8:3", "8:4", "8:5", "6:7", "10:7", "0:11", "4:11", "8:11", "12:11", "16:11"]
           }
         };
@@ -47,10 +35,10 @@
         return this.get('players').length;
       },
       getPlayersStr: function() {
-        return this.getNbPlayers() + "/" + MAX_PLAYERS;
+        return this.getNbPlayers() + "/" + Barricade.maxPlayers;
       },
       getStatusStr: function() {
-        return STATUS[this.get('status')];
+        return Barricade.status[this.get('status')];
       },
       getDateStr: function() {
         return new Date(this.get('date')).toUTCString();
@@ -59,7 +47,7 @@
         return -1 !== _.indexOf(this.get('players'), playerId);
       },
       getTurnColor: function() {
-        return COLORS[this.get('turn').player];
+        return Barricade.colors[this.get('turn').player];
       },
       getPawn: function(posStr) {
         var pawnColor;
@@ -81,10 +69,6 @@
         return 'complete' === this.getStatusStr();
       },
       /*
-            Board move
-      */
-
-      /*
             Actions
       */
 
@@ -95,16 +79,15 @@
         return (this.hasPlayer(playerId)) && 'playing' === this.getStatusStr();
       },
       canJoin: function(playerId) {
-        return (!this.hasPlayer(playerId)) && this.getNbPlayers() < MAX_PLAYERS && this.isWaitingPlayer();
+        return (!this.hasPlayer(playerId)) && (this.getNbPlayers() < Barricade.maxPlayers) && this.isWaitingPlayer();
       },
       canStart: function(playerId) {
-        return (this.isMaster(playerId)) && (this.getNbPlayers() >= MIN_PLAYERS) && this.isWaitingPlayer();
+        return (this.isMaster(playerId)) && (this.getNbPlayers() >= Barricade.minPlayers) && this.isWaitingPlayer();
       },
       canQuit: function(playerId) {
         return (this.hasPlayer(playerId)) && (this.getNbPlayers() > 1) && !this.isComplete();
       }
     });
-    GameModel.COLORS = COLORS;
     return GameModel;
   });
 
