@@ -1,20 +1,16 @@
-Game = require '../models/game'
-
-connections = {}
-    
-connectBoard = (io, id) ->  
-  if !connections[id]
-    connections[id] = io
-      .of('/board/' + id)
-      .on 'connection', (socket) ->
-        
-        socket.on 'move', (move) ->
-          socket.get 'user', (err, user) ->
-            console.log 'move', move, 'received from', user
 
 connect = (io) ->
-  Game.find (err, games) ->
-    connectBoard io, game.id for game in games when game.isPlaying()
+  io.sockets.on 'connection', (socket) =>
+
+    socket.on 'play', (gameId) ->
+      socket.gameId = gameId
+      socket.join gameId
+
+    socket.on 'move', (move) ->
+      io.sockets.in(socket.gameId).emit 'move'
+    
+    socket.on 'stop', ->
+      socket.leave socket.gameId
 
 module.exports = 
   connect: connect

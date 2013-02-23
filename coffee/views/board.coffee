@@ -26,16 +26,23 @@ define [ 'backbone', 'CellView', 'CellGrid', 'CellModel' ], (Backbone, CellView,
     boardSocket: null,
      
     initialize: ->
+      @boardSocket = io.connect()
+      @boardSocket.on 'move', ->
+        console.log 'move received'
+      
       @playerid = @options.playerid
+      
       @cells = new CellGrid()
       _.each CELLS, (line, y) =>
         _.each line, (x) =>
           @cells.push new CellModel(pos: {x:x, y:y})
       @cells.initializeNeighbours()
+      @cells.on 'move', @onMove, @
+      
       @render()
 
     events: 
-      "click .back":            "backToGameList",  
+      "click .back": "backToGameList",  
     
     render: ->
       @$('.cell').remove()
@@ -54,21 +61,24 @@ define [ 'backbone', 'CellView', 'CellGrid', 'CellModel' ], (Backbone, CellView,
       @$('#turn').removeClass()
       @$('#turn').addClass color
       
-      diceClass = DICE_CLASSES[turn.dice]
+      diceClass = DICE_CLASSES[turn.dice - 1]
       @$('#dice').removeClass()
       @$('#dice').addClass diceClass
       
       @cells.setTurn turn
       
     play: (game) -> 
-      @boardSocket = io.connect('/board/' + game.id)
+      @boardSocket.emit 'play', game.id
       @cells.reset()
       @model = game
       @updatePawns()
       @updatePlayerTurn()
         
     backToGameList: ->
-      @boardSocket.emit 'move', 'test'
+      @boardSocket.emit 'stop'
       @trigger 'back'
+    
+    onMove: (move) ->
+      @boardSocket.emit 'move', move
       
   BoardView

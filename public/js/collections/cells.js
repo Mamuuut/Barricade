@@ -82,7 +82,7 @@
       getTargets: function(cell, nbMoves, accepted, rejected) {
         var neighbours,
           _this = this;
-        nbMoves = nbMoves != null ? nbMoves : this.turn.dice;
+        nbMoves = nbMoves != null ? nbMoves : this.turn.dice - 1;
         if (cell.isHouse()) {
           return this.getTargets(this.getStart(cell.get('color')), nbMoves - 1);
         }
@@ -144,12 +144,14 @@
           return this.on('click:target:barricade', this.onBarricadeTargetClicked, this);
         } else {
           this.resetTargets();
-          return this.resetSources();
+          this.resetSources();
+          return this.trigger('move', 'pawn');
         }
       },
       onBarricadeTargetClicked: function(cell) {
         this.resetTargets();
-        return this.resetSources();
+        this.resetSources();
+        return this.trigger('move', 'pawn+barricade');
       }
     });
     return CellGrid;

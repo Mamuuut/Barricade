@@ -44,6 +44,7 @@ espresso.core.exec espresso.core.node_modules_path + 'stylus -w -c styl/styles.s
 
 ### io configuration ###
 io = (require 'socket.io').listen app
+io.set 'log level', 1
 new sockets.connect io
 
 ### app routes ###

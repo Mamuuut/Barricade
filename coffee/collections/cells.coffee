@@ -62,7 +62,7 @@ define [ 'backbone', 'CellModel' ], (Backbone, CellModel) ->
       Recursive path through neighbours
     ###
     getTargets: (cell, nbMoves, accepted, rejected) ->
-      nbMoves = if nbMoves? then nbMoves else @turn.dice
+      nbMoves = if nbMoves? then nbMoves else @turn.dice - 1
       if cell.isHouse()
         return @getTargets @getStart(cell.get 'color'), nbMoves - 1
       accepted = accepted or []
@@ -105,9 +105,11 @@ define [ 'backbone', 'CellModel' ], (Backbone, CellModel) ->
       else
         @resetTargets()
         @resetSources()
+        @trigger 'move', 'pawn'
       
     onBarricadeTargetClicked: (cell) ->
       @resetTargets()
       @resetSources()
+      @trigger 'move', 'pawn+barricade'
       
   CellGrid
