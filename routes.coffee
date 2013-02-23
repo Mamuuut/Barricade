@@ -2,8 +2,9 @@
  routes.coffee
 ###
 
-passport    = require 'passport'
-Game        = require './models/game'
+index = require './routes/index'
+login = require './routes/login'
+game  = require './routes/game'
         
 # Remove all games from DB for test purpose only
 ###
@@ -18,75 +19,17 @@ module.exports = (app) ->
       return next() 
     res.redirect '/login'
     
-  sendJsonGames = (res) ->
-    Game.find (err, games) ->
-      res.json games    
+  #Login
+  app.get     '/login',     login.getLogin
+  app.post    '/login',     login.postLogin
+  app.get     '/logout',    login.getLogout
 
-  ###
-    Index
-  ###
-  app.get '/', ensureAuthenticated, (req, res) ->
-    
-    res.render 'index', 
-      title: 'Welcome ' + req.user.username
+  #Index
+  app.get     '/',          ensureAuthenticated, index.getIndex
+  app.get     '/user',      ensureAuthenticated, index.getUser
   
-  ###
-    Games
-  ###  
-  app.get '/games', ensureAuthenticated, (req, res) ->
-    sendJsonGames res
-      
-  app.post '/games', ensureAuthenticated, (req, res) ->
-    newGame = new Game req.body
-    newGame.save (err, game) -> 
-      if err
-        res.json {err: err}
-      else
-        res.json game
-      
-  app.get '/games/:id', ensureAuthenticated, (req, res) ->
-    Game.findById req.params.id, (err, game) ->
-      if err
-        res.json {err: err}
-      else
-        res.json game    
-    
-  app.delete '/games/:id', ensureAuthenticated, (req, res) ->
-    Game.findById req.params.id, (err, game) ->
-      if err
-        res.json {err: err}
-      else if game
-        game.remove (err) -> 
-          if err
-            res.json {err: err}
-          else
-            sendJsonGames res
-      else
-        sendJsonGames res
-    
-  ###
-    User
-  ###      
-  app.get '/user', ensureAuthenticated, (req, res) ->
-    res.json 
-      name: req.user.username, 
-      id: req.user.id
-    
-  ###
-    Login
-  ###   
-  app.get '/login', (req, res) ->
-    errors = req.flash().error || []
-    res.render 'login', { errors: errors }
-  
-  app.get '/logout', (req, res) ->
-    req.logout()
-    res.redirect '/'
-  
-  app.post '/login',
-    passport.authenticate 'local', 
-      {
-        successRedirect: '/',
-        failureRedirect: '/login',
-        failureFlash: true
-      }
+  #Games
+  app.get     '/games',     ensureAuthenticated, game.getGames
+  app.post    '/games',     ensureAuthenticated, game.postGames
+  app.get     '/games/:id', ensureAuthenticated, game.getGame
+  app.delete  '/games/:id', ensureAuthenticated, game.deleteGame
