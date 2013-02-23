@@ -13,21 +13,27 @@
       var gameList;
       gameList = new GameList;
       return $.get('/user', function(user) {
-        var boardView, chatView, gameListView, mainView;
-        chatView = new ChatView({
-          user: user
-        });
-        gameListView = new GameListView({
-          games: gameList,
-          playerid: user.id
-        });
-        gameList.fetch();
-        boardView = new BoardView({
-          playerid: user.id
-        });
-        return mainView = new MainView({
-          gameListView: gameListView,
-          boardView: boardView
+        var socket,
+          _this = this;
+        socket = io.connect();
+        return socket.on('connect', function() {
+          var boardView, chatView, gameListView, mainView;
+          socket.emit('new user', user);
+          chatView = new ChatView({
+            user: user
+          });
+          gameListView = new GameListView({
+            games: gameList,
+            playerid: user.id
+          });
+          gameList.fetch();
+          boardView = new BoardView({
+            playerid: user.id
+          });
+          return mainView = new MainView({
+            gameListView: gameListView,
+            boardView: boardView
+          });
         });
       });
     };

@@ -33,8 +33,6 @@ define [ 'backbone', 'CellView', 'CellGrid', 'CellModel' ], (Backbone, CellView,
           @cells.push new CellModel(pos: {x:x, y:y})
       @cells.initializeNeighbours()
       @render()
-      
-      #@boardSocket = io.connect('/game_list')
 
     events: 
       "click .back":            "backToGameList",  
@@ -63,21 +61,14 @@ define [ 'backbone', 'CellView', 'CellGrid', 'CellModel' ], (Backbone, CellView,
       @cells.setTurn turn
       
     play: (game) -> 
+      @boardSocket = io.connect('/board/' + game.id)
       @cells.reset()
       @model = game
       @updatePawns()
       @updatePlayerTurn()
         
-    cellSelected: (event) ->
-      @$('.cell').removeClass 'selected'
-      @$('.cell').removeClass 'target'
-      cell = $(event.currentTarget) 
-      cell.addClass 'selected'
-      moves = @model.getMoves pawn.data('pos')
-      _.each moves, (posStr) =>
-        @cells[posStr].addClass 'target'
-        
     backToGameList: ->
+      @boardSocket.emit 'move', 'test'
       @trigger 'back'
       
   BoardView

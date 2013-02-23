@@ -10,9 +10,11 @@
       initialize: function() {
         var _this = this;
         this.chatSocket = io.connect('/chat');
-        this.chatSocket.on('connect', function() {
-          return _this.chatSocket.emit('new user', _this.options.user);
-        });
+        /*
+                @chatSocket.on 'connect', => 
+                  @chatSocket.emit 'new user', @options.user
+        */
+
         return this.chatSocket.on('new message', function(userMessage) {
           var newMessage;
           newMessage = $(_this.template(userMessage));

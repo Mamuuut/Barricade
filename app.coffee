@@ -3,13 +3,12 @@
 ###
 
 ### require modules ###
-express         = require 'express'
-passport        = require 'passport'
-espresso        = require './espresso.coffee'
-DB              = require './accessDB'
-socketChat      = require './socketChat'
-socketGameList  = require './socketGameList'
-routes          = require './routes'
+express   = require 'express'
+passport  = require 'passport'
+espresso  = require './espresso.coffee'
+DB        = require './accessDB'
+sockets   = require './sockets'
+routes    = require './routes'
 
 ### create express server ###
 app = express.createServer()
@@ -45,8 +44,7 @@ espresso.core.exec espresso.core.node_modules_path + 'stylus -w -c styl/styles.s
 
 ### io configuration ###
 io = (require 'socket.io').listen app
-new socketChat.startup io
-new socketGameList.startup io
+new sockets.connect io
 
 ### app routes ###
 new routes app

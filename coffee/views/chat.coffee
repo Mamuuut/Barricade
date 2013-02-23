@@ -9,8 +9,10 @@ define [ 'backbone' ], (Backbone) ->
     initialize: ->
       @chatSocket = io.connect '/chat'
       
-      @chatSocket.on 'connect', => 
-        @chatSocket.emit 'new user', @options.user
+      ###
+        @chatSocket.on 'connect', => 
+          @chatSocket.emit 'new user', @options.user
+      ###
         
       @chatSocket.on 'new message', (userMessage) =>
         newMessage = $ @template(userMessage)

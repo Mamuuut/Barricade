@@ -58,24 +58,14 @@
         return this.cells.setTurn(turn);
       },
       play: function(game) {
+        this.boardSocket = io.connect('/board/' + game.id);
         this.cells.reset();
         this.model = game;
         this.updatePawns();
         return this.updatePlayerTurn();
       },
-      cellSelected: function(event) {
-        var cell, moves,
-          _this = this;
-        this.$('.cell').removeClass('selected');
-        this.$('.cell').removeClass('target');
-        cell = $(event.currentTarget);
-        cell.addClass('selected');
-        moves = this.model.getMoves(pawn.data('pos'));
-        return _.each(moves, function(posStr) {
-          return _this.cells[posStr].addClass('target');
-        });
-      },
       backToGameList: function() {
+        this.boardSocket.emit('move', 'test');
         return this.trigger('back');
       }
     });

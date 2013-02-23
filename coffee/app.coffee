@@ -8,15 +8,24 @@ define ['ChatView', 'GameList', 'GameListView', 'BoardView', 'MainView'], (ChatV
       gameList = new GameList
           
       $.get '/user', (user) ->
-        chatView = new ChatView { user: user }
         
-        gameListView = new GameListView { games: gameList, playerid: user.id }
-        gameList.fetch()
+        socket = io.connect()
+        socket.on 'connect', => 
+          socket.emit 'new user', user
         
-        boardView = new BoardView { playerid: user.id }
-      
-        mainView = new MainView 
-          gameListView: gameListView,
-          boardView: boardView
+          # Chat
+          chatView = new ChatView { user: user }
+          
+          # Game List
+          gameListView = new GameListView { games: gameList, playerid: user.id }
+          gameList.fetch()
+          
+          # Board
+          boardView = new BoardView { playerid: user.id }
+        
+          # Main View
+          mainView = new MainView 
+            gameListView: gameListView,
+            boardView: boardView
       
     initialize: initialize

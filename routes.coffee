@@ -2,8 +2,8 @@
  routes.coffee
 ###
 
-passport = require 'passport'
-Game = require './models/game'
+passport    = require 'passport'
+Game        = require './models/game'
         
 # Remove all games from DB for test purpose only
 ###
@@ -26,12 +26,13 @@ module.exports = (app) ->
     Index
   ###
   app.get '/', ensureAuthenticated, (req, res) ->
+    
     res.render 'index', 
       title: 'Welcome ' + req.user.username
   
   ###
     Games
-  ###
+  ###  
   app.get '/games', ensureAuthenticated, (req, res) ->
     sendJsonGames res
       
