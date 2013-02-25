@@ -8,17 +8,11 @@ define [ 'underscore', 'backbone', 'CellModel', 'barricade' ], (_, Backbone, Cel
     idAttribute: "_id",
     
     defaults: ->
-      date: new Date(),
-      players: [],
-      currentplayer: 0,
-      status: 0,
-      winner: "",
-      pawns:
-        red:    _.clone Barricade.houses.red
-        green:  _.clone Barricade.houses.green
-        yellow: _.clone Barricade.houses.yellow
-        blue:   _.clone Barricade.houses.blue
-        barricade: ["8:1","8:3","8:4","8:5","6:7","10:7","0:11","4:11","8:11","12:11","16:11"]
+      date: new Date()
+      players: []
+      currentplayer: 0
+      status: 0
+      winner: ""
     
     ###
       Helpers

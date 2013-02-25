@@ -2,23 +2,30 @@
  game.coffee
 ###
 
-mongoose = require 'mongoose'
-Schema = mongoose.Schema
+mongoose  = require 'mongoose'
+Schema    = mongoose.Schema
 Barricade = require '../public/coffee/barricade'
 
 randomDice = ->
   return Math.ceil (6 * Math.random())
 
 Game = new Schema
-  date: { type: Date, default: Date.now },
-  players: [String],
+  date: { type: Date, default: Date.now }
+  players: [String]
   turn: { 
     player: {type: Number, default: 0}
     dice: {type: Number, default: ->
       randomDice()}
-  },
-  status: { type: Number, default: 0 },
+  }
+  status: { type: Number, default: 0 }
   winner: { type: String, default: "" } 
+  pawns: {
+    red:        { type: {String}, default: Barricade.houses.red.slice(0) }
+    green:      { type: {String}, default: Barricade.houses.green.slice(0) }
+    yellow:     { type: {String}, default: Barricade.houses.yellow.slice(0) }
+    blue:       { type: {String}, default: Barricade.houses.blue.slice(0) }
+    barricade:  { type: {String}, default: Barricade.barricades.slice(0) }
+  }
 
 ###
   Status
