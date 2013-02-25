@@ -143,7 +143,7 @@ describe 'Game model', ->
       game.hasPawn(color, dest).should.be.false
     
     it 'move should return true', ->
-      game.movePawn(src, dest).should.be.true
+      game.handleMove(src, dest).should.be.true
     
     it 'dest should have a pawn with color', ->
       game.getPawnColor(dest).should.equal(color)
@@ -156,5 +156,5 @@ describe 'Game model', ->
     src   = '5:14'
     dest  = '4:13'
     it 'move should return false', ->
-      game.movePawn(src, dest).should.be.false
+      game.handleMove(src, dest).should.be.false
       
