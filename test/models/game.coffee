@@ -36,6 +36,17 @@ describe 'Game model', ->
     
     it 'should have winner -1', ->
       game.should.have.property('winner').equal("")
+    
+    it 'should have default pawns', ->
+      game.should.have.property('pawns')
+      game.pawns.should.have.property('red').be.an.instanceOf(Array).with.lengthOf(8)
+      game.pawns.should.have.property('green').be.an.instanceOf(Array).with.lengthOf(8)
+      game.pawns.should.have.property('yellow').be.an.instanceOf(Array).with.lengthOf(8)
+      game.pawns.should.have.property('blue').be.an.instanceOf(Array).with.lengthOf(8)
+      game.pawns.should.have.property('barricade').be.an.instanceOf(Array).with.lengthOf(11)
+   
+    it 'should have red default color', ->
+      game.getCurrentColor().should.equal('red')
    
     it 'should be waiting for players', ->
       game.isWaitingPlayer().should.be.true
@@ -120,4 +131,25 @@ describe 'Game model', ->
       game.isComplete().should.be.true
       game.should.have.property('winner').equal(player1)
       
+  describe 'Move pawn', ->
+    src   = '1:14'
+    dest  = '0:13'
+    it 'should move a pawn from src to dest', ->
+      color = game.getCurrentColor()
+      game.hasPawn(color, dest).should.be.false
+      game.hasPawn(color, src).should.be.true
+      game.movePawn(src, dest).should.be.true
+      game.hasPawn(color, dest).should.be.true
+      game.hasPawn(color, src).should.be.false
+      
+  describe 'Move pawn not from current player', ->
+    color = 'green'
+    src   = '5:14'
+    dest  = '4:13'
+    it 'should return false and the pawn should not move', ->
+      game.hasPawn(color, dest).should.be.false
+      game.hasPawn(color, src).should.be.true
+      game.movePawn(src, dest).should.be.false
+      game.hasPawn(color, dest).should.be.false
+      game.hasPawn(color, src).should.be.true
       

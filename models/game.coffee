@@ -88,4 +88,22 @@ Game.methods.nextPlayer = ->
   @turn.player = ++@turn.player % @nbplayers
   @turn.dice = randomDice()
 
+###
+  Pawns
+###
+Game.methods.getCurrentColor = ->
+  Barricade.colors[@turn.player]
+
+Game.methods.hasPawn = (color, pawn) ->
+  if @pawns[color]
+    -1 isnt @pawns[color].indexOf pawn 
+
+Game.methods.movePawn = (src, dest) ->
+  color = @getCurrentColor()
+  pawnIdx = @pawns[color].indexOf src
+  if -1 isnt pawnIdx
+    @pawns[color].splice pawnIdx, 1, dest
+    return true
+  false
+
 module.exports = mongoose.model 'Game', Game
