@@ -68,21 +68,21 @@ define [ 'backbone', 'CellModel', 'barricade' ], (Backbone, CellModel, Barricade
       Recursive path through neighbours
     ###
     getTargets: (cell, nbMoves, accepted, rejected) ->
-      nbMoves = if nbMoves? then nbMoves else @turn.dice - 1
+      nbMoves = if nbMoves? then nbMoves else @turn.dice
       if cell.isHouse()
         return @getTargets @getStart(cell.get 'color'), nbMoves - 1
       accepted = accepted or []
       rejected = rejected or [cell.getPosStr()]
       neighbours = cell.get 'neighbours'
       
-      _.each neighbours, (neighbour) =>
-        if -1 is _.indexOf rejected, neighbour.getPosStr()
-          if nbMoves isnt 0
-            if !neighbour.isBarricade()
-              rejected.push neighbour.getPosStr()
-              @getTargets neighbour, nbMoves - 1, accepted, rejected
-          else if neighbour.get('pawn') isnt @getTurnColor()
-            accepted.push neighbour
+      if nbMoves is 0
+        if cell.get('pawn') isnt @getTurnColor()
+          accepted.push cell
+      else if !cell.isBarricade()
+        _.each neighbours, (neighbour) =>
+          if -1 is _.indexOf rejected, neighbour.getPosStr()
+            rejected.push neighbour.getPosStr()
+            @getTargets neighbour, nbMoves - 1, accepted, rejected
       accepted
             
     setTurn: (turn, isCurrentPlayer) ->

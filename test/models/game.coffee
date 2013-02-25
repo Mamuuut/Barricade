@@ -132,24 +132,29 @@ describe 'Game model', ->
       game.should.have.property('winner').equal(player1)
       
   describe 'Move pawn', ->
+    color = undefined
     src   = '1:14'
     dest  = '0:13'
-    it 'should move a pawn from src to dest', ->
+    it 'src should be player pawn', ->
       color = game.getCurrentColor()
-      game.hasPawn(color, dest).should.be.false
       game.hasPawn(color, src).should.be.true
+    
+    it 'dest should not be player pawn', ->
+      game.hasPawn(color, dest).should.be.false
+    
+    it 'move should return true', ->
       game.movePawn(src, dest).should.be.true
-      game.hasPawn(color, dest).should.be.true
-      game.hasPawn(color, src).should.be.false
+    
+    it 'dest should have a pawn with color', ->
+      game.getPawnColor(dest).should.equal(color)
+    
+    it 'src house should be empty', ->
+      game.getEmptyHouse(color).should.equal(src)
       
   describe 'Move pawn not from current player', ->
     color = 'green'
     src   = '5:14'
     dest  = '4:13'
-    it 'should return false and the pawn should not move', ->
-      game.hasPawn(color, dest).should.be.false
-      game.hasPawn(color, src).should.be.true
+    it 'move should return false', ->
       game.movePawn(src, dest).should.be.false
-      game.hasPawn(color, dest).should.be.false
-      game.hasPawn(color, src).should.be.true
       

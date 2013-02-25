@@ -15,7 +15,7 @@ connect = (io) ->
             src = moveArray[0]
             dest = moveArray[1]
             barricade = moveArray[2]
-            if game.movePawn src, dest, barricade
+            if game.handleMove src, dest, barricade
               game.save (err, game) ->   
                 io.sockets.in(socket.gameId).emit 'move', 'ok'
             else

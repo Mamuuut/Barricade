@@ -97,17 +97,52 @@ Game.methods.nextPlayer = ->
 Game.methods.getCurrentColor = ->
   Barricade.colors[@turn.player]
 
+Game.methods.isCurrentPlayerPawn = (pawn) ->
+  color = @getCurrentColor()
+  @hasPawn color, pawn
+
+Game.methods.getPawnColor = (pawn) ->
+  res = undefined
+  (res = if @hasPawn(color, pawn) then color else res) for color in Barricade.colors
+  res
+
+Game.methods.isBarricade = (pawn) ->
+  @hasPawn 'barricade', pawn
+
+Game.methods.isExit = (pawn) ->
+  Barricade.exit is pawn
+
+Game.methods.getEmptyHouse = (color) ->
+  res = undefined
+  (res = if @hasPawn(color, house) then res else house) for house in Barricade.houses[color]
+  res
+
 Game.methods.hasPawn = (color, pawn) ->
   if @pawns[color]
-    -1 isnt @pawns[color].indexOf pawn 
+    return -1 isnt @pawns[color].indexOf pawn 
 
-Game.methods.movePawn = (src, dest) ->
-  color = @getCurrentColor()
-  pawnIdx = @pawns[color].indexOf src
-  if -1 isnt pawnIdx
-    @pawns[color].splice pawnIdx, 1, dest
-    @nextPlayer()
+Game.methods.handleMove = (src, dest, barricade) ->
+  if @isCurrentPlayerPawn(src) and !@isCurrentPlayerPawn(dest)
+    color = @getCurrentColor()
+    
+    destPawnColor = @getPawnColor dest
+    if destPawnColor and color isnt destPawnColor
+      house = @getEmptyHouse destPawnColor
+      @movePawn destPawnColor, dest, house
+    else if barricade and @isBarricade dest 
+      @movePawn 'barricade', dest, barricade
+   
+    @movePawn color, src, dest
+    
+    if @isExit dest
+      @completeGame @players[@turn.player]
+    else
+      @nextPlayer()
     return true
   false
+
+Game.methods.movePawn = (color, src, dest) ->
+  pawnIdx = @pawns[color].indexOf src
+  @pawns[color].splice pawnIdx, 1, dest
 
 module.exports = mongoose.model 'Game', Game

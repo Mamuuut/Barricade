@@ -88,25 +88,25 @@
       getTargets: function(cell, nbMoves, accepted, rejected) {
         var neighbours,
           _this = this;
-        nbMoves = nbMoves != null ? nbMoves : this.turn.dice - 1;
+        nbMoves = nbMoves != null ? nbMoves : this.turn.dice;
         if (cell.isHouse()) {
           return this.getTargets(this.getStart(cell.get('color')), nbMoves - 1);
         }
         accepted = accepted || [];
         rejected = rejected || [cell.getPosStr()];
         neighbours = cell.get('neighbours');
-        _.each(neighbours, function(neighbour) {
-          if (-1 === _.indexOf(rejected, neighbour.getPosStr())) {
-            if (nbMoves !== 0) {
-              if (!neighbour.isBarricade()) {
-                rejected.push(neighbour.getPosStr());
-                return _this.getTargets(neighbour, nbMoves - 1, accepted, rejected);
-              }
-            } else if (neighbour.get('pawn') !== _this.getTurnColor()) {
-              return accepted.push(neighbour);
-            }
+        if (nbMoves === 0) {
+          if (cell.get('pawn') !== this.getTurnColor()) {
+            accepted.push(cell);
           }
-        });
+        } else if (!cell.isBarricade()) {
+          _.each(neighbours, function(neighbour) {
+            if (-1 === _.indexOf(rejected, neighbour.getPosStr())) {
+              rejected.push(neighbour.getPosStr());
+              return _this.getTargets(neighbour, nbMoves - 1, accepted, rejected);
+            }
+          });
+        }
         return accepted;
       },
       setTurn: function(turn, isCurrentPlayer) {
