@@ -10,8 +10,9 @@
       initialize: function() {
         var _this = this;
         this.boardSocket = io.connect();
-        this.boardSocket.on('move', function() {
-          return console.log('move received');
+        this.boardSocket.on('move', function(res) {
+          _this.model.fetch();
+          return console.log('move result', res);
         });
         this.playerid = this.options.playerid;
         this.cells = new CellGrid();
@@ -65,6 +66,8 @@
         this.boardSocket.emit('play', game.id);
         this.cells.reset();
         this.model = game;
+        this.model.on('change:pawns', this.updatePawns, this);
+        this.model.on('change:turn', this.updatePlayerTurn, this);
         this.updatePawns();
         return this.updatePlayerTurn();
       },

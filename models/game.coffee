@@ -20,11 +20,11 @@ Game = new Schema
   status: { type: Number, default: 0 }
   winner: { type: String, default: "" } 
   pawns: {
-    red:        { type: {String}, default: Barricade.houses.red.slice(0) }
-    green:      { type: {String}, default: Barricade.houses.green.slice(0) }
-    yellow:     { type: {String}, default: Barricade.houses.yellow.slice(0) }
-    blue:       { type: {String}, default: Barricade.houses.blue.slice(0) }
-    barricade:  { type: {String}, default: Barricade.barricades.slice(0) }
+    red:        { type: [String], default: Barricade.houses.red.slice(0) }
+    green:      { type: [String], default: Barricade.houses.green.slice(0) }
+    yellow:     { type: [String], default: Barricade.houses.yellow.slice(0) }
+    blue:       { type: [String], default: Barricade.houses.blue.slice(0) }
+    barricade:  { type: [String], default: Barricade.barricades.slice(0) }
   }
 
 ###
@@ -60,6 +60,9 @@ Game.virtual('nbplayers').get ->
 
 Game.methods.isMaster = (playerId) ->
   return 0 is @players.indexOf playerId
+
+Game.methods.isCurrentPlayer = (playerId) ->
+  return @turn.player is @players.indexOf playerId
 
 Game.methods.hasPlayer = (playerId) ->
   return -1 isnt @players.indexOf playerId
@@ -103,6 +106,7 @@ Game.methods.movePawn = (src, dest) ->
   pawnIdx = @pawns[color].indexOf src
   if -1 isnt pawnIdx
     @pawns[color].splice pawnIdx, 1, dest
+    @nextPlayer()
     return true
   false
 

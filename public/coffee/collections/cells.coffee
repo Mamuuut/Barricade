@@ -3,7 +3,10 @@ define [ 'backbone', 'CellModel', 'barricade' ], (Backbone, CellModel, Barricade
   CellGrid = Backbone.Collection.extend
     
     model: CellModel,
-    turn: undefined
+    turn: undefined,
+    moveSrc: '',
+    moveDest: '',
+    moveBarricade: ''
     
     initialize: ->
       @on 'click:source:pawn', @onPawnSourceClicked, @
@@ -18,6 +21,9 @@ define [ 'backbone', 'CellModel', 'barricade' ], (Backbone, CellModel, Barricade
         cell.reset()
         
     resetSources: ->
+      @moveSrc = ''
+      @moveDest = ''
+      @moveBarricade = ''
       @each (cell) ->
         cell.set {source: undefined}
     
@@ -89,6 +95,7 @@ define [ 'backbone', 'CellModel', 'barricade' ], (Backbone, CellModel, Barricade
     onPawnSourceClicked: (cell)->
       @resetSources()
       @resetTargets()
+      @moveSrc = cell.getPosStr()
       cell.set {source: 'move-pawn'}
       targets = @getTargets cell
       _.each targets, (target) =>
@@ -96,6 +103,7 @@ define [ 'backbone', 'CellModel', 'barricade' ], (Backbone, CellModel, Barricade
       @on 'click:target:pawn', @onPawnTargetClicked, @
     
     onPawnTargetClicked: (cell) ->
+      @moveDest = cell.getPosStr()
       if cell.isBarricade()
         @resetTargets()
         cell.set {source: 'move-barricade'}
@@ -103,13 +111,16 @@ define [ 'backbone', 'CellModel', 'barricade' ], (Backbone, CellModel, Barricade
           target.set {target: 'move-barricade'}
         @on 'click:target:barricade', @onBarricadeTargetClicked, @
       else
+        moveStr = @moveSrc + ';' + @moveDest
         @resetTargets()
         @resetSources()
-        @trigger 'move', 'pawn'
+        @trigger 'move', moveStr
       
     onBarricadeTargetClicked: (cell) ->
+      @moveBarricade = cell.getPosStr()
+      moveStr = @moveSrc + ';' + @moveDest + ';' + @moveBarricade
       @resetTargets()
       @resetSources()
-      @trigger 'move', 'pawn+barricade'
+      @trigger 'move', moveStr
       
   CellGrid

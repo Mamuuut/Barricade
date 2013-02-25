@@ -6,6 +6,9 @@
     CellGrid = Backbone.Collection.extend({
       model: CellModel,
       turn: void 0,
+      moveSrc: '',
+      moveDest: '',
+      moveBarricade: '',
       initialize: function() {
         return this.on('click:source:pawn', this.onPawnSourceClicked, this);
       },
@@ -24,6 +27,9 @@
         });
       },
       resetSources: function() {
+        this.moveSrc = '';
+        this.moveDest = '';
+        this.moveBarricade = '';
         return this.each(function(cell) {
           return cell.set({
             source: void 0
@@ -119,6 +125,7 @@
           _this = this;
         this.resetSources();
         this.resetTargets();
+        this.moveSrc = cell.getPosStr();
         cell.set({
           source: 'move-pawn'
         });
@@ -131,6 +138,8 @@
         return this.on('click:target:pawn', this.onPawnTargetClicked, this);
       },
       onPawnTargetClicked: function(cell) {
+        var moveStr;
+        this.moveDest = cell.getPosStr();
         if (cell.isBarricade()) {
           this.resetTargets();
           cell.set({
@@ -143,15 +152,19 @@
           });
           return this.on('click:target:barricade', this.onBarricadeTargetClicked, this);
         } else {
+          moveStr = this.moveSrc + ';' + this.moveDest;
           this.resetTargets();
           this.resetSources();
-          return this.trigger('move', 'pawn');
+          return this.trigger('move', moveStr);
         }
       },
       onBarricadeTargetClicked: function(cell) {
+        var moveStr;
+        this.moveBarricade = cell.getPosStr();
+        moveStr = this.moveSrc + ';' + this.moveDest + ';' + this.moveBarricade;
         this.resetTargets();
         this.resetSources();
-        return this.trigger('move', 'pawn+barricade');
+        return this.trigger('move', moveStr);
       }
     });
     return CellGrid;

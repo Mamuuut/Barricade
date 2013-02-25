@@ -9,8 +9,9 @@ define [ 'backbone', 'CellView', 'CellGrid', 'CellModel', 'barricade' ], (Backbo
      
     initialize: ->
       @boardSocket = io.connect()
-      @boardSocket.on 'move', ->
-        console.log 'move received'
+      @boardSocket.on 'move', (res) =>
+        @model.fetch()
+        console.log 'move result', res
       
       @playerid = @options.playerid
       
@@ -53,6 +54,10 @@ define [ 'backbone', 'CellView', 'CellGrid', 'CellModel', 'barricade' ], (Backbo
       @boardSocket.emit 'play', game.id
       @cells.reset()
       @model = game
+      
+      @model.on 'change:pawns', @updatePawns, @
+      @model.on 'change:turn',  @updatePlayerTurn, @
+      
       @updatePawns()
       @updatePlayerTurn()
         

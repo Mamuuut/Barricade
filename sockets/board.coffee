@@ -1,3 +1,4 @@
+Game = require '../models/game'
 
 connect = (io) ->
   io.sockets.on 'connection', (socket) =>
@@ -7,8 +8,21 @@ connect = (io) ->
       socket.join gameId
 
     socket.on 'move', (move) ->
-      io.sockets.in(socket.gameId).emit 'move'
-    
+      socket.get 'user', (err, user) ->
+        Game.findById socket.gameId, (err, game) ->
+          if game.isCurrentPlayer user.id
+            moveArray = move.split ';'
+            src = moveArray[0]
+            dest = moveArray[1]
+            barricade = moveArray[2]
+            if game.movePawn src, dest, barricade
+              game.save (err, game) ->   
+                io.sockets.in(socket.gameId).emit 'move', 'ok'
+            else
+              socket.emit 'move', 'Error: move pawn failed'
+          else
+            socket.emit 'move', 'Error: user is not the current player'
+              
     socket.on 'stop', ->
       socket.leave socket.gameId
 
