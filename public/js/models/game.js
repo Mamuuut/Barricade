@@ -55,6 +55,9 @@
       isMaster: function(playerId) {
         return 0 === _.indexOf(this.get('players'), playerId);
       },
+      isCurrentPlayer: function(playerId) {
+        return this.get('turn').player === _.indexOf(this.get('players'), playerId);
+      },
       isWaitingPlayer: function() {
         return 'waiting_player' === this.getStatusStr();
       },

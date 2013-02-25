@@ -14,7 +14,7 @@
           _this.model.fetch();
           return console.log('move result', res);
         });
-        this.playerid = this.options.playerid;
+        this.playerId = this.options.playerid;
         this.cells = new CellGrid();
         _.each(Barricade.cells, function(line, y) {
           return _.each(line, function(x) {
@@ -60,7 +60,7 @@
         diceClass = DICE_CLASSES[turn.dice - 1];
         this.$('#dice').removeClass();
         this.$('#dice').addClass(diceClass);
-        return this.cells.setTurn(turn);
+        return this.cells.setTurn(turn, this.model.isCurrentPlayer(this.playerId));
       },
       play: function(game) {
         this.boardSocket.emit('play', game.id);

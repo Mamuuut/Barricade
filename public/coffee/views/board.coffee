@@ -13,7 +13,7 @@ define [ 'backbone', 'CellView', 'CellGrid', 'CellModel', 'barricade' ], (Backbo
         @model.fetch()
         console.log 'move result', res
       
-      @playerid = @options.playerid
+      @playerId = @options.playerid
       
       @cells = new CellGrid()
       _.each Barricade.cells, (line, y) =>
@@ -48,7 +48,7 @@ define [ 'backbone', 'CellView', 'CellGrid', 'CellModel', 'barricade' ], (Backbo
       @$('#dice').removeClass()
       @$('#dice').addClass diceClass
       
-      @cells.setTurn turn
+      @cells.setTurn turn, @model.isCurrentPlayer(@playerId)
       
     play: (game) -> 
       @boardSocket.emit 'play', game.id

@@ -85,10 +85,10 @@ define [ 'backbone', 'CellModel', 'barricade' ], (Backbone, CellModel, Barricade
             accepted.push neighbour
       accepted
             
-    setTurn: (turn) ->
+    setTurn: (turn, isCurrentPlayer) ->
       @turn = turn
       @.each (cell) =>
-        isHoverable = @getTurnColor() is cell.get 'pawn'
+        isHoverable = isCurrentPlayer and @getTurnColor() is cell.get 'pawn'
         cell.set {hoverable: isHoverable}  
     
     # Listeners  

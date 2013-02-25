@@ -45,6 +45,9 @@ define [ 'underscore', 'backbone', 'CellModel', 'barricade' ], (_, Backbone, Cel
     isMaster: (playerId) ->
       0 is _.indexOf @get('players'), playerId
       
+    isCurrentPlayer: (playerId) ->
+      @get('turn').player is _.indexOf @get('players'), playerId
+      
     isWaitingPlayer: ->
       'waiting_player' is @getStatusStr()
       

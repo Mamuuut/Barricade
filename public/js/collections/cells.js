@@ -109,12 +109,12 @@
         });
         return accepted;
       },
-      setTurn: function(turn) {
+      setTurn: function(turn, isCurrentPlayer) {
         var _this = this;
         this.turn = turn;
         return this.each(function(cell) {
           var isHoverable;
-          isHoverable = _this.getTurnColor() === cell.get('pawn');
+          isHoverable = isCurrentPlayer && _this.getTurnColor() === cell.get('pawn');
           return cell.set({
             hoverable: isHoverable
           });
