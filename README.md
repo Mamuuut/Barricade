@@ -35,8 +35,8 @@ Implemented features
 TODO list
 ---------
 
-*   Add Client game logic
-*   Add game schema for mongoDB
+*   Improve game list
+*   Add game end screen
 *   Add Server game logic
 *   Add password encryption
 *   ...
