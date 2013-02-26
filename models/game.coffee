@@ -11,14 +11,15 @@ randomDice = ->
 
 Game = new Schema
   date: { type: Date, default: Date.now }
-  players: [String]
+  playerIds:    [String]
+  playerNames:  [String]
   turn: { 
     player: {type: Number, default: 0}
     dice: {type: Number, default: ->
       randomDice()}
   }
   status: { type: Number, default: 0 }
-  winner: { type: String, default: "" } 
+  winner: { type: Number, default: -1 }
   pawns: {
     red:        { type: [String], default: Barricade.houses.red.slice(0) }
     green:      { type: [String], default: Barricade.houses.green.slice(0) }
@@ -45,10 +46,10 @@ Game.methods.start = (playerId) ->
     return true
   return false
 
-Game.methods.completeGame = (playerId) ->
+Game.methods.completeGame = ->
   if @isPlaying()
     @status = 2
-    @winner = playerId
+    @winner = @turn.player
     return true
   return false
 
@@ -56,34 +57,37 @@ Game.methods.completeGame = (playerId) ->
   Players
 ###
 Game.virtual('nbplayers').get ->
-  @players.toObject().length
+  @playerIds.toObject().length
 
 Game.methods.isMaster = (playerId) ->
-  return 0 is @players.indexOf playerId
+  return 0 is @playerIds.indexOf playerId
 
 Game.methods.isCurrentPlayer = (playerId) ->
-  return @turn.player is @players.indexOf playerId
+  return @turn.player is @playerIds.indexOf playerId
 
 Game.methods.hasPlayer = (playerId) ->
-  return -1 isnt @players.indexOf playerId
+  return -1 isnt @playerIds.indexOf playerId
 
-Game.methods.addPlayer = (playerId) ->
-  if !@hasPlayer(playerId) and @nbplayers < Barricade.maxPlayers and @isWaitingPlayer()
-    @players.push playerId
-    return playerId
+Game.methods.addPlayer = (player) ->
+  if !@hasPlayer(player.id) and @nbplayers < Barricade.maxPlayers and @isWaitingPlayer()
+    @playerIds.push player.id
+    @playerNames.push player.name
+    return player.id
   return false
 
 Game.methods.removePlayer = (playerId) ->
   if (@hasPlayer playerId) and !@isComplete()
-    if playerId is @players[@turn.player]
+    if playerId is @playerIds[@turn.player]
       @turn.dice = randomDice()
     
-    @players.splice @players.indexOf(playerId), 1
+    idx = @playerIds.indexOf playerId
+    @playerIds.splice idx, 1
+    @playerNames.splice idx, 1
     
     @turn.player = @turn.player % @nbplayers
     
     if (@nbplayers is 1) and @isPlaying()
-      @completeGame @players[0]
+      @completeGame()
     return playerId
   return false
   
@@ -135,7 +139,7 @@ Game.methods.handleMove = (src, dest, barricade) ->
     @movePawn color, src, dest
     
     if @isExit dest
-      @completeGame @players[@turn.player]
+      @completeGame()
     else
       @nextPlayer()
     return true

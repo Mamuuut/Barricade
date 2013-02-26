@@ -7,14 +7,9 @@ define [ 'backbone' ], (Backbone) ->
     template: _.template($('#chat-template').html()),
      
     initialize: ->
-      @chatSocket = io.connect '/chat'
-      
-      ###
-        @chatSocket.on 'connect', => 
-          @chatSocket.emit 'new user', @options.user
-      ###
+      @socket = io.connect()
         
-      @chatSocket.on 'new message', (userMessage) =>
+      @socket.on 'new message', (userMessage) =>
         newMessage = $ @template(userMessage)
         @$('#conversation').prepend newMessage
         setTimeout ->
@@ -35,6 +30,6 @@ define [ 'backbone' ], (Backbone) ->
       if(e.which is 13)
         message = @$('#new_message').val()
         @$('#new_message').val ''
-        @chatSocket.emit 'send message', message
+        @socket.emit 'send message', message
    
   ChatView

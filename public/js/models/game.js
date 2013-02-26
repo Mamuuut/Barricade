@@ -14,7 +14,8 @@
       defaults: function() {
         return {
           date: new Date(),
-          players: [],
+          playerIds: [],
+          playerNames: [],
           currentplayer: 0,
           status: 0,
           winner: ""
@@ -25,7 +26,7 @@
       */
 
       getNbPlayers: function() {
-        return this.get('players').length;
+        return this.get('playerIds').length;
       },
       getPlayersStr: function() {
         return this.getNbPlayers() + "/" + Barricade.maxPlayers;
@@ -36,8 +37,11 @@
       getDateStr: function() {
         return new Date(this.get('date')).toUTCString();
       },
+      getTitle: function() {
+        return this.get('playerNames').join(', ');
+      },
       hasPlayer: function(playerId) {
-        return -1 !== _.indexOf(this.get('players'), playerId);
+        return -1 !== _.indexOf(this.get('playerIds'), playerId);
       },
       getTurnColor: function() {
         return Barricade.colors[this.get('turn').player];
@@ -53,10 +57,10 @@
         return pawnColor;
       },
       isMaster: function(playerId) {
-        return 0 === _.indexOf(this.get('players'), playerId);
+        return 0 === _.indexOf(this.get('playerIds'), playerId);
       },
       isCurrentPlayer: function(playerId) {
-        return this.get('turn').player === _.indexOf(this.get('players'), playerId);
+        return this.get('turn').player === _.indexOf(this.get('playerIds'), playerId);
       },
       isWaitingPlayer: function() {
         return 'waiting_player' === this.getStatusStr();

@@ -5,20 +5,20 @@
 define [ 'backbone', 'GameLineView' ], (Backbone, GameLineView) ->
   GameListView = Backbone.View.extend
     el: $("#games"),  
-    gameListSocket: null,
+    socket: null,
      
     initialize: ->
-      @games = @options.games
-      @playerid = @options.playerid
-      @list = @.$ '.list'
+      @socket = @options.socket
+      @games  = @options.games
+      @player = @options.player
+      @list   = @.$ '.list'
       @games.on 'reset', @render, @
       @games.on 'add', @addGame, @
       @games.on 'remove', @removeGame, @
       
-      @gameListSocket = io.connect('/game_list')
-      @gameListSocket.on 'update game', (gameId) =>
+      @socket.on 'update game', (gameId) =>
         @games.get(gameId).fetch()
-      @gameListSocket.on 'update list', =>
+      @socket.on 'update list', =>
         @games.fetch()
 
     events: 
@@ -31,16 +31,16 @@ define [ 'backbone', 'GameLineView' ], (Backbone, GameLineView) ->
       
     addGame: (game) ->
       console.log 'addGame', game
-      line = new GameLineView { model: game, playerid: @playerid }
+      line = new GameLineView { model: game, playerid: @player.id }
       line.render()
       
       # Socket
       line.on 'join', (gameId) =>
-        @gameListSocket.emit 'join game', gameId
+        @socket.emit 'join game', gameId
       line.on 'start', (gameId) =>
-        @gameListSocket.emit 'start game', gameId
+        @socket.emit 'start game', gameId
       line.on 'quit', (gameId) =>
-        @gameListSocket.emit 'quit game', gameId
+        @socket.emit 'quit game', gameId
       line.on 'play', (game) =>
         @trigger 'play', game
       
@@ -48,17 +48,18 @@ define [ 'backbone', 'GameLineView' ], (Backbone, GameLineView) ->
       
     removeGame: (game) ->
       console.log 'removeGame', game
-      @gameListSocket.emit 'remove game', game.Id
+      @socket.emit 'remove game', game.Id
           
     createGame: ->
       @games.create {
-        players: [@playerid],
+        playerIds: [@player.id],
+        playerNames: [@player.name],
         currentplayer: 0,
         cells: [0,0,0,0,0,0,0,0,0] 
         }, { 
         wait: true,
         success: =>
-          @gameListSocket.emit 'new game' 
+          @socket.emit 'new game' 
         } 
    
    GameListView

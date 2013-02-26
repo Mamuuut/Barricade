@@ -5,13 +5,12 @@ define [ 'backbone', 'CellView', 'CellGrid', 'CellModel', 'barricade' ], (Backbo
   
   BoardView = Backbone.View.extend
     el: $("#board_container"),  
-    boardSocket: null,
+    socket: null,
      
     initialize: ->
-      @boardSocket = io.connect()
-      @boardSocket.on 'move', (res) =>
+      @socket = @options.socket
+      @socket.on 'move', (res) =>
         @model.fetch()
-        console.log 'move result', res
       
       @playerId = @options.playerid
       
@@ -51,7 +50,7 @@ define [ 'backbone', 'CellView', 'CellGrid', 'CellModel', 'barricade' ], (Backbo
       @cells.setTurn turn, @model.isCurrentPlayer(@playerId)
       
     play: (game) -> 
-      @boardSocket.emit 'play', game.id
+      @socket.emit 'play', game.id
       @cells.reset()
       @model = game
       
@@ -62,10 +61,10 @@ define [ 'backbone', 'CellView', 'CellGrid', 'CellModel', 'barricade' ], (Backbo
       @updatePlayerTurn()
         
     backToGameList: ->
-      @boardSocket.emit 'stop'
+      @socket.emit 'stop'
       @trigger 'back'
     
     onMove: (move) ->
-      @boardSocket.emit 'move', move
+      @socket.emit 'move', move
       
   BoardView

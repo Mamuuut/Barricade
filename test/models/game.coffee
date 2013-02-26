@@ -14,8 +14,8 @@ describe 'Game model', ->
   before (done) ->
     Game.remove (err, games) ->
       game = new Game
-        players: [player1]
       game.save (err, game) ->
+        game.addPlayer {id: player1, name: player1}
         done()
       
   after (done) ->
@@ -26,8 +26,11 @@ describe 'Game model', ->
     it 'should have a date', ->
       game.should.have.property('date')
       
-    it 'should have players array with one player', ->
-      game.should.have.property('players').be.an.instanceOf(Array).with.lengthOf(1)
+    it 'should have players array with one player id', ->
+      game.should.have.property('playerIds').be.an.instanceOf(Array).with.lengthOf(1)
+      
+    it 'should have players array with one player name', ->
+      game.should.have.property('playerNames').be.an.instanceOf(Array).with.lengthOf(1)
       
     it 'should have default turn', ->
       game.should.have.property('turn')
@@ -35,7 +38,7 @@ describe 'Game model', ->
       game.turn.should.have.property('dice')
     
     it 'should have winner -1', ->
-      game.should.have.property('winner').equal("")
+      game.should.have.property('winner').equal(-1)
     
     it 'should have default pawns', ->
       game.should.have.property('pawns')
@@ -65,16 +68,16 @@ describe 'Game model', ->
         
   describe 'Join game', ->  
     it 'should have 2 players', ->
-      res = game.addPlayer player2
+      res = game.addPlayer {id: player2, name: player2}
       res.should.equal(player2)
       game.should.have.property('nbplayers').equal(2)
 
   describe 'Max players', ->
     it 'should have 4 players max', ->
-      game.addPlayer player3
-      game.addPlayer player4
+      game.addPlayer {id: player3, name: player3}
+      game.addPlayer {id: player4, name: player4}
       game.should.have.property('nbplayers').equal(4)
-      res = game.addPlayer player5
+      res = game.addPlayer {id: player5, name: player5}
       res.should.be.false
       game.should.have.property('nbplayers').equal(4)
       game.hasPlayer( player5 ).should.be.false
@@ -123,14 +126,6 @@ describe 'Game model', ->
       res = game.addPlayer player2
       res.should.be.false
       
-  describe 'Last player', ->
-    it 'should complete the game', ->
-      game.removePlayer player3
-      game.removePlayer player4
-      game.should.have.property('nbplayers').equal(1)
-      game.isComplete().should.be.true
-      game.should.have.property('winner').equal(player1)
-      
   describe 'Move pawn', ->
     color = undefined
     src   = '1:14'
@@ -152,9 +147,16 @@ describe 'Game model', ->
       game.getEmptyHouse(color).should.equal(src)
       
   describe 'Move pawn not from current player', ->
-    color = 'green'
-    src   = '5:14'
-    dest  = '4:13'
+    src   = '2:14'
+    dest  = '1:13'
     it 'move should return false', ->
       game.handleMove(src, dest).should.be.false
+      
+  describe 'Last player', ->
+    it 'should complete the game', ->
+      game.removePlayer player3
+      game.removePlayer player4
+      game.should.have.property('nbplayers').equal(1)
+      game.isComplete().should.be.true
+      game.should.have.property('winner').equal(0)
       

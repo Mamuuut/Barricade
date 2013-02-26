@@ -9,7 +9,8 @@ define [ 'underscore', 'backbone', 'CellModel', 'barricade' ], (_, Backbone, Cel
     
     defaults: ->
       date: new Date()
-      players: []
+      playerIds: []
+      playerNames: []
       currentplayer: 0
       status: 0
       winner: ""
@@ -18,7 +19,7 @@ define [ 'underscore', 'backbone', 'CellModel', 'barricade' ], (_, Backbone, Cel
       Helpers
     ###  
     getNbPlayers: ->
-      @get('players').length
+      @get('playerIds').length
       
     getPlayersStr: ->
       @getNbPlayers() + "/" + Barricade.maxPlayers
@@ -29,8 +30,11 @@ define [ 'underscore', 'backbone', 'CellModel', 'barricade' ], (_, Backbone, Cel
     getDateStr: ->
       new Date(@get('date')).toUTCString()
       
+    getTitle: ->
+      @get('playerNames').join(', ')
+      
     hasPlayer: (playerId) ->
-      -1 isnt _.indexOf @get('players'), playerId
+      -1 isnt _.indexOf @get('playerIds'), playerId
       
     getTurnColor: ->
       Barricade.colors[@get('turn').player]
@@ -43,10 +47,10 @@ define [ 'underscore', 'backbone', 'CellModel', 'barricade' ], (_, Backbone, Cel
       pawnColor
       
     isMaster: (playerId) ->
-      0 is _.indexOf @get('players'), playerId
+      0 is _.indexOf @get('playerIds'), playerId
       
     isCurrentPlayer: (playerId) ->
-      @get('turn').player is _.indexOf @get('players'), playerId
+      @get('turn').player is _.indexOf @get('playerIds'), playerId
       
     isWaitingPlayer: ->
       'waiting_player' is @getStatusStr()

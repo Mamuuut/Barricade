@@ -28,16 +28,12 @@
       */
 
       render: function() {
-        var params;
-        params = {
-          status: this.model.get('status'),
-          date: this.model.getDateStr()
-        };
-        this.$el.html(this.template(params));
+        this.$el.html(this.template());
         return this.updateLine();
       },
       updateLine: function() {
         this.updateNbPlayers();
+        this.updateTitle();
         this.updateStatus();
         this.updateJoinBtn();
         this.updatePlayBtn();
@@ -85,6 +81,20 @@
       },
       updateStatus: function() {
         return this.$el.addClass(this.model.getStatusStr());
+      },
+      updateTitle: function() {
+        var names,
+          _this = this;
+        names = this.model.get('playerNames');
+        this.$('.title').empty();
+        return _.each(names, function(name, idx) {
+          var span;
+          span = $('<span>' + name + '</span>');
+          if (idx === _this.model.get('turn').player) {
+            span.addClass('current');
+          }
+          return _this.$('.title').append(span);
+        });
       },
       /*
             Event handlers

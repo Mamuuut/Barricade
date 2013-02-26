@@ -11,20 +11,20 @@
     var GameListView;
     GameListView = Backbone.View.extend({
       el: $("#games"),
-      gameListSocket: null,
+      socket: null,
       initialize: function() {
         var _this = this;
+        this.socket = this.options.socket;
         this.games = this.options.games;
-        this.playerid = this.options.playerid;
+        this.player = this.options.player;
         this.list = this.$('.list');
         this.games.on('reset', this.render, this);
         this.games.on('add', this.addGame, this);
         this.games.on('remove', this.removeGame, this);
-        this.gameListSocket = io.connect('/game_list');
-        this.gameListSocket.on('update game', function(gameId) {
+        this.socket.on('update game', function(gameId) {
           return _this.games.get(gameId).fetch();
         });
-        return this.gameListSocket.on('update list', function() {
+        return this.socket.on('update list', function() {
           return _this.games.fetch();
         });
       },
@@ -44,17 +44,17 @@
         console.log('addGame', game);
         line = new GameLineView({
           model: game,
-          playerid: this.playerid
+          playerid: this.player.id
         });
         line.render();
         line.on('join', function(gameId) {
-          return _this.gameListSocket.emit('join game', gameId);
+          return _this.socket.emit('join game', gameId);
         });
         line.on('start', function(gameId) {
-          return _this.gameListSocket.emit('start game', gameId);
+          return _this.socket.emit('start game', gameId);
         });
         line.on('quit', function(gameId) {
-          return _this.gameListSocket.emit('quit game', gameId);
+          return _this.socket.emit('quit game', gameId);
         });
         line.on('play', function(game) {
           return _this.trigger('play', game);
@@ -63,18 +63,19 @@
       },
       removeGame: function(game) {
         console.log('removeGame', game);
-        return this.gameListSocket.emit('remove game', game.Id);
+        return this.socket.emit('remove game', game.Id);
       },
       createGame: function() {
         var _this = this;
         return this.games.create({
-          players: [this.playerid],
+          playerIds: [this.player.id],
+          playerNames: [this.player.name],
           currentplayer: 0,
           cells: [0, 0, 0, 0, 0, 0, 0, 0, 0]
         }, {
           wait: true,
           success: function() {
-            return _this.gameListSocket.emit('new game');
+            return _this.socket.emit('new game');
           }
         });
       }

@@ -23,14 +23,12 @@ define [ 'underscore', 'backbone' ], (_, Backbone) ->
       Rendering
     ### 
     render: ->
-      params = 
-        status: @model.get('status'), 
-        date: @model.getDateStr() 
-      @$el.html @template(params)
+      @$el.html @template()
       @updateLine()
     
     updateLine: ->
       @updateNbPlayers()
+      @updateTitle()
       @updateStatus()
       
       @updateJoinBtn()
@@ -74,6 +72,15 @@ define [ 'underscore', 'backbone' ], (_, Backbone) ->
     
     updateStatus: ->
       @$el.addClass @model.getStatusStr()
+    
+    updateTitle: ->
+      names = @model.get 'playerNames'
+      @$('.title').empty()
+      _.each names, (name, idx) =>
+        span = $('<span>' + name + '</span>')
+        if idx is @model.get('turn').player
+          span.addClass 'current'
+        @$('.title').append span
     
     ###
       Event handlers

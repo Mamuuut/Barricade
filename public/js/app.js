@@ -20,15 +20,18 @@
           var boardView, chatView, gameListView, mainView;
           socket.emit('new user', user);
           chatView = new ChatView({
-            user: user
+            user: user,
+            socket: socket
           });
           gameListView = new GameListView({
             games: gameList,
-            playerid: user.id
+            player: user,
+            socket: socket
           });
           gameList.fetch();
           boardView = new BoardView({
-            playerid: user.id
+            playerid: user.id,
+            socket: socket
           });
           return mainView = new MainView({
             gameListView: gameListView,

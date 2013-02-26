@@ -18,6 +18,7 @@ connect = (io) ->
             if game.handleMove src, dest, barricade
               game.save (err, game) ->   
                 io.sockets.in(socket.gameId).emit 'move', 'ok'
+                socket.broadcast.emit 'update game', socket.gameId
             else
               socket.emit 'move', 'Error: move pawn failed'
           else

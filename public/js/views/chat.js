@@ -9,13 +9,8 @@
       template: _.template($('#chat-template').html()),
       initialize: function() {
         var _this = this;
-        this.chatSocket = io.connect('/chat');
-        /*
-                @chatSocket.on 'connect', => 
-                  @chatSocket.emit 'new user', @options.user
-        */
-
-        return this.chatSocket.on('new message', function(userMessage) {
+        this.socket = io.connect();
+        return this.socket.on('new message', function(userMessage) {
           var newMessage;
           newMessage = $(_this.template(userMessage));
           _this.$('#conversation').prepend(newMessage);
@@ -42,7 +37,7 @@
         if (e.which === 13) {
           message = this.$('#new_message').val();
           this.$('#new_message').val('');
-          return this.chatSocket.emit('send message', message);
+          return this.socket.emit('send message', message);
         }
       }
     });
