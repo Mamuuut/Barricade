@@ -50,12 +50,15 @@ define [ 'backbone', 'CellView', 'CellGrid', 'CellModel', 'barricade' ], (Backbo
       @cells.setTurn turn, @model.isCurrentPlayer(@playerId)
       
     play: (game) -> 
+      @$('#win').hide()
+      
       @socket.emit 'play', game.id
       @cells.reset()
       @model = game
       
-      @model.on 'change:pawns', @updatePawns, @
-      @model.on 'change:turn',  @updatePlayerTurn, @
+      @model.on 'change:status',  @onStatusChanged, @
+      @model.on 'change:pawns',   @updatePawns, @
+      @model.on 'change:turn',    @updatePlayerTurn, @
       
       @updatePawns()
       @updatePlayerTurn()
@@ -66,5 +69,16 @@ define [ 'backbone', 'CellView', 'CellGrid', 'CellModel', 'barricade' ], (Backbo
     
     onMove: (move) ->
       @socket.emit 'move', move
+      
+    onStatusChanged: ->
+      if @model.isComplete()
+        if @model.isWinner @playerId
+          @$('.win').show()
+          @$('.lose').hide()
+          @$('#end').show()
+        else
+          @$('.win').hide()
+          @$('.lose').show()
+          @$('#end').show()
       
   BoardView

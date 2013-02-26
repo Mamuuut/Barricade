@@ -17,7 +17,8 @@
         return this.model.on('change:target', this.updateTarget, this);
       },
       events: {
-        "click": "cellClicked"
+        "click": "cellClicked",
+        "dblclick": "cellDblClicked"
       },
       render: function() {
         var left, top;
@@ -83,6 +84,9 @@
         if ('move-barricade' === this.model.get('target')) {
           return this.model.trigger('click:target:barricade', this.model);
         }
+      },
+      cellDblClicked: function() {
+        return this.model.trigger('click:target:pawn', this.model);
       }
     });
     return CellView;

@@ -58,6 +58,9 @@ define [ 'underscore', 'backbone', 'CellModel', 'barricade' ], (_, Backbone, Cel
     isComplete: ->
       'complete' is @getStatusStr()   
       
+    isWinner: (playerId) ->
+      @get('winner') is _.indexOf @get('playerIds'), playerId
+      
     ###
       Actions
     ###  

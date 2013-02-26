@@ -62,9 +62,11 @@
         return this.cells.setTurn(turn, this.model.isCurrentPlayer(this.playerId));
       },
       play: function(game) {
+        this.$('#win').hide();
         this.socket.emit('play', game.id);
         this.cells.reset();
         this.model = game;
+        this.model.on('change:status', this.onStatusChanged, this);
         this.model.on('change:pawns', this.updatePawns, this);
         this.model.on('change:turn', this.updatePlayerTurn, this);
         this.updatePawns();
@@ -76,6 +78,19 @@
       },
       onMove: function(move) {
         return this.socket.emit('move', move);
+      },
+      onStatusChanged: function() {
+        if (this.model.isComplete()) {
+          if (this.model.isWinner(this.playerId)) {
+            this.$('.win').show();
+            this.$('.lose').hide();
+            return this.$('#end').show();
+          } else {
+            this.$('.win').hide();
+            this.$('.lose').show();
+            return this.$('#end').show();
+          }
+        }
       }
     });
     return BoardView;

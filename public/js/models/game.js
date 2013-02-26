@@ -68,6 +68,9 @@
       isComplete: function() {
         return 'complete' === this.getStatusStr();
       },
+      isWinner: function(playerId) {
+        return this.get('winner') === _.indexOf(this.get('playerIds'), playerId);
+      },
       /*
             Actions
       */

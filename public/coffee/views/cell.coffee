@@ -18,6 +18,7 @@ define [ 'underscore', 'backbone' ], (_, Backbone) ->
       
     events: 
       "click":  "cellClicked", 
+      "dblclick":  "cellDblClicked", 
     
     render: -> 
       @$el.html @template()
@@ -76,4 +77,8 @@ define [ 'underscore', 'backbone' ], (_, Backbone) ->
         @model.trigger 'click:target:pawn', @model
       if 'move-barricade' is @model.get 'target'
         @model.trigger 'click:target:barricade', @model
+        
+    cellDblClicked: ->
+      @model.trigger 'click:target:pawn', @model
+      
   CellView
