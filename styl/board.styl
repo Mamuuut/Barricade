@@ -1,7 +1,7 @@
 cell-size = 30px
 
 pawn-shadow() 
-  box-shadow 2px 2px 2px #444, -3px -3px 9px #000 inset
+  box-shadow -3px -3px 9px #000 inset
 
 #board_container
   display none
@@ -15,7 +15,8 @@ pawn-shadow()
   #board
     position relative
     margin-top 8px
-    background-color #888
+    background url('../img/board.jpg')
+    box-shadow 0 0 100px 6px inset, 0 0 0 4px inset
     width 600px
     height @width
     #turn

@@ -46,7 +46,7 @@ h1{font-size:16px;margin:0}
 #board_container #board_header .action{text-decoration:underline;cursor:pointer;float:right;margin-left:4px;}
 #board_container #board_header .action:hover{color:#555}
 #board_container #board_header:after{content:'';display:block;clear:both}
-#board_container #board{position:relative;margin-top:8px;background-color:#888;width:600px;height:600px;}
+#board_container #board{position:relative;margin-top:8px;background:url("../img/board.jpg");-webkit-box-shadow:0 0 100px 6px inset,0 0 0 4px inset;-moz-box-shadow:0 0 100px 6px inset,0 0 0 4px inset;-ms-box-shadow:0 0 100px 6px inset,0 0 0 4px inset;-o-box-shadow:0 0 100px 6px inset,0 0 0 4px inset;box-shadow:0 0 100px 6px inset,0 0 0 4px inset;width:600px;height:600px;}
 #board_container #board #turn{-webkit-border-radius:50%;-moz-border-radius:50%;-ms-border-radius:50%;-o-border-radius:50%;border-radius:50%;float:left;width:30px;height:30px;margin:8px}
 #board_container #board #dice{position:relative;float:left;-webkit-border-radius:4px;-moz-border-radius:4px;-ms-border-radius:4px;-o-border-radius:4px;border-radius:4px;width:30px;height:30px;margin:8px;background-color:#fff;background-image:-webkit-linear-gradient(top,#fefefe,#f1f1f1 80%);background-image:-moz-linear-gradient(top,#fefefe,#f1f1f1 80%);background-image:-o-linear-gradient(top,#fefefe,#f1f1f1 80%);background-image:linear-gradient(top,#fefefe,#f1f1f1 80%);-webkit-box-shadow:0 5px 0 #ccc,0 6px 3px #444;-moz-box-shadow:0 5px 0 #ccc,0 6px 3px #444;-ms-box-shadow:0 5px 0 #ccc,0 6px 3px #444;-o-box-shadow:0 5px 0 #ccc,0 6px 3px #444;box-shadow:0 5px 0 #ccc,0 6px 3px #444;}
 #board_container #board #dice.one .hcenter.center{display:block}
@@ -66,7 +66,7 @@ h1{font-size:16px;margin:0}
 #board_container #board .cell.start,#board_container #board .cell.exit{-webkit-box-shadow:0 0 0 8px #fff inset;-moz-box-shadow:0 0 0 8px #fff inset;-ms-box-shadow:0 0 0 8px #fff inset;-o-box-shadow:0 0 0 8px #fff inset;box-shadow:0 0 0 8px #fff inset}
 #board_container #board .cell .target{display:none;cursor:pointer;z-index:1;position:absolute;}
 #board_container #board .cell .target.move-barricade{width:30px;height:30px;top:0;left:0;}
-#board_container #board .cell .target.move-barricade:hover{-webkit-border-radius:50%;-moz-border-radius:50%;-ms-border-radius:50%;-o-border-radius:50%;border-radius:50%;background-color:#333;opacity:.7;-webkit-box-shadow:2px 2px 2px #444,-3px -3px 9px #000 inset;-moz-box-shadow:2px 2px 2px #444,-3px -3px 9px #000 inset;-ms-box-shadow:2px 2px 2px #444,-3px -3px 9px #000 inset;-o-box-shadow:2px 2px 2px #444,-3px -3px 9px #000 inset;box-shadow:2px 2px 2px #444,-3px -3px 9px #000 inset}
+#board_container #board .cell .target.move-barricade:hover{-webkit-border-radius:50%;-moz-border-radius:50%;-ms-border-radius:50%;-o-border-radius:50%;border-radius:50%;background-color:#333;opacity:.7;-webkit-box-shadow:-3px -3px 9px #000 inset;-moz-box-shadow:-3px -3px 9px #000 inset;-ms-box-shadow:-3px -3px 9px #000 inset;-o-box-shadow:-3px -3px 9px #000 inset;box-shadow:-3px -3px 9px #000 inset}
 #board_container #board .cell .target.move-pawn{width:34px;height:34px;top:-2px;left:-2px;}
 #board_container #board .cell .target.move-pawn:hover{width:30px;height:30px;top:0;left:0}
 #board_container #board .cell .target.move-pawn div{position:absolute}
@@ -78,7 +78,7 @@ h1{font-size:16px;margin:0}
 #board_container #board .cell.move-barricade .pawn{opacity:.7}
 #board_container #board .cell.hoverable:hover:after,#board_container #board .cell.move-pawn:after{content:'';position:absolute;top:0;width:26px;height:26px;-webkit-border-radius:50%;-moz-border-radius:50%;-ms-border-radius:50%;-o-border-radius:50%;border-radius:50%;border:2px solid #fff;-webkit-box-shadow:0 0 8px #fff inset;-moz-box-shadow:0 0 8px #fff inset;-ms-box-shadow:0 0 8px #fff inset;-o-box-shadow:0 0 8px #fff inset;box-shadow:0 0 8px #fff inset}
 #board_container #board .cell .pawn{-webkit-border-radius:50%;-moz-border-radius:50%;-ms-border-radius:50%;-o-border-radius:50%;border-radius:50%;width:100%;height:100%}
-#board_container #board .cell .pawn,#board_container #board #turn{-webkit-box-shadow:2px 2px 2px #444,-3px -3px 9px #000 inset;-moz-box-shadow:2px 2px 2px #444,-3px -3px 9px #000 inset;-ms-box-shadow:2px 2px 2px #444,-3px -3px 9px #000 inset;-o-box-shadow:2px 2px 2px #444,-3px -3px 9px #000 inset;box-shadow:2px 2px 2px #444,-3px -3px 9px #000 inset}
+#board_container #board .cell .pawn,#board_container #board #turn{-webkit-box-shadow:-3px -3px 9px #000 inset;-moz-box-shadow:-3px -3px 9px #000 inset;-ms-box-shadow:-3px -3px 9px #000 inset;-o-box-shadow:-3px -3px 9px #000 inset;box-shadow:-3px -3px 9px #000 inset}
 #board_container #board .red{background-color:#f00}
 #board_container #board .green{background-color:#0f0}
 #board_container #board .yellow{background-color:#ff0}
