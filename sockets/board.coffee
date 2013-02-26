@@ -2,6 +2,12 @@ Game = require '../models/game'
 
 connect = (io) ->
   io.sockets.on 'connection', (socket) =>
+      
+    Game.on 'change:pawns', (game) ->
+      io.sockets.in(socket.gameId).emit 'update board'
+      
+    Game.on 'change:turn', (game) ->
+      io.sockets.in(socket.gameId).emit 'update board'
 
     socket.on 'play', (gameId) ->
       socket.gameId = gameId
@@ -16,13 +22,7 @@ connect = (io) ->
             dest = moveArray[1]
             barricade = moveArray[2]
             if game.handleMove src, dest, barricade
-              game.save (err, game) ->   
-                io.sockets.in(socket.gameId).emit 'move', 'ok'
-                socket.broadcast.emit 'update game', socket.gameId
-            else
-              socket.emit 'move', 'Error: move pawn failed'
-          else
-            socket.emit 'move', 'Error: user is not the current player'
+              game.save()
               
     socket.on 'stop', ->
       socket.leave socket.gameId

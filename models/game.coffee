@@ -149,4 +149,5 @@ Game.methods.movePawn = (color, src, dest) ->
   pawnIdx = @pawns[color].indexOf src
   @pawns[color].splice pawnIdx, 1, dest
 
+Game.plugin require('mongoose-eventify')
 module.exports = mongoose.model 'Game', Game

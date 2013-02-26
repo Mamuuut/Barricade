@@ -20,7 +20,6 @@
         this.list = this.$('.list');
         this.games.on('reset', this.render, this);
         this.games.on('add', this.addGame, this);
-        this.games.on('remove', this.removeGame, this);
         this.socket.on('update game', function(gameId) {
           return _this.games.get(gameId).fetch();
         });
@@ -61,22 +60,14 @@
         });
         return this.list.append(line.$el);
       },
-      removeGame: function(game) {
-        console.log('removeGame', game);
-        return this.socket.emit('remove game', game.Id);
-      },
       createGame: function() {
-        var _this = this;
         return this.games.create({
           playerIds: [this.player.id],
           playerNames: [this.player.name],
           currentplayer: 0,
           cells: [0, 0, 0, 0, 0, 0, 0, 0, 0]
         }, {
-          wait: true,
-          success: function() {
-            return _this.socket.emit('new game');
-          }
+          wait: true
         });
       }
     });

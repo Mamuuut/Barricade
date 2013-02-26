@@ -9,7 +9,8 @@
   "dependencies": {
     "express": "2.5.11",
     "socket.io": "0.9.0",
-    "mongoose": "*",
+    "mongoose": ">=3.0.x",
+    "mongoose-eventify": ">=0.0.1",
     "passport": "*",
     "passport-local": "*",
     "coffee-script": "1.5.0",

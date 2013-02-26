@@ -9,7 +9,7 @@ define [ 'backbone', 'CellView', 'CellGrid', 'CellModel', 'barricade' ], (Backbo
      
     initialize: ->
       @socket = @options.socket
-      @socket.on 'move', (res) =>
+      @socket.on 'update board', (res) =>
         @model.fetch()
       
       @playerId = @options.playerid

@@ -14,7 +14,6 @@ define [ 'backbone', 'GameLineView' ], (Backbone, GameLineView) ->
       @list   = @.$ '.list'
       @games.on 'reset', @render, @
       @games.on 'add', @addGame, @
-      @games.on 'remove', @removeGame, @
       
       @socket.on 'update game', (gameId) =>
         @games.get(gameId).fetch()
@@ -45,10 +44,6 @@ define [ 'backbone', 'GameLineView' ], (Backbone, GameLineView) ->
         @trigger 'play', game
       
       @list.append line.$el
-      
-    removeGame: (game) ->
-      console.log 'removeGame', game
-      @socket.emit 'remove game', game.Id
           
     createGame: ->
       @games.create {
@@ -56,10 +51,6 @@ define [ 'backbone', 'GameLineView' ], (Backbone, GameLineView) ->
         playerNames: [@player.name],
         currentplayer: 0,
         cells: [0,0,0,0,0,0,0,0,0] 
-        }, { 
-        wait: true,
-        success: =>
-          @socket.emit 'new game' 
-        } 
+        }, { wait: true } 
    
    GameListView

@@ -10,7 +10,7 @@
       initialize: function() {
         var _this = this;
         this.socket = this.options.socket;
-        this.socket.on('move', function(res) {
+        this.socket.on('update board', function(res) {
           return _this.model.fetch();
         });
         this.playerId = this.options.playerid;
