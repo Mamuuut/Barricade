@@ -11,11 +11,11 @@
         this.gameListView = this.options.gameListView;
         this.boardView = this.options.boardView;
         this.gameListView.on('play', function(game) {
-          _this.$('.content').addClass('playing');
+          _this.$('.content').find('div').addClass('playing');
           return _this.boardView.play(game);
         });
         return this.boardView.on('back', function() {
-          return _this.$('.content').removeClass('playing');
+          return _this.$('.content').find('div').removeClass('playing');
         });
       },
       events: {},

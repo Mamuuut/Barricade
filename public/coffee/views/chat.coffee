@@ -16,12 +16,8 @@ define [ 'backbone' ], (Backbone) ->
           newMessage.addClass 'visible', 0
 
     events: 
-      "click .switch":  "switchSize",
+      "click .header":  "switchSize",
       "keypress #new_message": "keyPressed"
-    
-    render: -> {}
-    
-    play: (game) -> {}
     
     switchSize: ->
       @$el.toggleClass 'minimized'

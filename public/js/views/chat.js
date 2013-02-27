@@ -20,14 +20,8 @@
         });
       },
       events: {
-        "click .switch": "switchSize",
+        "click .header": "switchSize",
         "keypress #new_message": "keyPressed"
-      },
-      render: function() {
-        return {};
-      },
-      play: function(game) {
-        return {};
       },
       switchSize: function() {
         return this.$el.toggleClass('minimized');

@@ -2,7 +2,7 @@
 module.exports = 
   getIndex: (req, res) ->
     res.render 'index', 
-      title: 'Welcome ' + req.user.username
+      title: req.user.username
     
   getUser: (req, res) ->
     res.json 

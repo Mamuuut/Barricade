@@ -2,12 +2,14 @@ block append head
     script(type='text/javascript', src='/socket.io/socket.io.js')
     script(type='text/javascript', data-main='js/main', src='js/libs/require.js')
 
-div.header
-  h1= title
-  a(href='/logout') Logout
+header
+  div
+    h1= title
+    a(href='/logout') Logout
   
 div.content
-  include game_list
-  include board
+  div.game-content
+    include game_list
+    include board
   
-include chat
+  include chat  

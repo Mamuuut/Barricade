@@ -10,11 +10,11 @@ define [ 'backbone' ], (Backbone) ->
       @boardView = @options.boardView
       
       @gameListView.on 'play', (game) =>
-        @$('.content').addClass 'playing'
+        @$('.content').find('div').addClass 'playing'
         @boardView.play game
 
       @boardView.on 'back', =>
-        @$('.content').removeClass 'playing'
+        @$('.content').find('div').removeClass 'playing'
 
     events: {}
     

@@ -1,40 +1,59 @@
 #chat
-  background-color #fff
-  padding 8px
-  position fixed
+  position absolute
+  left 0
   right 0
-  bottom 0
-  width 400px
+  bottom 0 
+  
   &.minimized
-    width auto 
-    .switch
-      border 1px solid
-    #message
+    .header:before
+      border-top none
+      border-bottom 12px solid #fff
     #conversation
+    #message
       display none
-  h1
-    margin-right 24px    
-  .switch
-    width 14px
-    height 14px
-    border-bottom 1px solid
-    action-button #555
-  #message
-    padding 5px
-    #new_message
-      padding 4px
-      margin -7px -5px
-      width 100%    
-      border 1px solid #acacac
-      border-radius 0
+  
+  .header
+    cursor pointer
+    padding 8px
+    padding-left 32px
+    background-color header-color
+    h1
+      color #fff
+      margin-right 24px 
+    &:hover
+      background-color #000
+      &:before
+        border-bottom-color rgb(147, 181, 255)
+        border-top-color rgb(147, 181, 255)
+    &:before
+      content ''
+      position absolute
+      width 0
+      height 0
+      top 0
+      left 0
+      border-left 6px solid transparent
+      border-right 6px solid transparent
+      border-top 12px solid #fff
+      margin 10px
+      
   #conversation
-    height 200px
+    height 100px
     overflow-y auto
     overflow-x hidden
-    border solid 1px #acacac
+    background-color #fff
+    border-bottom solid 1px #acacac
     padding 8px
     span
       opacity 0
       transition opacity 1s
       &.visible
         opacity 1
+  #message
+    padding 5px
+    #new_message
+      padding 4px
+      margin -7px -5px
+      width 100%    
+      border none
+      border-radius 0
