@@ -11,6 +11,9 @@ define [ 'backbone', 'CellView', 'CellGrid', 'CellModel', 'barricade' ], (Backbo
       @socket = @options.socket
       @socket.on 'update board', (res) =>
         @model.fetch()
+        
+      @socket.on 'game winner', (winnerId) =>
+        @onGameWinner winnerId
       
       @playerId = @options.playerid
       
@@ -70,15 +73,14 @@ define [ 'backbone', 'CellView', 'CellGrid', 'CellModel', 'barricade' ], (Backbo
     onMove: (move) ->
       @socket.emit 'move', move
       
-    onStatusChanged: ->
-      if @model.isComplete()
-        if @model.isWinner @playerId
-          @$('.win').show()
-          @$('.lose').hide()
-          @$('#end').show()
-        else
-          @$('.win').hide()
-          @$('.lose').show()
-          @$('#end').show()
+    onGameWinner: (winnerId) ->
+      if winnerId is @playerId
+        @$('.win').show()
+        @$('.lose').hide()
+        @$('#end').show()
+      else
+        @$('.win').hide()
+        @$('.lose').show()
+        @$('#end').show()
       
   BoardView

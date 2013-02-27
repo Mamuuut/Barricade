@@ -48,8 +48,8 @@ Game.methods.start = (playerId) ->
 
 Game.methods.completeGame = ->
   if @isPlaying()
-    @status = 2
     @winner = @turn.player
+    @status = 2
     return true
   return false
 
@@ -58,6 +58,9 @@ Game.methods.completeGame = ->
 ###
 Game.virtual('nbplayers').get ->
   @playerIds.toObject().length
+
+Game.methods.getWinnerId = ->
+  return @playerIds[@winner]
 
 Game.methods.isMaster = (playerId) ->
   return 0 is @playerIds.indexOf playerId

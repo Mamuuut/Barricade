@@ -1,7 +1,12 @@
 Game = require '../models/game'
 
 connect = (io) ->
-  io.sockets.on 'connection', (socket) =>
+  io.sockets.on 'connection', (socket) => 
+    
+    Game.on 'change:status', (game) ->
+      if game.isComplete()
+        io.sockets.in(socket.gameId).emit 'game winner', game.getWinnerId()
+        game.remove (err) -> {}
       
     Game.on 'change:pawns', (game) ->
       io.sockets.in(socket.gameId).emit 'update board'

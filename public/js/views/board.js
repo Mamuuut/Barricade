@@ -13,6 +13,9 @@
         this.socket.on('update board', function(res) {
           return _this.model.fetch();
         });
+        this.socket.on('game winner', function(winnerId) {
+          return _this.onGameWinner(winnerId);
+        });
         this.playerId = this.options.playerid;
         this.cells = new CellGrid();
         _.each(Barricade.cells, function(line, y) {
@@ -79,17 +82,15 @@
       onMove: function(move) {
         return this.socket.emit('move', move);
       },
-      onStatusChanged: function() {
-        if (this.model.isComplete()) {
-          if (this.model.isWinner(this.playerId)) {
-            this.$('.win').show();
-            this.$('.lose').hide();
-            return this.$('#end').show();
-          } else {
-            this.$('.win').hide();
-            this.$('.lose').show();
-            return this.$('#end').show();
-          }
+      onGameWinner: function(winnerId) {
+        if (winnerId === this.playerId) {
+          this.$('.win').show();
+          this.$('.lose').hide();
+          return this.$('#end').show();
+        } else {
+          this.$('.win').hide();
+          this.$('.lose').show();
+          return this.$('#end').show();
         }
       }
     });

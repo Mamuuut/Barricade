@@ -4,7 +4,7 @@ module.exports =
   
   connect: (io) ->
   
-    io.sockets.on 'connection', (socket) =>
+    io.sockets.on 'connection', (socket) =>    
       
       Game.on 'change', (game) ->
         socket.emit 'update game', game.id
