@@ -1,5 +1,7 @@
 /public/*
+/db/*
+/views/*
+/styl/*
 /.git/*
 .git
-/db/
 ./README.md
