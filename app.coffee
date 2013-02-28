@@ -79,7 +79,7 @@ app.configure 'production', ->
 db = new DB.startup app.get('db uri')
 
 ### start server ###
-port = process.env.PORT || 3000
+port = process.env.OPENSHIFT_INTERNAL_PORT || 3000
 console.log 'port', port
 
 server.listen port, ->
