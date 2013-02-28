@@ -83,7 +83,7 @@ port = process.env.OPENSHIFT_INTERNAL_PORT || 3000
 ip = process.env.OPENSHIFT_INTERNAL_IP
 console.log 'port', port, 'ip', ip
 
-server.listen port, ->
+server.listen port, ip, ->
   console.log "Server listening on port %d", port
   
 module.exports = app
