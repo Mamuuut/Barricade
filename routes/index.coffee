@@ -8,3 +8,4 @@ module.exports =
     res.json 
       name: req.user.username, 
       id: req.user.id
+      victories: req.user.victories

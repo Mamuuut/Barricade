@@ -29,6 +29,9 @@ big-button()
   padding 6px 12px
   &:hover
     box-shadow 0 0 4px 1px #fff inset
+
+pawn-shadow() 
+  box-shadow -3px -3px 9px #000 inset
     
 body, html
   height 100%
@@ -45,7 +48,7 @@ h1
 
 header
   display block
-  z-index 2
+  z-index 20
   width 100%
   height header-height
   position fixed
@@ -57,13 +60,17 @@ header
     padding 8px
     center-content content-width
     h1
-      padding 4px 0
+      padding 4px 16px 4px 0
       float left
       color #fff
+    img
+      padding 4px 4px 4px 0
+      float left
     a
       padding 4px 0
       float right
       color #fff
+      
 
 .content
   min-height 100%
@@ -72,7 +79,7 @@ header
   box-shadow content-shadow
   
   .game-content
-    padding header-height + 16px 8px 42px
+    padding header-height + 12px 8px 42px
     &.playing
       #board_container
         display block

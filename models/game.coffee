@@ -60,7 +60,8 @@ Game.virtual('nbplayers').get ->
   @playerIds.toObject().length
 
 Game.methods.getWinnerId = ->
-  return @playerIds[@winner]
+  if @winner isnt -1
+    return @playerIds[@winner]
 
 Game.methods.isMaster = (playerId) ->
   return 0 is @playerIds.indexOf playerId

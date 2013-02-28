@@ -7,7 +7,7 @@
       el: $('body'),
       initialize: function() {
         var _this = this;
-        this.playerid = this.options.playerid;
+        this.socket = this.options.socket;
         this.gameListView = this.options.gameListView;
         this.boardView = this.options.boardView;
         this.chatView = this.options.chatView;
@@ -16,14 +16,19 @@
           _this.boardView.play(game);
           return _this.chatView.minimize();
         });
-        return this.boardView.on('back', function() {
+        this.boardView.on('back', function() {
           _this.$('.content').find('div').removeClass('playing');
           return _this.chatView.maximize();
         });
+        this.socket.on('update victories', function(nbVictories) {
+          return $.get('/user', function(user) {
+            return _this.updateVictories(user.victories);
+          });
+        });
+        return this.updateVictories(this.options.user.victories);
       },
-      events: {},
-      render: function() {
-        return {};
+      updateVictories: function(nbVictories) {
+        return this.$('#nb-victory').html(nbVictories);
       }
     });
     return MainView;

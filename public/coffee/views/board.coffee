@@ -53,7 +53,7 @@ define [ 'backbone', 'CellView', 'CellGrid', 'CellModel', 'barricade' ], (Backbo
       @cells.setTurn turn, @model.isCurrentPlayer(@playerId)
       
     play: (game) -> 
-      @$('#win').hide()
+      @$('#end').hide()
       
       @socket.emit 'play', game.id
       @cells.reset()

@@ -65,7 +65,7 @@
         return this.cells.setTurn(turn, this.model.isCurrentPlayer(this.playerId));
       },
       play: function(game) {
-        this.$('#win').hide();
+        this.$('#end').hide();
         this.socket.emit('play', game.id);
         this.cells.reset();
         this.model = game;

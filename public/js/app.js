@@ -34,6 +34,8 @@
             socket: socket
           });
           return mainView = new MainView({
+            user: user,
+            socket: socket,
             gameListView: gameListView,
             boardView: boardView,
             chatView: chatView

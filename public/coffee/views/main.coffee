@@ -4,7 +4,7 @@ define [ 'backbone' ], (Backbone) ->
     el: $('body'),  
      
     initialize: ->
-      @playerid = @options.playerid
+      @socket = @options.socket
         
       @gameListView = @options.gameListView
       @boardView = @options.boardView
@@ -18,9 +18,14 @@ define [ 'backbone' ], (Backbone) ->
       @boardView.on 'back', =>
         @$('.content').find('div').removeClass 'playing'
         @chatView.maximize()
-
-    events: {}
+        
+      @socket.on 'update victories', (nbVictories) => 
+        $.get '/user', (user) =>
+          @updateVictories user.victories
+      
+      @updateVictories @options.user.victories
     
-    render: -> {}
-   
+    updateVictories: (nbVictories) -> 
+      @$('#nb-victory').html(nbVictories)
+      
   MainView
