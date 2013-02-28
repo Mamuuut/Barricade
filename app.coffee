@@ -67,8 +67,8 @@ app.configure 'production', ->
   io.enable 'browser client gzip'
   io.set 'log level', 1
   
-  socket.set 'transports', ['xhr-polling']
-  socket.set 'polling duration', 30
+  io.set 'transports', ['xhr-polling']
+  io.set 'polling duration', 30
   
 new sockets.connect io
 
