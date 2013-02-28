@@ -10,7 +10,10 @@ header div a{padding:4px 0;float:right;color:#fff}
 .content .game-content{padding:52px 8px 42px;}
 .content .game-content.playing #board_container{display:block}
 .content .game-content.playing #games{display:none}
-.login{top:40%;height:150px;position:relative;-webkit-border-radius:6px;-moz-border-radius:6px;-ms-border-radius:6px;-o-border-radius:6px;border-radius:6px;-webkit-box-shadow:0 0 0 16px rgba(255,255,255,0.3);-moz-box-shadow:0 0 0 16px rgba(255,255,255,0.3);-ms-box-shadow:0 0 0 16px rgba(255,255,255,0.3);-o-box-shadow:0 0 0 16px rgba(255,255,255,0.3);box-shadow:0 0 0 16px rgba(255,255,255,0.3);background-color:#fff;margin:-75px auto 0;width:300px;padding:8px;}
+#error{top:30%;position:relative;-webkit-border-radius:6px;-moz-border-radius:6px;-ms-border-radius:6px;-o-border-radius:6px;border-radius:6px;-webkit-box-shadow:0 0 0 16px rgba(255,255,255,0.3);-moz-box-shadow:0 0 0 16px rgba(255,255,255,0.3);-ms-box-shadow:0 0 0 16px rgba(255,255,255,0.3);-o-box-shadow:0 0 0 16px rgba(255,255,255,0.3);box-shadow:0 0 0 16px rgba(255,255,255,0.3);background-color:#fff;margin:0 auto;padding:8px;width:300px;text-align:center;}
+#error h1{font-size:32px}
+#error p{font-size:16px}
+.login{top:40%;position:relative;-webkit-border-radius:6px;-moz-border-radius:6px;-ms-border-radius:6px;-o-border-radius:6px;border-radius:6px;-webkit-box-shadow:0 0 0 16px rgba(255,255,255,0.3);-moz-box-shadow:0 0 0 16px rgba(255,255,255,0.3);-ms-box-shadow:0 0 0 16px rgba(255,255,255,0.3);-o-box-shadow:0 0 0 16px rgba(255,255,255,0.3);box-shadow:0 0 0 16px rgba(255,255,255,0.3);background-color:#fff;margin:-75px auto 0;width:300px;padding:8px;}
 .login span.error{color:#f00}
 .login form{margin:8px 0 0;}
 .login form input[type=text],.login form input[type=password]{-webkit-border-radius:3px;-moz-border-radius:3px;-ms-border-radius:3px;-o-border-radius:3px;border-radius:3px;-webkit-box-shadow:0 1px 0 #fff,0 -2px 5px rgba(0,0,0,0.08) inset;-moz-box-shadow:0 1px 0 #fff,0 -2px 5px rgba(0,0,0,0.08) inset;-ms-box-shadow:0 1px 0 #fff,0 -2px 5px rgba(0,0,0,0.08) inset;-o-box-shadow:0 1px 0 #fff,0 -2px 5px rgba(0,0,0,0.08) inset;box-shadow:0 1px 0 #fff,0 -2px 5px rgba(0,0,0,0.08) inset;background:#eae7e7;border:1px solid #c8c8c8;color:#777;margin:0 0 10px;padding:10px;width:278px;}

@@ -1,17 +1,20 @@
+extends layout
+
 block append head
     script(type='text/javascript', src='/socket.io/socket.io.js')
     script(type='text/javascript', data-main='js/main', src='js/libs/require.js')
 
-header
-  div
-    h1= title
-    img(src='img/trophee.png', height='20px')
-    h1#nb-victory
-    a(href='/logout') Logout
-  
-div.content
-  div.game-content
-    include game_list
-    include board
-  
-  include chat  
+block append body
+  header
+    div
+      h1= title
+      img(src='img/trophee.png', height='20px')
+      h1#nb-victory
+      a(href='/logout') Logout
+    
+  div.content
+    div.game-content
+      include game_list
+      include board
+    
+    include chat  

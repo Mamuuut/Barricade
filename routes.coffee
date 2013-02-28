@@ -2,9 +2,9 @@
  routes.coffee
 ###
 
-index = require './routes/index'
-login = require './routes/login'
-game  = require './routes/game'
+index   = require './routes/index'
+login   = require './routes/login'
+game    = require './routes/game'
         
 # Remove all games from DB for test purpose only
 ###

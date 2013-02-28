@@ -4,14 +4,18 @@
 
 ### require modules ###
 express   = require 'express'
+http      = require 'http'
+flash     = require 'connect-flash'
 passport  = require 'passport'
 espresso  = require './espresso.coffee'
 DB        = require './accessDB'
 sockets   = require './sockets'
 routes    = require './routes'
+errors    = require './routes/errors'
 
 ### create express server ###
-app = express.createServer()
+app = express()
+server = http.createServer app
 
 ### parse args (- coffee and the filename) ###
 ARGV = process.argv[2..]
@@ -26,12 +30,22 @@ for s in ARGV
 app.configure ->
   app.set 'views', __dirname + '/views'
   app.set 'view engine', 'jade'
+  
   app.use express.bodyParser()
   app.use express.cookieParser()
   app.use express.static __dirname + '/public'
   app.use express.session { secret: 'mamut game' }
+  app.use flash()
+  
   app.use passport.initialize()
   app.use passport.session()
+
+  ### app routes ###
+  new routes app
+  
+  app.use errors.errorLogger
+  app.use errors.errorHandler
+  app.use errors.notFoundHandler
 
 ### watch coffeescript sources ###
 coffee = espresso.core.exec espresso.core.node_modules_path + 'coffee -o public/js -w -c public/coffee'
@@ -42,21 +56,18 @@ coffee.stdout.on 'data', (data) ->
 ### watch stylus sources ###
 espresso.core.exec espresso.core.node_modules_path + 'stylus -w -c styl/styles.styl -o public/css/'
 
-### io configuration ###
-io = (require 'socket.io').listen app
-io.set 'log level', 1
-new sockets.connect io
-
-### app routes ###
-new routes app
-
 ### DB access ###
 conn = 'mongodb://localhost/db'
 db = new DB.startup conn
 
+### io configuration ###
+io = (require 'socket.io').listen server
+io.set 'log level', 1
+new sockets.connect io
+
 ### start server ###
-app.listen 3000, ->
+server.listen 3000, ->
   espresso.core.logEspresso()
-  console.log "Server listening on port %d, %s", app.address().port, app.env
+  console.log "Server listening on port %d", 3000
   
 module.exports = app
