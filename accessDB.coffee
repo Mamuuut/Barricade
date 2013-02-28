@@ -18,10 +18,13 @@ passport.use new LocalStrategy (username, password, done) ->
         password: password
       newUser.save (err, user) -> 
         console.log 'newUser saved', err, user
-      return done null, newUser
-    if !user.validPassword password
-      return done null, false, { message: 'Incorrect password.' }
-    return done null, user
+        return done null, newUser
+    else
+      user.validPassword password, (err, res) ->
+        if res
+          return done null, user
+        else
+          return done null, false, { message: 'Incorrect password.' }
 
 # serialize user on login
 passport.serializeUser (user, done) ->
