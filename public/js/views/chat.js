@@ -26,6 +26,12 @@
       switchSize: function() {
         return this.$el.toggleClass('minimized');
       },
+      minimize: function() {
+        return this.$el.addClass('minimized');
+      },
+      maximize: function() {
+        return this.$el.removeClass('minimized');
+      },
       keyPressed: function(e) {
         var message;
         if (e.which === 13) {

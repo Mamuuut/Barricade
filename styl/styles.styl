@@ -17,18 +17,18 @@ action-button(hover-color = #fff)
   margin-left 4px
   &:hover
     color hover-color
-
-game-status(color)
-  content ''
-  position absolute
-  width 10px
-  height 10px
-  background-color color
-  border-radius 5px
-  margin 5px
-  top 0
-  left 0
-  border 1px solid #888
+    
+big-button()
+  cursor pointer
+  margin 0
+  color: #fff
+  border-radius 4px
+  background-color #3d3d3d
+  border none
+  box-shadow 0 0 12px #000 inset
+  padding 6px 12px
+  &:hover
+    box-shadow 0 0 4px 1px #fff inset
     
 body, html
   height 100%
@@ -72,7 +72,7 @@ header
   box-shadow content-shadow
   
   .game-content
-    padding header-height + 8px 8px 188px
+    padding header-height + 16px 8px 42px
     &.playing
       #board_container
         display block

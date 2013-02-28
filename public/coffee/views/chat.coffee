@@ -21,7 +21,13 @@ define [ 'backbone' ], (Backbone) ->
     
     switchSize: ->
       @$el.toggleClass 'minimized'
-      
+    
+    minimize: ->
+      @$el.addClass 'minimized'
+    
+    maximize: ->
+      @$el.removeClass 'minimized'
+    
     keyPressed: (e) ->
       if(e.which is 13)
         message = @$('#new_message').val()

@@ -10,12 +10,15 @@
         this.playerid = this.options.playerid;
         this.gameListView = this.options.gameListView;
         this.boardView = this.options.boardView;
+        this.chatView = this.options.chatView;
         this.gameListView.on('play', function(game) {
           _this.$('.content').find('div').addClass('playing');
-          return _this.boardView.play(game);
+          _this.boardView.play(game);
+          return _this.chatView.minimize();
         });
         return this.boardView.on('back', function() {
-          return _this.$('.content').find('div').removeClass('playing');
+          _this.$('.content').find('div').removeClass('playing');
+          return _this.chatView.maximize();
         });
       },
       events: {},

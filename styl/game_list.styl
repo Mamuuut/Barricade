@@ -1,20 +1,35 @@
+
+game-status(color)
+  content ''
+  position absolute
+  width 12px
+  height @width
+  background-color color
+  border-radius 50%
+  margin 8px
+  top 0
+  left 0
+  border 1px solid #888
+  
 #games
-  .list
+  #create
+    big-button()
+      
+  ul
     padding 0
     margin 0
     list-style-type none
     li
       position relative
-      padding 4px 4px 4px 18px
-      &:nth-child(even)
-        background-color #deddff
-      &:nth-child(odd)
-        background-color #fffcdd
+      margin 8px 0
+      padding 8px
+      padding-left @padding + 14px
+      background-color #deddff
+      border-radius 4px
+      border solid 1px #ccc
       &:hover
-        .action
-          color #aaa
-        background-color #000
-        color #fff
+        box-shadow 0 0 12px darken(@background-color, 20%) inset
+        transform translate(4px, 0)
       .players
         padding 0 8px
       .title
@@ -23,13 +38,10 @@
           &.current
             font-weight bold
       .action
-        action-button()
+        action-button darken(@background-color, 20%)
       &.waiting_player:after
         game-status #ff8800
       &.playing:after
         game-status #00ff00
       &.complete:after
         game-status #ccc
-        
-  #create
-    margin 4px 0

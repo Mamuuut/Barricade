@@ -26,6 +26,7 @@ define ['ChatView', 'GameList', 'GameListView', 'BoardView', 'MainView'], (ChatV
           # Main View
           mainView = new MainView 
             gameListView: gameListView,
-            boardView: boardView
+            boardView: boardView,
+            chatView: chatView
       
     initialize: initialize

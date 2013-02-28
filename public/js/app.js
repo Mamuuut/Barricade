@@ -35,7 +35,8 @@
           });
           return mainView = new MainView({
             gameListView: gameListView,
-            boardView: boardView
+            boardView: boardView,
+            chatView: chatView
           });
         });
       });
