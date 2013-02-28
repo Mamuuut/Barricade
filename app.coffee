@@ -21,8 +21,6 @@ server = http.createServer app
 ARGV = process.argv[2..]
 rargs = /-{1,2}\w+/
 rprod = /-{1,2}(p|production)/
-
-console.log 'ARGV', ARGV
   
 for s in ARGV
   m = rargs.exec s
@@ -82,6 +80,8 @@ db = new DB.startup app.get('db uri')
 
 ### start server ###
 port = process.env.PORT || 3000
+console.log 'port', port
+
 server.listen port, ->
   console.log "Server listening on port %d", port
   
