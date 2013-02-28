@@ -80,6 +80,7 @@ db = new DB.startup app.get('db uri')
 
 ### start server ###
 port = process.env.OPENSHIFT_INTERNAL_PORT || 3000
+ip = process.env.OPENSHIFT_INTERNAL_IP
 console.log 'port', port
 
 server.listen port, ->
