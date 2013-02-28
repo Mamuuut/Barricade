@@ -67,8 +67,14 @@ app.configure 'production', ->
   io.enable 'browser client gzip'
   io.set 'log level', 1
   
-  io.set 'transports', ['xhr-polling']
-  io.set 'polling duration', 30
+  io.set 'transports', 
+  [
+    'websocket',
+    'flashsocket',
+    'htmlfile',
+    'xhr-polling',
+    'jsonp-polling',
+  ]
   
 new sockets.connect io
 
@@ -82,7 +88,7 @@ app.configure 'production', ->
 db = new DB.startup app.get('db uri')
 
 ### start server ###
-port = process.env.OPENSHIFT_INTERNAL_PORT || 3000
+port = 8000 #process.env.OPENSHIFT_INTERNAL_PORT || 3000
 ip = process.env.OPENSHIFT_INTERNAL_IP
 console.log 'port', port, 'ip', ip
 
