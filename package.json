@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "preinstall": "npm install -g coffee-script",
+  	"start": "coffee app.coffee -p",
   	"test": "mocha --compilers coffee:coffee-script --recursive --reporter spec --globals lr"
   },
   "dependencies": {
