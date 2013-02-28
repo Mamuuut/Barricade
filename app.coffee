@@ -74,16 +74,15 @@ new sockets.connect io
 ### DB access ###
 app.configure 'development', ->
   app.set 'db uri', 'mongodb://localhost/db'
-  app.set 'port', 3000
 
 app.configure 'production', ->
   app.set 'db uri', 'mongodb://mamut:cimeurz@ds029807.mongolab.com:29807/barricade'
-  app.set 'port', 443
   
 db = new DB.startup app.get('db uri')
 
 ### start server ###
-server.listen app.get('port'), ->
-  console.log "Server listening on port %d", app.get('db uri')
+port = process.env.PORT || 3000
+server.listen port, ->
+  console.log "Server listening on port %d", port
   
 module.exports = app
