@@ -35,10 +35,10 @@ Implemented features
 TODO list
 ---------
 
-*   Improve game list
-*   Add game end screen
+*   Add game list filters
 *   Add Server game logic
 *   Add password encryption
+*   Add production config
 *   ...
 
 Frameworks and libs
