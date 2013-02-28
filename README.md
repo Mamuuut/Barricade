@@ -37,7 +37,6 @@ TODO list
 
 *   Add game list filters
 *   Add Server game logic
-*   Add password encryption
 *   Add production config
 *   ...
 

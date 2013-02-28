@@ -17,7 +17,6 @@ passport.use new LocalStrategy (username, password, done) ->
         username: username
         password: password
       newUser.save (err, user) -> 
-        console.log 'newUser saved', err, user
         return done null, newUser
     else
       user.validPassword password, (err, res) ->
@@ -41,10 +40,5 @@ module.exports =
 
     mongoose.connection.on 'open', ->
       console.log 'We have connected to mongodb'
-      # Remove all users from DB for test purpose only
-      ###
-        User.remove (err, users) ->
-          console.log 'clear users', users
-      ###
   closeDB: ->
     mongoose.disconnect

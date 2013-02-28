@@ -22,9 +22,11 @@ ARGV = process.argv[2..]
 rargs = /-{1,2}\w+/
 rprod = /-{1,2}(p|production)/
 
+console.log 'ARGV', ARGV
+  
 for s in ARGV
   m = rargs.exec s
-  app.env = 'production' if m and m[0] and m[0].match rprod
+  app.set('env', 'production') if m and m[0] and m[0].match rprod
 
 ### express configuration ###
 app.configure ->
@@ -56,14 +58,27 @@ coffee.stdout.on 'data', (data) ->
 ### watch stylus sources ###
 espresso.core.exec espresso.core.node_modules_path + 'stylus -w -c styl/styles.styl -o public/css/'
 
-### DB access ###
-conn = 'mongodb://localhost/db'
-db = new DB.startup conn
-
 ### io configuration ###
 io = (require 'socket.io').listen server
-io.set 'log level', 1
+app.configure 'development', ->
+  io.set 'log level', 1
+
+app.configure 'production', ->
+  io.enable 'browser client minification'
+  io.enable 'browser client etag'
+  io.enable 'browser client gzip'
+  io.set 'log level', 1
+  
 new sockets.connect io
+
+### DB access ###
+app.configure 'development', ->
+  app.set 'db uri', 'mongodb://localhost/db'
+
+app.configure 'production', ->
+  app.set 'db uri', 'mongodb://mamut:cimeurz@ds029807.mongolab.com:29807/barricade'
+  
+db = new DB.startup app.get('db uri')
 
 ### start server ###
 server.listen 3000, ->

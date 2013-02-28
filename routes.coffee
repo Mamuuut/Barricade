@@ -5,12 +5,6 @@
 index   = require './routes/index'
 login   = require './routes/login'
 game    = require './routes/game'
-        
-# Remove all games from DB for test purpose only
-###
-Game.remove (err, games) ->
-  console.log 'clear games', games
-###
 
 module.exports = (app) ->
   
