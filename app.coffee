@@ -67,14 +67,8 @@ app.configure 'production', ->
   io.enable 'browser client gzip'
   io.set 'log level', 1
   
-  io.set 'transports', 
-  [
-    'websocket',
-    'flashsocket',
-    'htmlfile',
-    'xhr-polling',
-    'jsonp-polling',
-  ]
+  socket.set 'transports', ['xhr-polling']
+  socket.set 'polling duration', 30
   
 new sockets.connect io
 
