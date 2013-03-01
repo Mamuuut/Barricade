@@ -4,7 +4,6 @@
 
 ### require modules ###
 express   = require 'express'
-expose    = require 'express-expose'
 http      = require 'http'
 flash     = require 'connect-flash'
 passport  = require 'passport'
@@ -51,8 +50,6 @@ app.configure ->
 
 config.initialize app
 appConfig = app.get 'config'
-console.log 'appConfig', appConfig
-app.expose app.settings
 
 ### watch coffeescript sources ###
 coffee = espresso.core.exec espresso.core.node_modules_path + 'coffee -o public/js -w -c public/coffee'

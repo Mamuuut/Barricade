@@ -8,7 +8,6 @@
   },
   "dependencies": {
     "express": 				">=3.0.x",
-	"express-expose": 		">=0.3.x",
     "connect-flash": 		"*",
     "socket.io": 			"0.9.0",
     "mongoose": 			">=3.0.x",
