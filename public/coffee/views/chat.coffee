@@ -7,7 +7,7 @@ define [ 'backbone' ], (Backbone) ->
     template: _.template($('#chat-template').html()),
      
     initialize: ->
-      @socket = io.connect()
+      @socket = @options.socket
         
       @socket.on 'new message', (userMessage) =>
         newMessage = $ @template(userMessage)

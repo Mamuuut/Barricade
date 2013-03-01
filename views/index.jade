@@ -1,10 +1,12 @@
 extends layout
 
-block append head
-    script(type='text/javascript', src='/socket.io/socket.io.js')
-    script(type='text/javascript', data-main='js/main', src='js/libs/require.js')
+append head
+  script(type='text/javascript', src= socketio_base_url + '/socket.io/socket.io.js')
+  script(type='text/javascript', data-main='js/main', src='js/libs/require.js')
+  script
+    socketio_base_url = '!{socketio_base_url}'
 
-block append body
+append body
   header
     div
       h1= title

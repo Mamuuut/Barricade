@@ -9,7 +9,7 @@
       template: _.template($('#chat-template').html()),
       initialize: function() {
         var _this = this;
-        this.socket = io.connect();
+        this.socket = this.options.socket;
         return this.socket.on('new message', function(userMessage) {
           var newMessage;
           newMessage = $(_this.template(userMessage));

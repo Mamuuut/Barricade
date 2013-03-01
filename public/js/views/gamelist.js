@@ -21,7 +21,11 @@
         this.games.on('reset', this.render, this);
         this.games.on('add', this.addGame, this);
         this.socket.on('update game', function(gameId) {
-          return _this.games.get(gameId).fetch();
+          var game;
+          game = _this.games.get(gameId);
+          if (game) {
+            return game.fetch();
+          }
         });
         return this.socket.on('update list', function() {
           return _this.games.fetch();

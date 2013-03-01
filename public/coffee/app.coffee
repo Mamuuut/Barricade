@@ -9,7 +9,7 @@ define ['ChatView', 'GameList', 'GameListView', 'BoardView', 'MainView'], (ChatV
           
       $.get '/user', (user) ->
         
-        socket = io.connect()
+        socket = io.connect socketio_base_url
         socket.on 'connect', => 
           socket.emit 'new user', user
         

@@ -1,8 +1,14 @@
 
 module.exports = 
-  getIndex: (req, res) ->
-    res.render 'index', 
-      title: req.user.username
+  getIndex: (app) ->
+    (req, res) ->
+      socketioPort = app.get('config').socketio.port
+      socketioBaseUrl = req.protocol + '://' + req.host + ':' + socketioPort
+      
+      #res.expose socketioBaseUrl, 'socketioBaseUrl'
+      res.render 'index', 
+        title: req.user.username
+        socketio_base_url: socketioBaseUrl
     
   getUser: (req, res) ->
     res.json 

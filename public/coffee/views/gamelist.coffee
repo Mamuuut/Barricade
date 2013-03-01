@@ -16,7 +16,9 @@ define [ 'backbone', 'GameLineView' ], (Backbone, GameLineView) ->
       @games.on 'add', @addGame, @
       
       @socket.on 'update game', (gameId) =>
-        @games.get(gameId).fetch()
+        game = @games.get gameId 
+        if game
+          game.fetch()
       @socket.on 'update list', =>
         @games.fetch()
 

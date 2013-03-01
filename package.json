@@ -3,25 +3,26 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "preinstall": "npm install coffee-script",
-  	"start": "coffee app.coffee -p",
+    "preinstall": "npm install -g coffee-script",
+  	"start": "forever start -v -c coffee app.coffee -production",
   	"test": "mocha --compilers coffee:coffee-script --recursive --reporter spec --globals lr"
   },
   "dependencies": {
-    "express": ">=3.0.x",
-    "connect-flash": "*",
-    "socket.io": "0.9.0",
-    "mongoose": ">=3.0.x",
-    "mongoose-eventify": ">=0.0.1",
-    "passport": "*",
-    "passport-local": "*",
-    "bcrypt-nodejs": "*",
-    "coffee-script": "1.5.0",
-    "stylus": "*",
-    "jade": "*",
-    "uglify-js": "*",
-    "mocha": "*",
-    "should": "*",
-    "supertest": "*"
+    "express": 				">=3.0.x",
+	"express-expose": 		">=0.3.x",
+    "connect-flash": 		"*",
+    "socket.io": 			"0.9.0",
+    "mongoose": 			">=3.0.x",
+    "mongoose-eventify": 	">=0.0.1",
+    "passport": 			"*",
+    "passport-local": 		"*",
+    "bcrypt-nodejs": 		"*",
+    "coffee-script": 		"1.5.0",
+    "stylus": 				"*",
+    "jade": 				"*",
+    "uglify-js": 			"*",
+    "mocha": 				"*",
+    "should": 				"*",
+    "supertest": 			"*"
   }
 }

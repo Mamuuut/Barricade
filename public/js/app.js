@@ -15,7 +15,7 @@
       return $.get('/user', function(user) {
         var socket,
           _this = this;
-        socket = io.connect();
+        socket = io.connect(socketio_base_url);
         return socket.on('connect', function() {
           var boardView, chatView, gameListView, mainView;
           socket.emit('new user', user);

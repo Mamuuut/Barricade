@@ -19,7 +19,7 @@ module.exports = (app) ->
   app.get     '/logout',    login.getLogout
 
   #Index
-  app.get     '/',          ensureAuthenticated, index.getIndex
+  app.get     '/',          ensureAuthenticated, index.getIndex app
   app.get     '/user',      ensureAuthenticated, index.getUser
   
   #Games

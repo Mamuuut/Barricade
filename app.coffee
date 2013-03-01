@@ -4,10 +4,12 @@
 
 ### require modules ###
 express   = require 'express'
+expose    = require 'express-expose'
 http      = require 'http'
 flash     = require 'connect-flash'
 passport  = require 'passport'
 espresso  = require './espresso.coffee'
+config    = require './config'
 DB        = require './accessDB'
 sockets   = require './sockets'
 routes    = require './routes'
@@ -47,6 +49,11 @@ app.configure ->
   app.use errors.errorHandler
   app.use errors.notFoundHandler
 
+config.initialize app
+appConfig = app.get 'config'
+console.log 'appConfig', appConfig
+app.expose app.settings
+
 ### watch coffeescript sources ###
 coffee = espresso.core.exec espresso.core.node_modules_path + 'coffee -o public/js -w -c public/coffee'
 coffee.stdout.on 'data', (data) ->
@@ -57,11 +64,15 @@ coffee.stdout.on 'data', (data) ->
 espresso.core.exec espresso.core.node_modules_path + 'stylus -w -c styl/styles.styl -o public/css/'
 
 ### io configuration ###
-io = (require 'socket.io').listen server
+io = undefined
 app.configure 'development', ->
+  io = (require 'socket.io').listen server
+  
   io.set 'log level', 1
 
 app.configure 'production', ->
+  io = (require 'socket.io').listen appConfig.socketio.port
+  
   io.enable 'browser client minification'
   io.enable 'browser client etag'
   io.enable 'browser client gzip'
@@ -79,20 +90,10 @@ app.configure 'production', ->
 new sockets.connect io
 
 ### DB access ###
-app.configure 'development', ->
-  app.set 'db uri', 'mongodb://localhost/db'
-
-app.configure 'production', ->
-  app.set 'db uri', 'mongodb://mamut:cimeurz@ds029807.mongolab.com:29807/barricade'
-  
-db = new DB.startup app.get('db uri')
+db = new DB.startup appConfig.mongodb
 
 ### start server ###
-port = 8000 #process.env.OPENSHIFT_INTERNAL_PORT || 3000
-ip = process.env.OPENSHIFT_INTERNAL_IP
-console.log 'port', port, 'ip', ip
-
-server.listen port, ip, ->
-  console.log "Server listening on port %d", port
+server.listen appConfig.server.port, appConfig.server.ip, ->
+  console.log "Server listening on port %d", appConfig.server.port
   
 module.exports = app
