@@ -55,7 +55,7 @@ appConfig = app.get 'config'
 coffee = espresso.core.exec espresso.core.node_modules_path + 'coffee -o public/js -w -c public/coffee'
 coffee.stdout.on 'data', (data) ->
   #console.log data
-  espresso.core.minify() if app.env == 'production'
+  espresso.core.minify() if app.get(env) is 'production'
 
 ### watch stylus sources ###
 espresso.core.exec espresso.core.node_modules_path + 'stylus -w -c styl/styles.styl -o public/css/'
