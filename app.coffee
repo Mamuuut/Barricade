@@ -63,8 +63,8 @@ espresso.core.exec espresso.core.node_modules_path + 'stylus -w -c styl/styles.s
 ### io configuration ###
 io = undefined
 app.configure 'development', ->
-  io = (require 'socket.io').listen server
-  
+  io = (require 'socket.io').listen server, {path: '/pouet'}
+
   io.set 'log level', 1
 
 app.configure 'production', ->
@@ -83,7 +83,7 @@ app.configure 'production', ->
     'xhr-polling',
     'jsonp-polling',
   ]
-  
+
 new sockets.connect io
 
 ### DB access ###
