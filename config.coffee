@@ -3,8 +3,6 @@ config =
     server: 
       ip  : process.env.OPENSHIFT_INTERNAL_IP
       port: process.env.OPENSHIFT_INTERNAL_PORT || 3000
-    socketio:
-      port: 8443
     mongodb: (->
       username = process.env.MONGO_USER
       password = process.env.MONGO_PASS
@@ -13,8 +11,6 @@ config =
   development:
     server: 
       ip  : undefined
-      port: 3000
-    socketio:
       port: 3000
     mongodb: 'mongodb://localhost/db'
 

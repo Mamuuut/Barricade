@@ -61,20 +61,17 @@ coffee.stdout.on 'data', (data) ->
 espresso.core.exec espresso.core.node_modules_path + 'stylus -w -c styl/styles.styl -o public/css/'
 
 ### io configuration ###
-io = undefined
+io = (require 'socket.io').listen server
 app.configure 'development', ->
-  io = (require 'socket.io').listen server, {path: '/pouet'}
-
+  
   io.set 'log level', 1
 
 app.configure 'production', ->
-  io = (require 'socket.io').listen appConfig.socketio.port
   
   io.enable 'browser client minification'
   io.enable 'browser client etag'
   io.enable 'browser client gzip'
   io.set 'log level', 1
-  
   io.set 'transports', 
   [
     'websocket',

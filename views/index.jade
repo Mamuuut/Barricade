@@ -1,10 +1,8 @@
 extends layout
 
 append head
-  script(type='text/javascript', src= 'js/libs/socket.io.min.js')
+  script(type='text/javascript', src= '/socket.io/socket.io.js')
   script(type='text/javascript', data-main='js/main', src='js/libs/require.js')
-  script
-    socketio_base_url = '!{socketio_base_url}'
 
 append body
   header
