@@ -3,7 +3,7 @@ module.exports =
   getIndex: (app) ->
     (req, res) ->
       socketioPort = app.get('config').socketio.port
-      socketioBaseUrl = req.protocol + '://' + req.host + ':' + socketioPort
+      socketioBaseUrl = ###req.protocol + ### 'https://' + req.host + ':' + socketioPort
       
       #res.expose socketioBaseUrl, 'socketioBaseUrl'
       res.render 'index', 

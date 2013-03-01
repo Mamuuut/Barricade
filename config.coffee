@@ -4,7 +4,7 @@ config =
       ip  : process.env.OPENSHIFT_INTERNAL_IP
       port: process.env.OPENSHIFT_INTERNAL_PORT || 3000
     socketio:
-      port: 8000
+      port: 8443
     mongodb: (->
       username = process.env.MONGO_USER
       password = process.env.MONGO_PASS
