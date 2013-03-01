@@ -3,7 +3,6 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "preinstall": "npm install -g coffee-script",
   	"start": "forever start -v -c coffee app.coffee -production",
   	"test": "mocha --compilers coffee:coffee-script --recursive --reporter spec --globals lr"
   },
