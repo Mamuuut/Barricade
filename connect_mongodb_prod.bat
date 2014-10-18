@@ -1,1 +1,0 @@
-..\..\mongodb\bin\mongo ds029807.mongolab.com:29807/barricade -u mamut -p cimeurz
