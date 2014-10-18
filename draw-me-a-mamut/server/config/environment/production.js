@@ -15,9 +15,6 @@ module.exports = {
 
   // MongoDB connection options
   mongo: {
-    uri:    process.env.MONGOLAB_URI ||
-            process.env.MONGOHQ_URL ||
-            process.env.OPENSHIFT_MONGODB_DB_URL+process.env.OPENSHIFT_APP_NAME ||
-            'mongodb://localhost/drawmeamamut'
+    uri:    'mongodb://' + process.env.MONGO_USER + ':' + process.env.MONGO_PASS + '@ds029807.mongolab.com:29807/drawmeamamut'
   }
 };
