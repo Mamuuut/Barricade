@@ -5,6 +5,9 @@ angular.module('drawMeAMamutApp')
     $scope.menu = [{
       'title': 'Home',
       'link': '/'
+    },{
+      'title': 'Draw',
+      'link': '/draw'
     }];
 
     $scope.isCollapsed = true;

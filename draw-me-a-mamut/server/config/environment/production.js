@@ -15,6 +15,6 @@ module.exports = {
 
   // MongoDB connection options
   mongo: {
-    uri:    'mongodb://' + process.env.MONGO_USER + ':' + process.env.MONGO_PASS + '@ds029807.mongolab.com:29807/drawmeamamut'
+    uri:    'mongodb://' + process.env.MONGO_USER + ':' + process.env.MONGO_PASS + '@ds029960.mongolab.com:29960/drawmeamamut'
   }
 };

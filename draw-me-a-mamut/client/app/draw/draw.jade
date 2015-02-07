@@ -1,0 +1,12 @@
+div(ng-include='"components/navbar/navbar.html"')
+
+.container
+  #canvas_wrapper
+    canvas(
+      ng-mousedown='mousedown($event)'
+      ng-mouseup='mouseup($event)'
+      ng-mousemove='mousemove($event)'
+      ng-mouseleave='mouseleave($event)'
+      resize
+      drawing
+    )
